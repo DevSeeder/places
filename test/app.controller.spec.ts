@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BairrosController } from '../src/bairros/bairros.controller';
-import { BairrosService } from '../src/bairros/bairros.service';
+import { BairrosController } from '../src/adapter/controller/bairros.controller';
+import { BairrosService } from '../src/adapter/service/bairros.service';
 
 describe('BairrosController', () => {
   let bairrosController: BairrosController;

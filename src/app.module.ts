@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BairrosModule } from './bairros/bairros.module';
+import { BairrosModule } from './adapter/bairros.module';
 
 @Module({
   imports: [BairrosModule],
