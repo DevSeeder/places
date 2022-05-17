@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from '../src/bairros/bairros.controller';
-import { AppService } from '../src/bairros/bairros.service';
+import { BairrosController } from '../src/bairros/bairros.controller';
+import { BairrosService } from '../src/bairros/bairros.service';
 
-describe('AppController', () => {
-  let appController: AppController;
+describe('BairrosController', () => {
+  let bairrosController: BairrosController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
+      controllers: [BairrosController],
+      providers: [BairrosService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    bairrosController = app.get<BairrosController>(BairrosController);
   });
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(bairrosController.getHello()).toBe('Hello World!');
     });
   });
 });
