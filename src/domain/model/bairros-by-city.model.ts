@@ -1,5 +1,4 @@
-export class BairrosByCity {
-  cidade: string;
-  bairro: string;
-  uf: string;
+export class BairroByCity {
+  name: string;
+  city: string;
 }

@@ -1,16 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { BairrosByCity } from 'src/domain/model/bairros-by-city.model';
+import { Inject, Injectable } from '@nestjs/common';
+// import { BairrosByCity } from 'src/domain/model/bairros-by-city.model';
+import { GuiaMaisRepository } from '../repository/guia-mais.repository';
 
 @Injectable()
 export class BairrosService {
+  constructor(
+    @Inject('GuiaMaisRepository') private guiaMaisRepository: GuiaMaisRepository
+  ) {}
+
   async getBairrosByCity(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     country: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     state: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     city: string
-  ): Promise<BairrosByCity[]> {
-    return [];
+  ): Promise<any> {
+    return this.guiaMaisRepository.getBairrosByCity(country, state, city);
   }
 }
