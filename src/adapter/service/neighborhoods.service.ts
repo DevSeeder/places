@@ -1,18 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-// import { BairrosByCity } from 'src/domain/model/bairros-by-city.model';
 import { GuiaMaisRepository } from '../repository/guia-mais.repository';
 
 @Injectable()
-export class BairrosService {
+export class NeighborhoodsService {
   constructor(
     @Inject('GuiaMaisRepository') private guiaMaisRepository: GuiaMaisRepository
   ) {}
 
-  async getBairrosByCity(
+  async getNeighborhoodsByCity(
     country: string,
     state: string,
     city: string
   ): Promise<any> {
-    return this.guiaMaisRepository.getBairrosByCity(country, state, city);
+    return this.guiaMaisRepository.getNeighborhoodsByCity(country, state, city);
   }
 }

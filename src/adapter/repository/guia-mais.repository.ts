@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { BairroByCity } from 'src/domain/model/bairros-by-city.model';
+import { NeighborhoodsByCity } from 'src/domain/model/neighborhoods-by-city.model';
 import { PuppeteerRepository } from 'src/domain/repository/puppeteer.repository';
 
 @Injectable()
 export class GuiaMaisRepository extends PuppeteerRepository {
-  async getBairrosByCity(country: string, state: string, city: string) {
+  async getNeighborhoodsByCity(country: string, state: string, city: string) {
     const url = `https://www.guiamais.com.br/bairros/${city}-${state}`;
     const $ = await this.getDocumentHtml(url);
 
-    const arrBairros = [];
+    const arrNeighborhoods = [];
     $('.cities.centerContent')
       .find('a')
       .each(function () {
-        const bairro = new BairroByCity();
-        bairro.name = $(this).text();
-        bairro.city = city.capitalize() + '-' + state.toUpperCase();
-        arrBairros.push(bairro);
+        const neighborhood = new NeighborhoodsByCity();
+        neighborhood.name = $(this).text();
+        neighborhood.city = city.capitalize() + '-' + state.toUpperCase();
+        arrNeighborhoods.push(neighborhood);
       });
 
-    return arrBairros;
+    return arrNeighborhoods;
   }
 }

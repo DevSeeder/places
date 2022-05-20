@@ -1,22 +1,24 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { BairrosController } from '../src/adapter/controller/bairros.controller';
-import { BairrosService } from '../src/adapter/service/bairros.service';
+// import { Test, TestingModule } from '@nestjs/testing';
+// import { NeighborhoodsController } from '../src/adapter/controller/neighborhoods.controller';
+// import { NeighborhoodsService } from '../src/adapter/service/neighborhoods.service';
 
-describe('BairrosController', () => {
-  let bairrosController: BairrosController;
+// describe('NeighborhoodsController', () => {
+//   let neighborhoodsController: NeighborhoodsController;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [BairrosController],
-      providers: [BairrosService],
-    }).compile();
+//   beforeEach(async () => {
+//     const app: TestingModule = await Test.createTestingModule({
+//       controllers: [NeighborhoodsController],
+//       providers: [NeighborhoodsService]
+//     }).compile();
 
-    bairrosController = app.get<BairrosController>(BairrosController);
-  });
+//     neighborhoodsController = app.get<NeighborhoodsController>(
+//       NeighborhoodsController
+//     );
+//   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(bairrosController.getHello()).toBe('Hello World!');
-    });
-  });
-});
+//   describe('root', () => {
+//     it('should return "Hello World!"', () => {
+//       expect(neighborhoodsController.getHello()).toBe('Hello World!');
+//     });
+//   });
+// });

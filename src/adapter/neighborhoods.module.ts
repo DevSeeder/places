@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { BairrosController } from './controller/bairros.controller';
+import { NeighborhoodsController } from './controller/neighborhoods.controller';
 import { GuiaMaisRepository } from './repository/guia-mais.repository';
-import { BairrosService } from './service/bairros.service';
+import { NeighborhoodsService } from './service/neighborhoods.service';
 
 @Module({
   imports: [PuppeteerModule.forFeature()],
-  controllers: [BairrosController],
+  controllers: [NeighborhoodsController],
   providers: [
     {
       provide: 'GuiaMaisRepository',
       useClass: GuiaMaisRepository
     },
-    BairrosService
+    NeighborhoodsService
   ]
 })
-export class BairrosModule {}
+export class NeighborhoodsModule {}
