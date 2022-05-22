@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
-import { GuiaMaisRepository } from './repository/guia-mais.repository';
+import { GuiaMaisRepository } from './repository/neighborhoods/guia-mais.repository';
 import { NeighborhoodsService } from './service/neighborhoods.service';
 
 @Module({
