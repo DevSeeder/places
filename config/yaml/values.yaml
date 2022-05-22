@@ -1,0 +1,4 @@
+repository:
+  neighborhoods:
+    guia-mais:
+      url: 'https://www.guiamais.com.br/bairros'

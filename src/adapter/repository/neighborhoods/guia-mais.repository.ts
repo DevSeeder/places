@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
 import { Page } from 'puppeteer';
-import { NeighborhoodsByCity } from 'src/domain/model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from 'src/domain/model/search-neighborhoods.model';
-import { PuppeteerNeighborhoodRepository } from 'src/domain/repository/puppeteer/neighborhood/puppeteer-neighborhood-repository.interface';
-import { PuppeteerNeoghborhoodRepository } from 'src/domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
+import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
+import { SearchNeighborhoods } from '../../../domain/model/search-neighborhoods.model';
+import { PuppeteerNeighborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood-repository.interface';
+import { PuppeteerNeoghborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 
 @Injectable()
 export class GuiaMaisRepository
@@ -13,10 +14,13 @@ export class GuiaMaisRepository
   implements PuppeteerNeighborhoodRepository
 {
   constructor(
-    @Inject('GUIA_MAIS_NEIGHBORHOODS_URL') protected url: string,
+    protected configService: ConfigService,
     @InjectPage() protected readonly page: Page
   ) {
-    super(url, page);
+    super(
+      configService.get<string>('repository.neighborhoods.guia-mais.url'),
+      page
+    );
   }
 
   buildElementFromDocument(searchParams, $: CheerioAPI): NeighborhoodsByCity[] {
@@ -25,11 +29,13 @@ export class GuiaMaisRepository
       .find('a')
       .each(function () {
         const neighborhood = new NeighborhoodsByCity();
+
         neighborhood.name = $(this).text();
         neighborhood.city =
           searchParams.city.capitalize() +
           '-' +
           searchParams.state.toUpperCase();
+
         arrNeighborhoods.push(neighborhood);
       });
 
