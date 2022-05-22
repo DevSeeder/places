@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { SearchNeighborhoods } from 'src/domain/model/search-neighborhoods.model';
 import { GuiaMaisRepository } from '../repository/guia-mais.repository';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class NeighborhoodsService {
     state: string,
     city: string
   ): Promise<any> {
-    return this.guiaMaisRepository.getNeighborhoodsByCity(country, state, city);
+    const searchParams = new SearchNeighborhoods(country, state, city);
+    return this.guiaMaisRepository.getNeighborhoodsByCity(searchParams);
   }
 }

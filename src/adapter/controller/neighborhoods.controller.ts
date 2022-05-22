@@ -6,7 +6,7 @@ export class NeighborhoodsController {
   constructor(private readonly neighborhoodsService: NeighborhoodsService) {}
 
   @Get('/city/:country/:state/:city')
-  async getHello(
+  async getNeighborhoodsByCity(
     @Param('country') country,
     @Param('state') state,
     @Param('city') city
