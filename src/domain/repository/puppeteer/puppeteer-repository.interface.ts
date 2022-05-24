@@ -5,6 +5,8 @@ export interface IPuppeteerRepository<ElementPlace, SearchElement> {
 
   getDocumentHtml(url: string): Promise<CheerioAPI>;
 
+  getDataHtml(): Promise<string>;
+
   buildElementFromDocument(
     searchParams: SearchElement,
     $: CheerioAPI

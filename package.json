@@ -28,6 +28,7 @@
     "chai": "^4.3.6",
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^16.0.1",
+    "fs": "^0.0.1-security",
     "js-yaml": "^4.1.0",
     "nest-puppeteer": "^1.1.1",
     "puppeteer": "^14.1.0",

@@ -1,0 +1,10 @@
+import './string.extension';
+import { Module } from '@nestjs/common';
+
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [],
+  exports: []
+})
+export class ExtensionsModule {}

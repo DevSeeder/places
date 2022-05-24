@@ -17,11 +17,13 @@ export class PuppeteerRepository {
       waitUntil: 'networkidle0'
     });
 
-    const data = await this.page.evaluate(
+    this._data = await this.getDataHtml();
+    return cheerio.load(this._data);
+  }
+
+  async getDataHtml(): Promise<string> {
+    return await this.page.evaluate(
       () => document.querySelector('*').outerHTML
     );
-
-    this._data = data;
-    return cheerio.load(data);
   }
 }
