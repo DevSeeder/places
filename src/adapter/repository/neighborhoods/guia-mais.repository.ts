@@ -5,7 +5,7 @@ import { InjectPage } from 'nest-puppeteer';
 import { Page } from 'puppeteer';
 import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../../domain/model/search-neighborhoods.model';
-import { PuppeteerNeighborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood-repository.interface';
+import { PuppeteerNeighborhoodRepository } from '../../../domain/repository/interfaces/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeoghborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 
 @Injectable()
@@ -31,10 +31,7 @@ export class GuiaMaisRepository
         const neighborhood = new NeighborhoodsByCity();
 
         neighborhood.name = $(this).text();
-        neighborhood.city =
-          searchParams.city.capitalize() +
-          '-' +
-          searchParams.state.toUpperCase();
+        neighborhood.city = `${searchParams.city.capitalize()} - ${searchParams.state.toUpperCase()}`;
 
         arrNeighborhoods.push(neighborhood);
       });
@@ -44,6 +41,6 @@ export class GuiaMaisRepository
 
   async getEndpoint(searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
     const url = `${this._url}/${searchParams.city}-${searchParams.state}`;
-    return await this.getDocumentHtml(url);
+    return this.getDocumentHtml(url);
   }
 }

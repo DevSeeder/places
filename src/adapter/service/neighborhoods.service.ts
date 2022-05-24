@@ -7,7 +7,8 @@ import { GuiaMaisRepository } from '../repository/neighborhoods/guia-mais.reposi
 @Injectable()
 export class NeighborhoodsService implements INeighborhoodsService {
   constructor(
-    @Inject('GuiaMaisRepository') private guiaMaisRepository: GuiaMaisRepository
+    @Inject('GuiaMaisRepository')
+    private readonly guiaMaisRepository: GuiaMaisRepository
   ) {}
 
   async getNeighborhoodsByCity(
