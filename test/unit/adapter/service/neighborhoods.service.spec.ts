@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NeighborhoodsService } from '../../../src/adapter/service/neighborhoods.service';
+import { NeighborhoodsService } from '../../../../src/adapter/service/neighborhoods.service';
 import { ConfigModule } from '@nestjs/config';
-import configuration from '../../../src/config/configuration';
+import configuration from '../../../../src/config/configuration';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { NeighborhoodsByCity } from '../../../src/domain/model/neighborhoods-by-city.model';
+import { NeighborhoodsByCity } from '../../../../src/domain/model/neighborhoods-by-city.model';
 
 describe('NeighborhoodsService', () => {
   let sut: NeighborhoodsService;

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 // import expect from 'chai';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../../src/app.module';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
