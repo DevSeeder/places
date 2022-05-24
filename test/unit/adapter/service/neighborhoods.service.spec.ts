@@ -38,7 +38,6 @@ describe('NeighborhoodsService', () => {
     }).compile();
 
     sut = app.get<NeighborhoodsService>(NeighborhoodsService);
-    // C:\Users\Maick\Documents\dev-projects\nest_js\places\test\mock\html\repository\neighborhoods\guia-mais_neighborhoods_orleans.html
   });
 
   describe('NeighborhoodsService', () => {

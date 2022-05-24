@@ -48,7 +48,6 @@ describe('GuiaMaisRepository', () => {
           flag: 'r'
         }
       );
-
       const mockSearchParams = new SearchNeighborhoods(
         'brasil',
         'sc',
@@ -58,8 +57,7 @@ describe('GuiaMaisRepository', () => {
 
       const actual = await sut.getNeighborhoodsByCity(mockSearchParams);
 
-      expect(actual).to.be.an('array');
-      //   expect(actual.length).to.be.not.empty();
+      expect(actual).to.be.an('array').that.is.not.empty;
 
       guiaMaisStub.restore();
     });
