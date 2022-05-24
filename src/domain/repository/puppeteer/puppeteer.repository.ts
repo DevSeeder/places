@@ -13,12 +13,15 @@ export abstract class PuppeteerRepository {
   }
 
   async getDocumentHtml(url: string): Promise<CheerioAPI> {
+    await this.goToUrl(url);
+    this._data = await this.getDataHtml();
+    return cheerio.load(this._data);
+  }
+
+  async goToUrl(url: string): Promise<void> {
     await this.page.goto(url, {
       waitUntil: 'networkidle0'
     });
-
-    this._data = await this.getDataHtml();
-    return cheerio.load(this._data);
   }
 
   async getDataHtml(): Promise<string> {

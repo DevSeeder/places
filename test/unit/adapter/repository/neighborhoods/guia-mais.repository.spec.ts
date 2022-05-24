@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import configuration from '../../../src/config/configuration';
+import configuration from '../../../../../src/config/configuration';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { GuiaMaisRepository } from '../../../src/adapter/repository/neighborhoods/guia-mais.repository';
+import { GuiaMaisRepository } from '../../../../../src/adapter/repository/neighborhoods/guia-mais.repository';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoods } from '../../../src/domain/model/search-neighborhoods.model';
+import { SearchNeighborhoods } from '../../../../../src/domain/model/search-neighborhoods.model';
 import * as fs from 'fs';
-import { ExtensionsModule } from '../../../src/adapter/helper/extensions/exensions.module';
+import { ExtensionsModule } from '../../../../../src/adapter/helper/extensions/exensions.module';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -53,13 +53,15 @@ describe('GuiaMaisRepository', () => {
         'sc',
         'orleans'
       );
-      const guiaMaisStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
+      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
+      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
       const actual = await sut.getNeighborhoodsByCity(mockSearchParams);
 
       expect(actual).to.be.an('array').that.is.not.empty;
 
-      guiaMaisStub.restore();
+      getDataHtmlStub.restore();
+      goToUrlStub.restore();
     });
   });
 });

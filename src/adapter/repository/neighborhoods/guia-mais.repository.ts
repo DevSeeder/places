@@ -5,7 +5,7 @@ import { InjectPage } from 'nest-puppeteer';
 import { Page } from 'puppeteer';
 import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../../domain/model/search-neighborhoods.model';
-import { PuppeteerNeighborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood-repository.interface';
+import { PuppeteerNeighborhoodRepository } from '../../../domain/repository/interfaces/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeoghborhoodRepository } from '../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 
 @Injectable()
