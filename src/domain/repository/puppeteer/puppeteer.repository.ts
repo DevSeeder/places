@@ -2,7 +2,7 @@ import { Page } from 'puppeteer';
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
 
-export class PuppeteerRepository {
+export abstract class PuppeteerRepository {
   protected _data: string;
   protected _url: string;
   protected _page: Page;
@@ -13,17 +13,18 @@ export class PuppeteerRepository {
   }
 
   async getDocumentHtml(url: string): Promise<CheerioAPI> {
-    await this.page.goto(url, {
-      waitUntil: 'networkidle0'
-    });
-
+    await this.goToUrl(url);
     this._data = await this.getDataHtml();
     return cheerio.load(this._data);
   }
 
+  async goToUrl(url: string): Promise<void> {
+    await this.page.goto(url, {
+      waitUntil: 'networkidle0'
+    });
+  }
+
   async getDataHtml(): Promise<string> {
-    return await this.page.evaluate(
-      () => document.querySelector('*').outerHTML
-    );
+    return this.page.evaluate(() => document.querySelector('*').outerHTML);
   }
 }
