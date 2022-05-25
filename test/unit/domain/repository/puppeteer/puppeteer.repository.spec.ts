@@ -9,7 +9,6 @@ import {
 import { ExtensionsModule } from '../../../../../src/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
 import { PuppeteerRepository } from '../../../../../src/domain/repository/puppeteer/puppeteer.repository';
-// import * as sinon from 'sinon';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
