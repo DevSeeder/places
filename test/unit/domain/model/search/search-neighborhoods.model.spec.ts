@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SearchNeighborhoods } from '../../../../src/domain/model/search-neighborhoods.model';
+import { SearchNeighborhoods } from '../../../../../src/domain/model/search/search-neighborhoods.model';
 
 describe('SearchNeighborhoods', () => {
   it('should instance SearchNeighborhoods and return the object with the correct properties', async () => {

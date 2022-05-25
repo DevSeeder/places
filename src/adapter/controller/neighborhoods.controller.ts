@@ -11,14 +11,10 @@ export class NeighborhoodsController {
     @Param('state') state,
     @Param('city') city
   ): Promise<any> {
-    try {
-      return await this.neighborhoodsService.getNeighborhoodsByCity(
-        country,
-        state,
-        city
-      );
-    } catch (error) {
-      return error;
-    }
+    return await this.neighborhoodsService.getNeighborhoodsByCity(
+      country,
+      state,
+      city
+    );
   }
 }

@@ -1,21 +1,14 @@
-import { Page } from 'puppeteer';
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
+import { Page } from '../../interfaces/puppeteer/page.interface';
 
 export abstract class PuppeteerRepository {
-  protected _data: string;
-  protected _url: string;
-  protected _page: Page;
-
-  constructor(protected url: string, protected readonly page: Page) {
-    this._url = url;
-    this._page = page;
-  }
+  constructor(protected url: string, protected readonly page: Page) {}
 
   async getDocumentHtml(url: string): Promise<CheerioAPI> {
     await this.goToUrl(url);
-    this._data = await this.getDataHtml();
-    return cheerio.load(this._data);
+    const data = await this.getDataHtml();
+    return cheerio.load(data);
   }
 
   async goToUrl(url: string): Promise<void> {

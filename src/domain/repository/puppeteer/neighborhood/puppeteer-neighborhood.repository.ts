@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CheerioAPI } from 'cheerio';
 import { NeighborhoodsByCity } from 'src/domain/model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from 'src/domain/model/search-neighborhoods.model';
+import { SearchNeighborhoods } from 'src/domain/model/search/search-neighborhoods.model';
 import { PuppeteerRepository } from '../puppeteer.repository';
-import { PuppeteerNeighborhoodRepository } from '../../interfaces/puppeteer-neighborhood-repository.interface';
+import { IPuppeteerNeighborhoodRepository } from '../../../interfaces/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 
-export abstract class PuppeteerNeoghborhoodRepository
+export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository
-  implements PuppeteerNeighborhoodRepository
+  implements IPuppeteerNeighborhoodRepository
 {
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoods
