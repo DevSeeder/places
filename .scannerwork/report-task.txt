@@ -1,0 +1,6 @@
+projectKey=places
+serverUrl=http://localhost:9000
+serverVersion=9.4.0.54424
+dashboardUrl=http://localhost:9000/dashboard?id=places
+ceTaskId=AYD8T4VDo5AnrF9woR_i
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYD8T4VDo5AnrF9woR_i
