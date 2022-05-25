@@ -17,14 +17,13 @@ export abstract class PuppeteerNeighborhoodRepository
   }
 
   buildElementFromDocument(
-    searchParams: SearchNeighborhoods,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    $: CheerioAPI
+    _searchParams: SearchNeighborhoods,
+    _$: CheerioAPI
   ): NeighborhoodsByCity[] {
     throw new Error('Method not implemented.');
   }
 
-  async getEndpoint(searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
+  async getEndpoint(_searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
     throw new Error('Method not implemented.');
   }
 }
