@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { GuiaMaisRepository } from '../../../../../src/adapter/repository/neighborhoods/guia-mais.repository';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoods } from '../../../../../src/domain/model/search-neighborhoods.model';
+import { SearchNeighborhoods } from '../../../../../src/domain/model/search/search-neighborhoods.model';
 import * as fs from 'fs';
 import { ExtensionsModule } from '../../../../../src/adapter/helper/extensions/exensions.module';
 
