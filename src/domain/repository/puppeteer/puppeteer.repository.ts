@@ -18,6 +18,7 @@ export abstract class PuppeteerRepository {
   }
 
   async getDataHtml(): Promise<string> {
+    /* istanbul ignore next */
     return this.page.evaluate(() => document.querySelector('*').outerHTML);
   }
 }
