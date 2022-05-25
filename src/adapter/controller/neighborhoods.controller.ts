@@ -6,12 +6,12 @@ export class NeighborhoodsController {
   constructor(private readonly neighborhoodsService: NeighborhoodsService) {}
 
   @Get('/city/:country/:state/:city')
-  async getNeighborhoodsByCity(
+  getNeighborhoodsByCity(
     @Param('country') country,
     @Param('state') state,
     @Param('city') city
   ): Promise<any> {
-    return await this.neighborhoodsService.getNeighborhoodsByCity(
+    return this.neighborhoodsService.getNeighborhoodsByCity(
       country,
       state,
       city
