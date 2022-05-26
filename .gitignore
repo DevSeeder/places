@@ -34,3 +34,8 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 node_modules
+
+# Sonar
+.scannerwork/.sonar_lock
+.scannerwork/report-task.txt
+*.ucfg
