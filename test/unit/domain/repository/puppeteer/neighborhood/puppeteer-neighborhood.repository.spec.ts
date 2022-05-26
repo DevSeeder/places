@@ -51,5 +51,12 @@ describe('PuppeteerNeighborhoodRepository', () => {
         expect(err.message).to.be.equal('Method not implemented.');
       }
     });
+
+    it('should call buildElementFromDocument and throws a error', async () => {
+      const mockSearch = new SearchNeighborhoods('brasil', 'se', 'aracaju');
+      expect(async () => {
+        return await sut.buildElementFromDocument(mockSearch, null);
+      }).to.throw(new Error('Method not implemented.'));
+    });
   });
 });
