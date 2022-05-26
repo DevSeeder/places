@@ -12,10 +12,11 @@ export abstract class PuppeteerNeighborhoodRepository
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoods
   ): Promise<NeighborhoodsByCity[]> {
-    const $ = await this.getEndpoint(searchParams);
+    const $ = await this.callEndpoint(searchParams);
     return this.buildElementFromDocument(searchParams, $);
   }
 
+  /* istanbul ignore next */
   buildElementFromDocument(
     _searchParams: SearchNeighborhoods,
     _$: CheerioAPI
@@ -23,7 +24,8 @@ export abstract class PuppeteerNeighborhoodRepository
     throw new Error('Method not implemented.');
   }
 
-  async getEndpoint(_searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
+  /* istanbul ignore next */
+  async callEndpoint(_searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
     throw new Error('Method not implemented.');
   }
 }
