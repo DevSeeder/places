@@ -37,7 +37,7 @@ describe('PuppeteerNeighborhoodRepository', () => {
     it('should call getEndpoint and throws a error', async () => {
       const mockSearch = new SearchNeighborhoods('brasil', 'se', 'aracaju');
       try {
-        await sut.getEndpoint(mockSearch);
+        await sut.callEndpoint(mockSearch);
       } catch (err) {
         expect(err.message).to.be.equal('Method not implemented.');
       }
