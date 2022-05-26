@@ -16,6 +16,7 @@ export abstract class PuppeteerNeighborhoodRepository
     return this.buildElementFromDocument(searchParams, $);
   }
 
+  /* istanbul ignore next */
   buildElementFromDocument(
     _searchParams: SearchNeighborhoods,
     _$: CheerioAPI
@@ -23,6 +24,7 @@ export abstract class PuppeteerNeighborhoodRepository
     throw new Error('Method not implemented.');
   }
 
+  /* istanbul ignore next */
   async callEndpoint(_searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
     throw new Error('Method not implemented.');
   }

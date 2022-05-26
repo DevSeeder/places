@@ -4,6 +4,7 @@ import { SearchNeighborhoods } from '../../../../../../src/domain/model/search/s
 import { ExtensionsModule } from '../../../../../../src/adapter/helper/extensions/exensions.module';
 import { PuppeteerNeighborhoodRepository } from '../../../../../../src/domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -33,7 +34,7 @@ describe('PuppeteerNeighborhoodRepository', () => {
     await app.close();
   });
 
-  describe('PuppeteerNeighborhoodRepository', () => {
+  describe('buildElementFromDocument', () => {
     it('should call getEndpoint and throws a error', async () => {
       const mockSearch = new SearchNeighborhoods('brasil', 'se', 'aracaju');
       try {
@@ -58,6 +59,24 @@ describe('PuppeteerNeighborhoodRepository', () => {
         return sut.buildElementFromDocument(mockSearch, null);
       };
       expect(callback).to.throws(Error);
+    });
+  });
+
+  describe('getNeighborhoodsByCity', () => {
+    it('should call getNeighborhoodsByCity and call callEndpoint with the correct params', async () => {
+      const callEndpointStub = sinon.stub(sut, 'callEndpoint').returns(null);
+      const buildElementFromDocumentStub = sinon
+        .stub(sut, 'buildElementFromDocument')
+        .returns([]);
+
+      const mockSearch = new SearchNeighborhoods('brasil', 'se', 'aracaju');
+
+      await sut.getNeighborhoodsByCity(mockSearch);
+
+      sinon.assert.calledOnceWithExactly(callEndpointStub, mockSearch);
+
+      callEndpointStub.restore();
+      buildElementFromDocumentStub.restore();
     });
   });
 });
