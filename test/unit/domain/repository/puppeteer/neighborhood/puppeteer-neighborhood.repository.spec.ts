@@ -57,7 +57,7 @@ describe('PuppeteerNeighborhoodRepository', () => {
       const callback = function () {
         return sut.buildElementFromDocument(mockSearch, null);
       };
-      expect(callback).to.throw('Method not implemented.');
+      expect(callback).to.throws(Error);
     });
   });
 });
