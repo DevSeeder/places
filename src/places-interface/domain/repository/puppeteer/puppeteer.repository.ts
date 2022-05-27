@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
-import { Page } from '../../interfaces/puppeteer/page.interface';
+import { Page } from '../../interface/puppeteer/page.interface';
 
 export abstract class PuppeteerRepository {
   constructor(protected url: string, protected readonly page: Page) {}

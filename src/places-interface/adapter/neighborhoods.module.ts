@@ -4,7 +4,7 @@ import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
 import { GuiaMaisRepository } from './repository/neighborhoods/guia-mais.repository';
 import { NeighborhoodsService } from './service/neighborhoods.service';
-import configuration from '../config/configuration';
+import configuration from '../../config/configuration';
 
 @Module({
   imports: [

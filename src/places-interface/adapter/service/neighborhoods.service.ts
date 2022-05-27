@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { INeighborhoodsService } from 'src/domain/service/neighborhoods-service.interface';
 import { NeighborhoodsByCity } from '../../domain/model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../domain/model/search/search-neighborhoods.model';
+import { INeighborhoodsService } from '../../domain/service/neighborhoods-service.interface';
+
 import { GuiaMaisRepository } from '../repository/neighborhoods/guia-mais.repository';
 
 @Injectable()

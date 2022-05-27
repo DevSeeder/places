@@ -5,10 +5,10 @@ import { EvaluateFn } from 'puppeteer';
 import {
   OptionsPage,
   Page
-} from '../../../../../src/domain/interfaces/puppeteer/page.interface';
-import { ExtensionsModule } from '../../../../../src/adapter/helper/extensions/exensions.module';
+} from '../../../../../src/places-interface/domain/interface/puppeteer/page.interface';
+import { ExtensionsModule } from '../../../../../src/places-interface/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
-import { PuppeteerRepository } from '../../../../../src/domain/repository/puppeteer/puppeteer.repository';
+import { PuppeteerRepository } from '../../../../../src/places-interface/domain/repository/puppeteer/puppeteer.repository';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);

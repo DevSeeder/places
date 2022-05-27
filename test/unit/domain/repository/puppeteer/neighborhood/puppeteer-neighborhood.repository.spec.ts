@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoods } from '../../../../../../src/domain/model/search/search-neighborhoods.model';
-import { ExtensionsModule } from '../../../../../../src/adapter/helper/extensions/exensions.module';
-import { PuppeteerNeighborhoodRepository } from '../../../../../../src/domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
+import { SearchNeighborhoods } from '../../../../../../src/places-interface/domain/model/search/search-neighborhoods.model';
+import { ExtensionsModule } from '../../../../../../src/places-interface/adapter/helper/extensions/exensions.module';
+import { PuppeteerNeighborhoodRepository } from '../../../../../../src/places-interface/domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
