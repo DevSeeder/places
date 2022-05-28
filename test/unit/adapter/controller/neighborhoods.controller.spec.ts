@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NeighborhoodsController } from '../../../../src/places-interface/adapter/controller/neighborhoods.controller';
-import { NeighborhoodsService } from '../../../../src/places-interface/adapter/service/neighborhoods.service';
 import { ConfigModule } from '@nestjs/config';
 import configuration from '../../../../src/config/configuration';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodsByCity } from '../../../../src/places-interface/domain/model/neighborhoods-by-city.model';
+import { ExtensionsModule } from '../../../../src/places-interface/adapter/helper/extensions/exensions.module';
+import { NeighborhoodsService } from '../../../../src/places-interface/adapter/service/neighborhoods.service';
 
 describe('NeighborhoodsController', () => {
   let neighborhoodsController: NeighborhoodsController;
 
-  const mockGuiaMaisRepository = {
+  const mockNeighborhoodsService = {
     getNeighborhoodsByCity: () => {
       return;
     }
@@ -33,15 +34,15 @@ describe('NeighborhoodsController', () => {
         ConfigModule.forRoot({
           isGlobal: true,
           load: [configuration]
-        })
+        }),
+        ExtensionsModule
       ],
       controllers: [NeighborhoodsController],
       providers: [
         {
-          provide: 'GuiaMaisRepository',
-          useValue: mockGuiaMaisRepository
-        },
-        NeighborhoodsService
+          provide: NeighborhoodsService,
+          useFactory: () => mockNeighborhoodsService
+        }
       ]
     }).compile();
 
@@ -53,7 +54,7 @@ describe('NeighborhoodsController', () => {
   describe('NeighborhoodsController', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
       const guiaMaisStub = sinon
-        .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
+        .stub(mockNeighborhoodsService, 'getNeighborhoodsByCity')
         .returns(mockNeighborhoods);
 
       const actual = await neighborhoodsController.getNeighborhoodsByCity(
@@ -62,8 +63,8 @@ describe('NeighborhoodsController', () => {
         'orleans'
       );
 
-      expect(actual).to.be.an('array');
-      expect(actual.length).to.be.equal(2);
+      expect(actual.body).to.be.an('array').that.contains;
+      expect(actual.body).to.have.lengthOf(2);
 
       guiaMaisStub.restore();
     });

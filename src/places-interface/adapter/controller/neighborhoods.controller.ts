@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
-import { NestResponse } from 'src/core/http/nest-response';
-import { AbstractController } from 'src/places-interface/domain/controller/abstract-controller';
+import { NestResponse } from '../../../core/http/nest-response';
+import { AbstractController } from '../../../places-interface/domain/controller/abstract-controller';
 import { NeighborhoodsService } from '../service/neighborhoods.service';
 
 @Controller('neighborhoods')

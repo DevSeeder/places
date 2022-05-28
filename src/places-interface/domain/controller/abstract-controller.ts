@@ -1,4 +1,4 @@
-import { NestResponseBuilder } from 'src/core/http/nest-response.builder';
+import { NestResponseBuilder } from '../../../core/http/nest-response.builder';
 
 export abstract class AbstractController {
   buildResponse(status, body, header = {}) {
