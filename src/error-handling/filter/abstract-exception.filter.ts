@@ -24,6 +24,8 @@ export abstract class AbstractExceptionFilter<ExceptionType>
 
     const customResponse = this.makeCustomResponse(exception);
 
+    console.error(customResponse);
+
     this.httpAdapter.reply(response, customResponse, customResponse.status);
   }
 

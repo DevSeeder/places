@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
 import { Page } from '../../interface/puppeteer/page.interface';
+import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
 
 export abstract class PuppeteerRepository {
   constructor(protected url: string, protected readonly page: Page) {}
@@ -20,5 +21,9 @@ export abstract class PuppeteerRepository {
   async getDataHtml(): Promise<string> {
     /* istanbul ignore next */
     return this.page.evaluate(() => document.querySelector('*').outerHTML);
+  }
+
+  validateInput(searchParams: SearchNeighborhoods) {
+    searchParams.validateIsAnyEmptyKey();
   }
 }

@@ -23,7 +23,10 @@ export class GuiaMaisRepository
     );
   }
 
-  buildElementFromDocument(searchParams, $: CheerioAPI): NeighborhoodsByCity[] {
+  buildElementsFromDocument(
+    searchParams,
+    $: CheerioAPI
+  ): NeighborhoodsByCity[] {
     const arrNeighborhoods = [];
     $('.cities.centerContent')
       .find('a')

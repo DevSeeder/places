@@ -14,7 +14,7 @@ export class HttpExceptionFilter extends AbstractExceptionFilter<HttpException> 
       message: exception.message,
       type: exception.name,
       errorCode: exception.getStatus(),
-      err: exception
+      errInstance: exception
     };
   }
 }

@@ -11,7 +11,7 @@ export class CustomErrorExceptionFilter extends AbstractExceptionFilter<CustomEr
       message: exception.message,
       type: exception.type,
       errorCode: exception.errCode,
-      err: exception
+      errInstance: exception
     };
   }
 }

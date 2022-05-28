@@ -1,4 +1,5 @@
 import './string.extension';
+import './object.extension';
 import { Module } from '@nestjs/common';
 
 @Module({

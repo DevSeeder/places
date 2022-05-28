@@ -9,8 +9,12 @@ export interface IPuppeteerRepository<ElementPlace, SearchElement> {
 
   goToUrl(url: string): Promise<void>;
 
-  buildElementFromDocument(
+  buildElementsFromDocument(
     searchParams: SearchElement,
     $: CheerioAPI
   ): ElementPlace[];
+
+  validateInput(searchParams: SearchElement): void;
+
+  validateOutput(output: ElementPlace[]): void;
 }
