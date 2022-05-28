@@ -1,20 +1,23 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { NestResponse } from 'src/core/http/nest-response';
+import { AbstractController } from 'src/places-interface/domain/controller/abstract-controller';
 import { NeighborhoodsService } from '../service/neighborhoods.service';
 
 @Controller('neighborhoods')
-export class NeighborhoodsController {
-  constructor(private readonly neighborhoodsService: NeighborhoodsService) {}
+export class NeighborhoodsController extends AbstractController {
+  constructor(private readonly neighborhoodsService: NeighborhoodsService) {
+    super();
+  }
 
   @Get('/city/:country/:state/:city')
   getNeighborhoodsByCity(
     @Param('country') country,
     @Param('state') state,
     @Param('city') city
-  ): Promise<any> {
-    return this.neighborhoodsService.getNeighborhoodsByCity(
-      country,
-      state,
-      city
+  ): NestResponse {
+    return this.buildResponse(
+      HttpStatus.ACCEPTED,
+      this.neighborhoodsService.getNeighborhoodsByCity(country, state, city)
     );
   }
 }

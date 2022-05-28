@@ -3,7 +3,7 @@ import { NeighborhoodsByCity } from '../../../model/neighborhoods-by-city.model'
 import { SearchNeighborhoods } from '../../../model/search/search-neighborhoods.model';
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
-import { NotFoundException } from '../../../../../error-handling/exception/not-found.exception';
+import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
 
 export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository

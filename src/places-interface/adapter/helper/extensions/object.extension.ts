@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-import { EmptyPropException } from '../../../../error-handling/exception/empty-prop.exception';
+import { EmptyPropException } from '../../../../core/error-handling/exception/empty-prop.exception';
 
 declare global {
   interface Object {
     validateIsAnyEmptyKey(): void;
-
     getMethods(): string[];
+    isEmpty(): boolean;
   }
 }
 
@@ -27,6 +27,10 @@ Object.prototype.getMethods = (): any[] => {
     (item: string) =>
       typeof obj !== 'undefined' && typeof obj[item] === 'function'
   );
+};
+
+Object.prototype.isEmpty = (): boolean => {
+  return Object.keys(this).length === 0;
 };
 
 export {};
