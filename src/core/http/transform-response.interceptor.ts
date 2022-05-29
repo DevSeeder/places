@@ -12,7 +12,7 @@ import { NestResponse } from './nest-response';
 
 @Injectable()
 export class TransformResponseInterceptor implements NestInterceptor {
-  private httpAdapter: AbstractHttpAdapter;
+  private readonly httpAdapter: AbstractHttpAdapter;
 
   constructor(adapterHost: HttpAdapterHost) {
     this.httpAdapter = adapterHost.httpAdapter;
@@ -20,7 +20,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>
+    next: CallHandler
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map((responseController: NestResponse) => {

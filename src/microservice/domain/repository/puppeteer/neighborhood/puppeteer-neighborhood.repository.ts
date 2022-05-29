@@ -12,18 +12,18 @@ export abstract class PuppeteerNeighborhoodRepository
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoods
   ): Promise<NeighborhoodsByCity[]> {
-    await this.validateInput(searchParams);
+    this.validateInput(searchParams);
 
     const $ = await this.callEndpoint(searchParams);
     const elements = this.buildElementsFromDocument(searchParams, $);
 
-    await this.validateOutput(elements);
+    this.validateOutput(elements);
 
     return elements;
   }
 
   validateOutput(output: NeighborhoodsByCity[]): void {
-    if (output.length == 0) throw new NotFoundException('Neighborhoods');
+    if (output.length === 0) throw new NotFoundException('Neighborhoods');
   }
 
   abstract buildElementsFromDocument(

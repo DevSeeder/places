@@ -12,7 +12,7 @@ declare global {
 Object.prototype.validateIsAnyEmptyKey = function () {
   const context = this;
   Object.keys(this).forEach(function (key) {
-    if (context[key].length == 0) throw new EmptyPropException(key);
+    if (context[key].length === 0) throw new EmptyPropException(key);
   });
 };
 
@@ -21,7 +21,9 @@ Object.prototype.getMethods = (): any[] => {
   let currentObj = this;
   const obj = this;
   do {
-    Object.getOwnPropertyNames(currentObj).map((item) => properties.add(item));
+    Object.getOwnPropertyNames(currentObj).forEach((item) =>
+      properties.add(item)
+    );
   } while ((currentObj = Object.getPrototypeOf(currentObj)));
   return [...properties.keys()].filter(
     (item: string) =>
@@ -30,7 +32,7 @@ Object.prototype.getMethods = (): any[] => {
 };
 
 Object.prototype.isEmpty = (): boolean => {
-  return Object.keys(this).length == 0;
+  return Object.keys(this).length === 0;
 };
 
 export {};
