@@ -4,7 +4,7 @@ import { CustomExceptionReponse } from '../interface/custom-exception-response.i
 
 @Catch(HttpException)
 export class HttpExceptionFilter extends AbstractExceptionFilter<HttpException> {
-  getResponse(host: ArgumentsHost, exception: HttpException): any {
+  getResponse(_host: ArgumentsHost, exception: HttpException): any {
     return exception.getResponse();
   }
 
@@ -13,8 +13,7 @@ export class HttpExceptionFilter extends AbstractExceptionFilter<HttpException> 
       status: exception.getStatus(),
       message: exception.message,
       type: exception.name,
-      errorCode: exception.getStatus(),
-      errInstance: exception
+      errorCode: exception.getStatus()
     };
   }
 }

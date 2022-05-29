@@ -5,7 +5,8 @@ export class EmptyDataException extends CustomErrorException {
   constructor(element = '') {
     super(
       `The ${element} data cannot be empty`,
-      HttpStatus.INTERNAL_SERVER_ERROR
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      1
     );
   }
 }

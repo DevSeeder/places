@@ -5,7 +5,7 @@ export class NestResponse {
   headers: object;
   body: CustomResponse;
 
-  constructor(resposta: NestResponse) {
-    Object.assign(this, resposta);
+  constructor(response: NestResponse) {
+    Object.assign(this, response);
   }
 }

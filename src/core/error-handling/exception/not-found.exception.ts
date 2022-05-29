@@ -3,6 +3,10 @@ import { CustomErrorException } from './custom-error.exception';
 
 export class NotFoundException extends CustomErrorException {
   constructor(element = '') {
-    super(`${element.capitalize()} not found`, HttpStatus.NOT_FOUND);
+    super(
+      `${element.capitalize()} not found`,
+      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
+    );
   }
 }

@@ -9,8 +9,7 @@ export class ErrorExceptionFilter extends AbstractExceptionFilter<Error> {
       status: this.getStatus(exception),
       message: exception.message,
       type: exception.name,
-      errorCode: this.getStatus(exception),
-      errInstance: exception
+      errorCode: this.getStatus(exception)
     };
   }
 

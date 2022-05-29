@@ -10,8 +10,7 @@ export class CustomErrorExceptionFilter extends AbstractExceptionFilter<CustomEr
       status: exception.getStatus(),
       message: exception.message,
       type: exception.type,
-      errorCode: exception.errCode,
-      errInstance: exception
+      errorCode: exception.errCode
     };
   }
 }

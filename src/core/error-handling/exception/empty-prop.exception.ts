@@ -5,7 +5,8 @@ export class EmptyPropException extends CustomErrorException {
   constructor(element = '') {
     super(
       `The property '${element.capitalize()}' cannot be empty`,
-      HttpStatus.INTERNAL_SERVER_ERROR
+      HttpStatus.NOT_ACCEPTABLE,
+      2
     );
   }
 }

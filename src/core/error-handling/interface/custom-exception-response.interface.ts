@@ -3,5 +3,4 @@ export interface CustomExceptionReponse {
   message: string;
   type: string;
   errorCode: number;
-  errInstance: any;
 }
