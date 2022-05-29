@@ -10,4 +10,11 @@ describe('EmptyDataException ', () => {
     expect(exception.getStatus()).to.be.equal(HttpStatus.INTERNAL_SERVER_ERROR);
     expect(exception.errCode).to.be.equal(1);
   });
+
+  it('Should call instanciate EmptyDataException correctly with default param', function () {
+    const exception = new EmptyDataException();
+    expect(exception.message).to.be.equal('The  data cannot be empty');
+    expect(exception.getStatus()).to.be.equal(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(exception.errCode).to.be.equal(1);
+  });
 });
