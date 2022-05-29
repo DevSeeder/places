@@ -5,13 +5,13 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">Nest</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
 ## Description
 
 API to get Places by Local Names.
 
-- Only Nighborhoods for now
+- Only Neighborhoods for now
 
 ## Installation
 
