@@ -1,31 +1,35 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../../../../src/app.module';
-import { INestApplication } from '@nestjs/common/interfaces/nest-application.interface';
-import { expect } from 'chai';
-import * as request from 'supertest';
+import { HttpStatus } from '@nestjs/common';
+import { NeighborhoodsModule } from '../../../../src/microservice/adapter/neighborhoods.module';
+import { Test, TestingModule } from '@nestjs/testing';
+import { NeighborhoodsController } from '../../../../src/microservice/adapter/controller/neighborhoods.controller';
+import { ExtensionsModule } from '../../../../src/microservice/adapter/helper/extensions/exensions.module';
 
-describe('NewStageForEmptyMovesInterfaceModule', () => {
-  let application: INestApplication;
+describe('NeighborhoodsModule', () => {
+  let sut: NeighborhoodsController;
+  let app: TestingModule;
+
+  const mockGuiaMaisRepository = {
+    getNeighborhoodsByCity() {
+      return;
+    }
+  };
 
   beforeEach(async function () {
-    application = await NestFactory.create(AppModule);
-    application.init();
+    app = await Test.createTestingModule({
+      imports: [NeighborhoodsModule, ExtensionsModule],
+      providers: []
+    })
+      .overrideProvider('GuiaMaisRepository')
+      .useValue(mockGuiaMaisRepository)
+      .compile();
+
+    sut = app.get<NeighborhoodsController>(NeighborhoodsController);
   });
 
-  afterEach(async function () {
-    application.close();
-  });
-
-  describe('#endpoint /', function () {
-    describe('GET /', function () {
-      it('should verify if default service returns 404', function (done) {
-        request(application.getHttpServer())
-          .get('/')
-          .end(function (err, res) {
-            expect(res.status).to.be.equal(404);
-            done(err);
-          });
-      });
+  describe('NeighborhoodsController', function () {
+    it('should call buildResponse for status 200', async function () {
+      const actual = await sut.buildResponse(HttpStatus.OK, {});
+      expect(actual.status).toBe(HttpStatus.OK);
     });
   });
 });
