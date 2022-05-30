@@ -16,9 +16,8 @@ export class NestResponseBuilder {
     return this;
   }
 
-  setHeader(headers: object) {
-    if (headers.isEmpty()) return this;
-
+  setHeader(headers: any) {
+    if (Object.keys(headers).length === 0) return this;
     this.response.headers = headers;
     return this;
   }

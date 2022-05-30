@@ -1,0 +1,52 @@
+import '../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { expect } from 'chai';
+import { TransformResponseInterceptor } from '../../../../src/core/http/transform-response.interceptor';
+import { ExecutionContext, HttpStatus, INestApplication } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from '../../../../src/app.module';
+import { createMock } from '@golevelup/ts-jest';
+import { NestResponse } from '../../../../src/core/http/nest-response';
+import { NestResponseBuilder } from '../../../../src/core/http/nest-response.builder';
+import { CustomResponse } from '../../../../src/core/interface/custom-response.interface';
+import { of } from 'rxjs';
+
+describe('TransformResponseInterceptor ', () => {
+  let app: INestApplication;
+  let mockAdapter;
+
+  const callHandler = {
+    handle: jest.fn(() => of([mockNestResponse()]))
+  };
+
+  beforeEach(async function () {
+    app = await NestFactory.create(AppModule);
+    app.init();
+    mockAdapter = {
+      httpAdapter: await app.getHttpAdapter()
+    };
+  });
+
+  afterEach(async function () {
+    await app.close();
+  });
+
+  const mockCustomResponse: CustomResponse = {
+    success: true,
+    response: 'any_data'
+  };
+
+  const mockNestResponse = (): NestResponse => {
+    const builder = new NestResponseBuilder();
+    builder.setStatus(HttpStatus.OK);
+    builder.setBody(mockCustomResponse);
+    builder.setHeader({});
+    return builder.build();
+  };
+
+  it('Should call instanciate TransformResponseInterceptor correctly', async function () {
+    const mockExecutionContext = createMock<ExecutionContext>();
+    const sut = new TransformResponseInterceptor(mockAdapter);
+    const actual = await sut.intercept(mockExecutionContext, callHandler);
+    expect(typeof actual).to.be.equal('object');
+  });
+});

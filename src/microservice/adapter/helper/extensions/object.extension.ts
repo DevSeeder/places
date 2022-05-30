@@ -5,7 +5,6 @@ declare global {
   interface Object {
     validateIsAnyEmptyKey(): void;
     getMethods(): string[];
-    isEmpty(): boolean;
   }
 }
 
@@ -29,10 +28,6 @@ Object.prototype.getMethods = (): any[] => {
     (item: string) =>
       typeof obj !== 'undefined' && typeof obj[item] === 'function'
   );
-};
-
-Object.prototype.isEmpty = (): boolean => {
-  return Object.keys(this).length === 0;
 };
 
 export {};
