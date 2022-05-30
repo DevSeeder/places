@@ -16,7 +16,7 @@ export class NeighborhoodsController extends AbstractController {
     @Param('city') city
   ): NestResponse {
     return this.buildResponse(
-      HttpStatus.ACCEPTED,
+      HttpStatus.OK,
       this.neighborhoodsService.getNeighborhoodsByCity(country, state, city)
     );
   }
