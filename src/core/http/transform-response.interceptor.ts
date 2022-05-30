@@ -23,22 +23,30 @@ export class TransformResponseInterceptor implements NestInterceptor {
     next: CallHandler
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
+      /* istanbul ignore next */
       map((responseController: NestResponse) => {
-        const ctx = context.switchToHttp();
-        const response = ctx.getResponse();
-        const { headers, status, body } = responseController;
-
-        const headersName = Object.getOwnPropertyNames(headers);
-
-        headersName.forEach((header) => {
-          const headerValue = headers[header];
-          this.httpAdapter.setHeader(response, header, headerValue);
-        });
-
-        this.httpAdapter.status(response, status);
-
-        return body;
+        return this.interceptResponse(responseController, context);
       })
     );
+  }
+
+  interceptResponse(
+    responseController: NestResponse,
+    context: ExecutionContext
+  ) {
+    const ctx = context.switchToHttp();
+    const response = ctx.getResponse();
+    const { headers, status, body } = responseController;
+
+    const headersName = Object.getOwnPropertyNames(headers);
+
+    headersName.forEach((header) => {
+      const headerValue = headers[header];
+      this.httpAdapter.setHeader(response, header, headerValue);
+    });
+
+    this.httpAdapter.status(response, status);
+
+    return body;
   }
 }
