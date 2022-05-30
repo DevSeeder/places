@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/e2e/jest-e2e.json"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.3.3",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.1",
     "@nestjs/core": "^8.0.0",
@@ -81,7 +82,8 @@
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
       "/node_modules/",
-      "/src/main.ts"
+      "/src/main.ts",
+      "/src/app.module.ts"
     ],
     "testEnvironment": "node"
   }
