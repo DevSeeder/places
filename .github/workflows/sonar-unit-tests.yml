@@ -1,4 +1,4 @@
-name: Build Sonar
+name: Build Sonar Unit Tests
 on:
   push:
     branches:
