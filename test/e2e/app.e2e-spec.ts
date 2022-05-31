@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-// import expect from 'chai';
+import { expect } from 'chai';
 import { AppModule } from '../../src/app.module';
+import { NestFactory } from '@nestjs/core';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -11,12 +11,8 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule]
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    app = await NestFactory.create(AppModule);
+    app.init();
   });
 
   afterEach(async () => {
@@ -24,12 +20,10 @@ describe('AppController (e2e)', () => {
   });
 
   it('/neighborhoods/city/brasil/sc/orleans (GET)', async () => {
-    try {
-      await request(app.getHttpServer())
-        .get('/neighborhoods/city/brasil/sc/orleans')
-        .expect(200);
-    } catch (error) {
-      console.error(error);
-    }
+    const actual = await request(app.getHttpServer())
+      .get('/neighborhoods/city/brasil/sc/orleans')
+      .expect(200);
+
+    expect(actual.body).to.be.an('array').that.is.not.empty;
   });
 });
