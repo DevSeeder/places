@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodsByCity } from '../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
 import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { NeighborhoodsService } from '../../../../../src/microservice/adapter/service/neighborhoods.service';
+import { NeighborhoodsService } from '../../../../../src/microservice/domain/service/neighborhoods.service';
 
 describe('NeighborhoodsController', () => {
   let neighborhoodsController: NeighborhoodsController;

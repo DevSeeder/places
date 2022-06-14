@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
-import { NeighborhoodsService } from '../service/neighborhoods.service';
+import { NeighborhoodsService } from '../../domain/service/neighborhoods.service';
 
 @Controller('neighborhoods')
 export class NeighborhoodsController extends AbstractController {
@@ -26,6 +26,18 @@ export class NeighborhoodsController extends AbstractController {
     return this.buildResponse(
       HttpStatus.OK,
       await this.neighborhoodsService.getAll()
+    );
+  }
+
+  @Get('/mongo/:country/:state/:city')
+  getMongoByCity(
+    @Param('country') country,
+    @Param('state') state,
+    @Param('city') city
+  ): NestResponse {
+    return this.buildResponse(
+      HttpStatus.OK,
+      this.neighborhoodsService.getMongoByCity(country, state, city)
     );
   }
 }

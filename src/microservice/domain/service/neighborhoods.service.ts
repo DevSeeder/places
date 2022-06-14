@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { NeighborhoodsByCity } from '../../domain/model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from '../../domain/model/search/search-neighborhoods.model';
-import { INeighborhoodsService } from '../../domain/service/neighborhoods-service.interface';
-import { NeighborhoodsMongoose } from '../repository/neighborhoods/neighborhoods-mongoose.repository';
+import { NeighborhoodsByCity } from '../model/neighborhoods-by-city.model';
+import { SearchNeighborhoods } from '../model/search/search-neighborhoods.model';
+import { INeighborhoodsService } from './neighborhoods-service.interface';
+import { NeighborhoodsMongoose } from '../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 
-import { GuiaMaisRepository } from '../repository/neighborhoods/puppeteer/guia-mais.repository';
+import { GuiaMaisRepository } from '../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 
 @Injectable()
 export class NeighborhoodsService implements INeighborhoodsService {
@@ -25,5 +25,9 @@ export class NeighborhoodsService implements INeighborhoodsService {
 
   async getAll() {
     return this.mongoRepository.findAll();
+  }
+
+  async getMongoByCity(country: string, state: string, city: string) {
+    return this.mongoRepository.findByCountryStateAndCity(country, state, city);
   }
 }
