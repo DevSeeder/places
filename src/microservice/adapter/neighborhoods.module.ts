@@ -2,9 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
-import { GuiaMaisRepository } from './repository/neighborhoods/guia-mais.repository';
+import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
 import { NeighborhoodsService } from './service/neighborhoods.service';
 import configuration from '../../config/configuration';
+import { NeighborhoodsMongoose } from './repository/neighborhoods/neighborhoods-mongoose.repository';
+import {
+  Neighborhood,
+  NeighborhoodSchema
+} from '../domain/schemas/neighborhood.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -12,7 +18,10 @@ import configuration from '../../config/configuration';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration]
-    })
+    }),
+    MongooseModule.forFeature([
+      { name: Neighborhood.name, schema: NeighborhoodSchema }
+    ])
   ],
   controllers: [NeighborhoodsController],
   providers: [
@@ -20,6 +29,7 @@ import configuration from '../../config/configuration';
       provide: 'GuiaMaisRepository',
       useClass: GuiaMaisRepository
     },
+    NeighborhoodsMongoose,
     NeighborhoodsService
   ]
 })

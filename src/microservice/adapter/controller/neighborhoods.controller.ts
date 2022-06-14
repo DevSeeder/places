@@ -20,4 +20,12 @@ export class NeighborhoodsController extends AbstractController {
       this.neighborhoodsService.getNeighborhoodsByCity(country, state, city)
     );
   }
+
+  @Get()
+  async getAll() {
+    return this.buildResponse(
+      HttpStatus.OK,
+      await this.neighborhoodsService.getAll()
+    );
+  }
 }
