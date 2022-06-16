@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodsByCity } from '../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
 import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { NeighborhoodsService } from '../../../../../src/microservice/domain/service/neighborhoods.service';
+import { GetNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/get-neighborhoods-by-city.service';
 
 describe('NeighborhoodsController', () => {
   let neighborhoodsController: NeighborhoodsController;
@@ -40,7 +40,7 @@ describe('NeighborhoodsController', () => {
       controllers: [NeighborhoodsController],
       providers: [
         {
-          provide: NeighborhoodsService,
+          provide: GetNeighborhoodsByCityService,
           useFactory: () => mockNeighborhoodsService
         }
       ]

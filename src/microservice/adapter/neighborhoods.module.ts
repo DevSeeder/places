@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
-import { NeighborhoodsService } from '../domain/service/neighborhoods.service';
+import { GetNeighborhoodsByCityService } from '../domain/service/neighborhoods/get-neighborhoods-by-city.service';
 import configuration from '../../config/configuration';
 import { NeighborhoodsMongoose } from './repository/neighborhoods/neighborhoods-mongoose.repository';
 import {
@@ -30,7 +30,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       useClass: GuiaMaisRepository
     },
     NeighborhoodsMongoose,
-    NeighborhoodsService
+    GetNeighborhoodsByCityService
   ]
 })
 export class NeighborhoodsModule {}

@@ -25,7 +25,7 @@ class Cities {
   name: string;
 
   @Prop({ required: true })
-  cities: Neighborhoods[];
+  neighborhoods: Neighborhoods[];
 }
 
 class Neighborhoods {

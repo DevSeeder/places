@@ -1,4 +1,4 @@
-import { NeighborhoodsByCity } from '../model/neighborhoods-by-city.model';
+import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
 
 export interface INeighborhoodsService {
   getNeighborhoodsByCity(

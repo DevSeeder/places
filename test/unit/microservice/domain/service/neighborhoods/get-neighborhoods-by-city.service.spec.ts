@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NeighborhoodsService } from '../../../../../src/microservice/domain/service/neighborhoods.service';
+import { GetNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/get-neighborhoods-by-city.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { NeighborhoodsByCity } from '../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
+import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
 
-describe('NeighborhoodsService', () => {
-  let sut: NeighborhoodsService;
+describe('GetNeighborhoodsByCityService', () => {
+  let sut: GetNeighborhoodsByCityService;
 
   const mockGuiaMaisRepository = {
     getNeighborhoodsByCity: () => {
@@ -33,14 +33,14 @@ describe('NeighborhoodsService', () => {
           provide: 'GuiaMaisRepository',
           useValue: mockGuiaMaisRepository
         },
-        NeighborhoodsService
+        GetNeighborhoodsByCityService
       ]
     }).compile();
 
-    sut = app.get<NeighborhoodsService>(NeighborhoodsService);
+    sut = app.get<GetNeighborhoodsByCityService>(GetNeighborhoodsByCityService);
   });
 
-  describe('NeighborhoodsService', () => {
+  describe('GetNeighborhoodsByCityService', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
       const guiaMaisStub = sinon
         .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
