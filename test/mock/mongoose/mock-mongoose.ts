@@ -12,3 +12,19 @@ export const mockModelMongoose = {
     return { exec: jest.fn(() => null) };
   }
 };
+
+jest.mock('mongoose', () => {
+  return {
+    createConnection: jest.fn(() => {
+      return {
+        asPromise: jest.fn(() => {
+          return {
+            model: jest.fn(),
+            close: jest.fn()
+          };
+        })
+      };
+    }),
+    Schema: jest.fn()
+  };
+});

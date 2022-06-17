@@ -6,7 +6,7 @@ import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper
 import { NeighborhoodsMongoose } from '../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
-import { mockModelMongoose } from '../../../../mock/mongoose/mockMongooseModel';
+import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
