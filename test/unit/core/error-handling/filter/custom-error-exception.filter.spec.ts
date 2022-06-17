@@ -14,6 +14,22 @@ import { Neighborhood } from '../../../../../src/microservice/domain/schemas/nei
 import { mockModelMongoose } from '../../../../mock/mongoose/mockMongooseModel';
 import { getModelToken } from '@nestjs/mongoose';
 
+jest.mock('mongoose', () => {
+  return {
+    createConnection: jest.fn(() => {
+      return {
+        asPromise: jest.fn(() => {
+          return {
+            model: jest.fn(),
+            close: jest.fn()
+          };
+        })
+      };
+    }),
+    Schema: jest.fn()
+  };
+});
+
 jest.setTimeout(50000);
 
 describe('CustomErrorExceptionFilter', () => {
@@ -32,6 +48,7 @@ describe('CustomErrorExceptionFilter', () => {
       .compile();
 
     sut = app.get<CustomErrorExceptionFilter>(CustomErrorExceptionFilter);
+
     server = await NestFactory.create(AppModule);
     await server.init();
   });
