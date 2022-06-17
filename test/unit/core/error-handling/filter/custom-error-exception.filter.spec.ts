@@ -13,10 +13,23 @@ import { AppModule } from '../../../../../src/app.module';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { mockMongooseConnection } from '../../../../mock/mongoose/mock-mongoose';
 
 jest.setTimeout(25000);
-mockMongooseConnection();
+jest.mock('mongoose', () => {
+  return {
+    createConnection: jest.fn(() => {
+      return {
+        asPromise: jest.fn(() => {
+          return {
+            model: jest.fn(),
+            close: jest.fn()
+          };
+        })
+      };
+    }),
+    Schema: jest.fn()
+  };
+});
 
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;
