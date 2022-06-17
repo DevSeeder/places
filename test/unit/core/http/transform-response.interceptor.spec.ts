@@ -16,9 +16,10 @@ import { CustomResponse } from '../../../../src/core/interface/custom-response.i
 import { of } from 'rxjs';
 import * as sinon from 'sinon';
 
-import '../../../mock/mongoose/mock-mongoose.ts';
+import { mockMongooseConnection } from '../../../mock/mongoose/mock-mongoose';
 
 jest.setTimeout(22000);
+mockMongooseConnection();
 
 describe('TransformResponseInterceptor ', () => {
   let app: INestApplication;

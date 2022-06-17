@@ -13,9 +13,10 @@ import { AppModule } from '../../../../../src/app.module';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import '../../../../mock/mongoose/mock-mongoose.ts';
+import { mockMongooseConnection } from '../../../../mock/mongoose/mock-mongoose';
 
 jest.setTimeout(25000);
+mockMongooseConnection();
 
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;

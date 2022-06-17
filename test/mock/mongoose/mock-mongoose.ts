@@ -13,18 +13,20 @@ export const mockModelMongoose = {
   }
 };
 
-jest.mock('mongoose', () => {
-  return {
-    createConnection: jest.fn(() => {
-      return {
-        asPromise: jest.fn(() => {
-          return {
-            model: jest.fn(),
-            close: jest.fn()
-          };
-        })
-      };
-    }),
-    Schema: jest.fn()
-  };
-});
+export function mockMongooseConnection() {
+  jest.mock('mongoose', () => {
+    return {
+      createConnection: jest.fn(() => {
+        return {
+          asPromise: jest.fn(() => {
+            return {
+              model: jest.fn(),
+              close: jest.fn()
+            };
+          })
+        };
+      }),
+      Schema: jest.fn()
+    };
+  });
+}
