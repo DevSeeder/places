@@ -10,6 +10,9 @@ import { ExecutionContext } from '@nestjs/common';
 import * as sinon from 'sinon';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../../../../../src/app.module';
+import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { mockModelMongoose } from '../../../../mock/mongoose/mockMongooseModel';
+import { getModelToken } from '@nestjs/mongoose';
 
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;
@@ -21,7 +24,10 @@ describe('CustomErrorExceptionFilter', () => {
       imports: [ExtensionsModule, FiltersModule],
       controllers: [],
       providers: [CustomErrorExceptionFilter]
-    }).compile();
+    })
+      .overrideProvider(getModelToken(Neighborhood.name))
+      .useValue(mockModelMongoose)
+      .compile();
 
     sut = app.get<CustomErrorExceptionFilter>(CustomErrorExceptionFilter);
     server = await NestFactory.create(AppModule);

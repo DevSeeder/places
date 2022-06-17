@@ -1,4 +1,4 @@
-import { NeighborhoodsMongoBuilder } from 'src/microservice/adapter/helper/builder/neighborhoods-mongo.builder';
+import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods-mongo.builder';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';

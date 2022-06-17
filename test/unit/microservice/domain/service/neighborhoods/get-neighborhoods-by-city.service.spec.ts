@@ -3,6 +3,8 @@ import { GetNeighborhoodsByCityService } from '../../../../../../src/microservic
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
+import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
+import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -10,6 +12,21 @@ describe('GetNeighborhoodsByCityService', () => {
   const mockGuiaMaisRepository = {
     getNeighborhoodsByCity: () => {
       return;
+    }
+  };
+
+  const mockMongooseRepository = {
+    findBySearchParams: () => {
+      return [];
+    }
+  };
+
+  const mockSaveNeighborhoodsService = {
+    saveNeighborhoodsByCity: () => {
+      return;
+    },
+    findNeighborhoodInDatabase: () => {
+      return [];
     }
   };
 
@@ -32,6 +49,14 @@ describe('GetNeighborhoodsByCityService', () => {
         {
           provide: 'GuiaMaisRepository',
           useValue: mockGuiaMaisRepository
+        },
+        {
+          provide: NeighborhoodsMongoose,
+          useValue: mockMongooseRepository
+        },
+        {
+          provide: SaveNeighborhoodsByCityService,
+          useFactory: () => mockSaveNeighborhoodsService
         },
         GetNeighborhoodsByCityService
       ]
