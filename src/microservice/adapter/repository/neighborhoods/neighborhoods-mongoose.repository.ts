@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { SearchNeighborhoods } from 'src/microservice/domain/model/search/search-neighborhoods.model';
 import { MongooseRepository } from '../../../domain/repository/mongoose.repository';
 import {
   Neighborhood,
@@ -11,7 +12,7 @@ import {
 export class NeighborhoodsMongoose extends MongooseRepository<Neighborhood> {
   constructor(
     @InjectModel(Neighborhood.name)
-    protected model: Model<NeighborhoodDocument>
+    model: Model<NeighborhoodDocument>
   ) {
     super(model);
   }
@@ -20,24 +21,9 @@ export class NeighborhoodsMongoose extends MongooseRepository<Neighborhood> {
     return await this.model.find().select({ _id: 0 }).lean().exec();
   }
 
-  async findByCountryStateAndCity(
-    country: string,
-    state: string,
-    city: string
+  async findBySearchParams(
+    searchParams: SearchNeighborhoods
   ): Promise<Neighborhood[]> {
-    console.log({
-      country,
-      'states.name': state,
-      'states.cities.name': city
-    });
-    return await this.model
-      .find({
-        country,
-        'states.name': state,
-        'states.cities.name': city
-      })
-      .select({ _id: 0 })
-      .lean()
-      .exec();
+    return await this.model.find(searchParams).select({ _id: 0 }).lean().exec();
   }
 }

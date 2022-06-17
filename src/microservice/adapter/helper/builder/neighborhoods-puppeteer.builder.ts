@@ -1,34 +1,22 @@
 import { SearchNeighborhoods } from 'src/microservice/domain/model/search/search-neighborhoods.model';
 import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
-import {
-  CitiesNeighborhood,
-  Neighborhood,
-  Neighborhoods,
-  StatesNeighborhood
-} from '../../../domain/schemas/neighborhood.schema';
-import { MongoDBHelper } from '../mongodb.helper';
+import { Neighborhood } from '../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsPuppeteerBuilder {
   constructor(private puppeteerResponse: NeighborhoodsByCity[]) {}
 
-  build(searchParams: SearchNeighborhoods): Neighborhood {
-    const obj = new Neighborhood();
-    obj.country = searchParams.country;
-    const state = new StatesNeighborhood();
-    state.name = searchParams.state;
-    const city = new CitiesNeighborhood();
-    city.name = searchParams.city;
-    city.neighborhoods = [];
+  build(searchParams: SearchNeighborhoods): Neighborhood[] {
+    const arr = [];
 
     this.puppeteerResponse.forEach((item) => {
-      const neighborhood = new Neighborhoods();
-      neighborhood.name = item.name;
-      neighborhood._id = MongoDBHelper.generateObjectID();
-      city.neighborhoods.push(neighborhood);
+      const obj = new Neighborhood();
+      obj.country = searchParams.country;
+      obj.state = searchParams.state;
+      obj.city = searchParams.city;
+      obj.name = item.name;
+      arr.push(obj);
     });
 
-    state.cities = [city];
-    obj.states = [state];
-    return obj;
+    return arr;
   }
 }

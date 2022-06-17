@@ -6,17 +6,11 @@ export class NeighborhoodsMongoBuilder {
 
   build(): NeighborhoodsByCity[] {
     const arr = [];
-    this.mongoResponse.forEach((country) => {
-      country.states.forEach((state) => {
-        state.cities.forEach((city) => {
-          city.neighborhoods.forEach((item) => {
-            const obj = new NeighborhoodsByCity();
-            obj.city = `${city.name.capitalize()} - ${state.name.toUpperCase()}`;
-            obj.name = item.name;
-            arr.push(obj);
-          });
-        });
-      });
+    this.mongoResponse.forEach((document) => {
+      const obj = new NeighborhoodsByCity();
+      obj.city = `${document.city.capitalize()} - ${document.state.toUpperCase()}`;
+      obj.name = document.name;
+      arr.push(obj);
     });
     return arr;
   }

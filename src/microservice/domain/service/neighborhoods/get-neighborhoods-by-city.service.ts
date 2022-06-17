@@ -3,17 +3,19 @@ import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
-import { NeighborhoodsMongoBuilder } from 'src/microservice/adapter/helper/builder/neighborhoods-mongo.builder';
 import { SaveNeighborhoodsByCityService } from './save-neighborhoods-by-city.service';
+import { NeighborhoodsService } from './neighborhoods.service';
 
 @Injectable()
-export class GetNeighborhoodsByCityService {
+export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   constructor(
     @Inject('GuiaMaisRepository')
     private readonly guiaMaisRepository: GuiaMaisRepository,
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
-    private readonly mongoRepository: NeighborhoodsMongoose
-  ) {}
+    mongoRepository: NeighborhoodsMongoose
+  ) {
+    super(mongoRepository);
+  }
 
   async getNeighborhoodsByCity(
     country: string,
@@ -38,20 +40,5 @@ export class GetNeighborhoodsByCityService {
     }
 
     return resMongo;
-  }
-
-  async getAll() {
-    return this.mongoRepository.findAll();
-  }
-
-  async findInDatabase(
-    searchParams: SearchNeighborhoods
-  ): Promise<NeighborhoodsByCity[]> {
-    const res = await this.mongoRepository.findByCountryStateAndCity(
-      searchParams.country,
-      searchParams.state,
-      searchParams.city
-    );
-    return new NeighborhoodsMongoBuilder(res).build();
   }
 }
