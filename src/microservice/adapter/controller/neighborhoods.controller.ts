@@ -34,16 +34,4 @@ export class NeighborhoodsController extends AbstractController {
       await this.getNeighborhoodsByCityService.getAll()
     );
   }
-
-  // @Get('/mongo/:country/:state/:city')
-  // getMongoByCity(
-  //   @Param('country') country,
-  //   @Param('state') state,
-  //   @Param('city') city
-  // ): NestResponse {
-  //   return this.buildResponse(
-  //     HttpStatus.OK,
-  //     this.getNeighborhoodsByCityService.findInDatabase(country, state, city)
-  //   );
-  // }
 }

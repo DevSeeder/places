@@ -11,6 +11,7 @@ import {
   NeighborhoodSchema
 } from '../domain/schemas/neighborhood.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { MongooseModule } from '@nestjs/mongoose';
       useClass: GuiaMaisRepository
     },
     NeighborhoodsMongoose,
-    GetNeighborhoodsByCityService
+    GetNeighborhoodsByCityService,
+    SaveNeighborhoodsByCityService
   ]
 })
 export class NeighborhoodsModule {}

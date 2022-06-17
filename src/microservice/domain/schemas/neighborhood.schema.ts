@@ -9,18 +9,18 @@ export class Neighborhood {
   country: string;
 
   @Prop({ required: true })
-  states: States[];
+  states: StatesNeighborhood[];
 }
 
-class States {
+export class StatesNeighborhood {
   @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
-  cities: Cities[];
+  cities: CitiesNeighborhood[];
 }
 
-class Cities {
+export class CitiesNeighborhood {
   @Prop({ required: true })
   name: string;
 
@@ -28,9 +28,10 @@ class Cities {
   neighborhoods: Neighborhoods[];
 }
 
-class Neighborhoods {
+export class Neighborhoods {
   @Prop({ required: true })
   name: string;
+  _id: string;
 }
 
 export const NeighborhoodSchema = SchemaFactory.createForClass(Neighborhood);

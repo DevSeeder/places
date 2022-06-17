@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
 import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
-import { INeighborhoodsService } from '../../interface/service/neighborhoods-service.interface';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { NeighborhoodsMongoBuilder } from 'src/microservice/adapter/helper/builder/neighborhoods-mongo.builder';
+import { SaveNeighborhoodsByCityService } from './save-neighborhoods-by-city.service';
 
 @Injectable()
-export class GetNeighborhoodsByCityService implements INeighborhoodsService {
+export class GetNeighborhoodsByCityService {
   constructor(
     @Inject('GuiaMaisRepository')
     private readonly guiaMaisRepository: GuiaMaisRepository,
+    private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
     private readonly mongoRepository: NeighborhoodsMongoose
   ) {}
 
@@ -23,8 +24,18 @@ export class GetNeighborhoodsByCityService implements INeighborhoodsService {
 
     const resMongo = await this.findInDatabase(searchParams);
 
-    if (!resMongo.length)
-      return await this.guiaMaisRepository.getNeighborhoodsByCity(searchParams);
+    if (!resMongo.length) {
+      const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
+        searchParams
+      );
+
+      await this.saveNeighborhoodsService.saveNeighborhoodsByCity(
+        resPuppeteer,
+        searchParams
+      );
+
+      return resPuppeteer;
+    }
 
     return resMongo;
   }
@@ -41,7 +52,6 @@ export class GetNeighborhoodsByCityService implements INeighborhoodsService {
       searchParams.state,
       searchParams.city
     );
-    const builder = new NeighborhoodsMongoBuilder(res);
-    return builder.build();
+    return new NeighborhoodsMongoBuilder(res).build();
   }
 }
