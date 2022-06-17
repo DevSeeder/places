@@ -25,7 +25,10 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
         item.name
       );
 
-      if (responseDB.length === 0) await this.mongoRepository.insert(item);
+      if (responseDB.length === 0) {
+        this.logger.log(`Saving neighborhood '${item.name}'...`);
+        await this.mongoRepository.insert(item);
+      }
     });
   }
 

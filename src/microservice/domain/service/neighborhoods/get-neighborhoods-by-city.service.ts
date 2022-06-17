@@ -27,6 +27,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     const resMongo = await this.findInDatabase(searchParams);
 
     if (!resMongo.length) {
+      this.logger.log('Searching by puppeteer...');
       const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
         searchParams
       );
@@ -36,8 +37,12 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
         searchParams
       );
 
+      this.logger.log('Returning Puppeteer response...');
+
       return resPuppeteer;
     }
+
+    this.logger.log('Returning MongoDB response...');
 
     return resMongo;
   }
