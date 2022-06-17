@@ -14,6 +14,8 @@ import { Neighborhood } from '../../../../../src/microservice/domain/schemas/nei
 import { mockModelMongoose } from '../../../../mock/mongoose/mockMongooseModel';
 import { getModelToken } from '@nestjs/mongoose';
 
+jest.setTimeout(22000);
+
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;
   let app: TestingModule;

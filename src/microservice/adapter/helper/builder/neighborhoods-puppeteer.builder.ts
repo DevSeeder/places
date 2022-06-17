@@ -1,22 +1,17 @@
-import { SearchNeighborhoods } from 'src/microservice/domain/model/search/search-neighborhoods.model';
 import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
 import { Neighborhood } from '../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsPuppeteerBuilder {
-  constructor(private puppeteerResponse: NeighborhoodsByCity[]) {}
+  constructor(private mongoResponse: Neighborhood[]) {}
 
-  build(searchParams: SearchNeighborhoods): Neighborhood[] {
+  build(): NeighborhoodsByCity[] {
     const arr = [];
-
-    this.puppeteerResponse.forEach((item) => {
-      const obj = new Neighborhood();
-      obj.country = searchParams.country;
-      obj.state = searchParams.state;
-      obj.city = searchParams.city;
-      obj.name = item.name;
+    this.mongoResponse.forEach((document) => {
+      const obj = new NeighborhoodsByCity();
+      obj.city = `${document.city.capitalize()} - ${document.state.toUpperCase()}`;
+      obj.name = document.name;
       arr.push(obj);
     });
-
     return arr;
   }
 }

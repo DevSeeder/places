@@ -1,7 +1,6 @@
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
 import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
-import { EmptyPropException } from '../../../../../../src/core/error-handling/exception/empty-prop.exception';
 
 describe('object.extension', () => {
   describe('getMethods', function () {

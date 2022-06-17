@@ -16,6 +16,8 @@ import { CustomResponse } from '../../../../src/core/interface/custom-response.i
 import { of } from 'rxjs';
 import * as sinon from 'sinon';
 
+jest.setTimeout(22000);
+
 describe('TransformResponseInterceptor ', () => {
   let app: INestApplication;
   let mockAdapter;

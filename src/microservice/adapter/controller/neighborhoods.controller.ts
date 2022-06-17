@@ -26,12 +26,4 @@ export class NeighborhoodsController extends AbstractController {
       )
     );
   }
-
-  @Get()
-  async getAll() {
-    return this.buildResponse(
-      HttpStatus.OK,
-      await this.getNeighborhoodsByCityService.getAll()
-    );
-  }
 }

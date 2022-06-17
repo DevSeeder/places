@@ -1,6 +1,8 @@
 export const mockModelMongoose = {
   find: () => {
-    return { exec: jest.fn(() => null) };
+    return {
+      exec: jest.fn(() => null)
+    };
   },
   findAll: () => {
     return { exec: jest.fn(() => null) };
