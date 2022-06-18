@@ -20,6 +20,6 @@ export class NeighborhoodsMongoose extends MongooseRepository<Neighborhood> {
   async findBySearchParams(
     searchParams: SearchNeighborhoods
   ): Promise<Neighborhood[]> {
-    return await this.model.find(searchParams).select({ _id: 0 }).lean().exec();
+    return this.model.find(searchParams).select({ _id: 0 }).lean().exec();
   }
 }

@@ -3,7 +3,7 @@ import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city
 import { Neighborhood } from '../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsMongoBuilder {
-  constructor(private puppeteerResponse: NeighborhoodsByCity[]) {}
+  constructor(private readonly puppeteerResponse: NeighborhoodsByCity[]) {}
 
   build(searchParams: SearchNeighborhoods): Neighborhood[] {
     const arr = [];

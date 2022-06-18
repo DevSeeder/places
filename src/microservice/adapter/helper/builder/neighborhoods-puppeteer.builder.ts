@@ -2,7 +2,7 @@ import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city
 import { Neighborhood } from '../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsPuppeteerBuilder {
-  constructor(private mongoResponse: Neighborhood[]) {}
+  constructor(private readonly mongoResponse: Neighborhood[]) {}
 
   build(): NeighborhoodsByCity[] {
     const arr = [];
