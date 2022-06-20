@@ -1,21 +1,21 @@
-name: e2e
-on:
-  push:
-    branches:
-      - main
-      - development
-jobs:
-  e2eTests:
-    name: e2e-Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: install
-        run: npm install
-      - name: e2e test
-        run: npm run test:e2e
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+# name: e2e
+# on:
+#   push:
+#     branches:
+#       - main
+#       - development
+# jobs:
+#   e2eTests:
+#     name: e2e-Tests
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+#       - name: install
+#         run: npm install
+#       - name: e2e test
+#         run: npm run test:e2e
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
 
