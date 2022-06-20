@@ -40,3 +40,4 @@ node_modules
 .scannerwork/.sonar_lock
 .scannerwork/report-task.txt
 *.ucfg
+.env
