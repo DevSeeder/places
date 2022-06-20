@@ -1,11 +1,13 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
-import { NeighborhoodsService } from '../service/neighborhoods.service';
+import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get-neighborhoods-by-city.service';
 
 @Controller('neighborhoods')
 export class NeighborhoodsController extends AbstractController {
-  constructor(private readonly neighborhoodsService: NeighborhoodsService) {
+  constructor(
+    private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService
+  ) {
     super();
   }
 
@@ -17,7 +19,11 @@ export class NeighborhoodsController extends AbstractController {
   ): NestResponse {
     return this.buildResponse(
       HttpStatus.OK,
-      this.neighborhoodsService.getNeighborhoodsByCity(country, state, city)
+      this.getNeighborhoodsByCityService.getNeighborhoodsByCity(
+        country,
+        state,
+        city
+      )
     );
   }
 }
