@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { GuiaMaisRepository } from '../../../../../../src/microservice/adapter/repository/neighborhoods/guia-mais.repository';
+import { GuiaMaisRepository } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
+import { SearchNeighborhoods } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
 import * as fs from 'fs';
-import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { ExtensionsModule } from '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import * as cheerio from 'cheerio';
 
 jest.useFakeTimers();

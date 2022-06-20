@@ -7,6 +7,15 @@
 
   <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
+## Technologies
+
+<ul>
+  <li>NestJS</li>
+  <li>NodeJS</li>
+  <li>Puppeteer</li>
+  <li>MongoDB</li>
+</ul>
+
 ## Description
 
 API to get Places by Local Names.

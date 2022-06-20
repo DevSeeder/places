@@ -16,6 +16,23 @@ import { CustomResponse } from '../../../../src/core/interface/custom-response.i
 import { of } from 'rxjs';
 import * as sinon from 'sinon';
 
+jest.setTimeout(22000);
+jest.mock('mongoose', () => {
+  return {
+    createConnection: jest.fn(() => {
+      return {
+        asPromise: jest.fn(() => {
+          return {
+            model: jest.fn(),
+            close: jest.fn()
+          };
+        })
+      };
+    }),
+    Schema: jest.fn()
+  };
+});
+
 describe('TransformResponseInterceptor ', () => {
   let app: INestApplication;
   let mockAdapter;
