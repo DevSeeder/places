@@ -7,6 +7,8 @@ import { NeighborhoodsMongoose } from '../../../../src/microservice/adapter/repo
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../mock/mongoose/mock-mongoose';
+import { Country } from '../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 
 describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
@@ -18,12 +20,18 @@ describe('NeighborhoodsModule', () => {
     }
   };
 
-  const mockMongooseRepository = {
+  const mockNeighborhoodsMongooseRepository = {
     findBySearchParams: () => {
       return [];
     },
     insert: () => {
       return;
+    }
+  };
+
+  const mockCountriesMongooseRepository = {
+    findByNameOrAlias: () => {
+      return [];
     }
   };
 
@@ -35,8 +43,12 @@ describe('NeighborhoodsModule', () => {
       .overrideProvider('GuiaMaisRepository')
       .useValue(mockGuiaMaisRepository)
       .overrideProvider(NeighborhoodsMongoose)
-      .useValue(mockMongooseRepository)
+      .useValue(mockNeighborhoodsMongooseRepository)
+      .overrideProvider(CountriesMongoose)
+      .useValue(mockCountriesMongooseRepository)
       .overrideProvider(getModelToken(Neighborhood.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(Country.name))
       .useValue(mockModelMongoose)
       .compile();
 

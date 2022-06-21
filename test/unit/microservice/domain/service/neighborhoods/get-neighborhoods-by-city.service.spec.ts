@@ -7,6 +7,9 @@ import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservi
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { GetCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
+import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -17,8 +20,14 @@ describe('GetNeighborhoodsByCityService', () => {
     }
   };
 
-  const mockMongooseRepository = {
+  const mockNeighborhoodsMongooseRepository = {
     findBySearchParams: () => {
+      return [];
+    }
+  };
+
+  const mockCountryMongooseRepository = {
+    findByNameOrAlias: () => {
       return [];
     }
   };
@@ -29,6 +38,12 @@ describe('GetNeighborhoodsByCityService', () => {
     },
     findNeighborhoodInDatabase: () => {
       return [];
+    }
+  };
+
+  const mockGetCountryService = {
+    getCountryByNameOrAlias: () => {
+      return [new Country()];
     }
   };
 
@@ -61,11 +76,19 @@ describe('GetNeighborhoodsByCityService', () => {
         },
         {
           provide: NeighborhoodsMongoose,
-          useValue: mockMongooseRepository
+          useValue: mockNeighborhoodsMongooseRepository
+        },
+        {
+          provide: CountriesMongoose,
+          useValue: mockCountryMongooseRepository
         },
         {
           provide: SaveNeighborhoodsByCityService,
           useFactory: () => mockSaveNeighborhoodsService
+        },
+        {
+          provide: GetCountryByNameOrAliasService,
+          useFactory: () => mockGetCountryService
         },
         GetNeighborhoodsByCityService
       ]

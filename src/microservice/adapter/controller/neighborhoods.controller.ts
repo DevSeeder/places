@@ -12,14 +12,14 @@ export class NeighborhoodsController extends AbstractController {
   }
 
   @Get('/city/:country/:state/:city')
-  getNeighborhoodsByCity(
+  async getNeighborhoodsByCity(
     @Param('country') country,
     @Param('state') state,
     @Param('city') city
-  ): NestResponse {
+  ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      this.getNeighborhoodsByCityService.getNeighborhoodsByCity(
+      await this.getNeighborhoodsByCityService.getNeighborhoodsByCity(
         country,
         state,
         city
