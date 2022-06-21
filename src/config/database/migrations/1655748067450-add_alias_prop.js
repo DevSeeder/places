@@ -10,20 +10,18 @@ const model = startConnection('countries', 'country');
  * Make any changes you need to make to the database here
  */
 async function up() {
-  const res = await model
-    .aggregate([
-      {
-        $project: {
-          alias: { $objectToArray: '$translations' },
-          iso2: '$iso2',
-          iso3: '$iso3',
-          name: '$name'
-        }
+  const res = model.aggregate([
+    {
+      $project: {
+        alias: { $objectToArray: '$translations' },
+        iso2: '$iso2',
+        iso3: '$iso3',
+        name: '$name'
       }
-    ])
-    .exec();
+    }
+  ]);
 
-  await res.forEach(async (item) => {
+  for await (const item of res) {
     const arrAlias = await item.alias.map((obj) => obj.v);
     arrAlias.push(item.name);
     arrAlias.push(item.iso2);
@@ -35,7 +33,7 @@ async function up() {
         }
       })
       .exec();
-  });
+  }
 }
 
 /**

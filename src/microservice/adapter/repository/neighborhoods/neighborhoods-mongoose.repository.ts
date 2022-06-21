@@ -9,7 +9,10 @@ import {
 } from '../../../domain/schemas/neighborhood.schema';
 
 @Injectable()
-export class NeighborhoodsMongoose extends MongooseRepository<Neighborhood> {
+export class NeighborhoodsMongoose extends MongooseRepository<
+  Neighborhood,
+  NeighborhoodDocument
+> {
   constructor(
     @InjectModel(Neighborhood.name)
     model: Model<NeighborhoodDocument>

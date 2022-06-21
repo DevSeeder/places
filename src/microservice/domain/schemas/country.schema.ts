@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type CountryDocument = Country & Document;
 
-@Schema()
+@Schema({ collection: 'countries' })
 export class Country {
   @Prop({ required: true })
   id: string;

@@ -12,6 +12,9 @@ import {
 } from '../domain/schemas/neighborhood.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
+import { Country, CountrySchema } from '../domain/schemas/country.schema';
+import { GetCountryByNameOrAliasService } from '../domain/service/countries/get-country-by-name-or-alias.service';
+import { CountriesMongoose } from './repository/countries/countries-mongoose.repository';
 
 @Module({
   imports: [
@@ -21,7 +24,8 @@ import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/
       load: [configuration]
     }),
     MongooseModule.forFeature([
-      { name: Neighborhood.name, schema: NeighborhoodSchema }
+      { name: Neighborhood.name, schema: NeighborhoodSchema },
+      { name: Country.name, schema: CountrySchema }
     ])
   ],
   controllers: [NeighborhoodsController],
@@ -31,8 +35,10 @@ import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/
       useClass: GuiaMaisRepository
     },
     NeighborhoodsMongoose,
+    CountriesMongoose,
     GetNeighborhoodsByCityService,
-    SaveNeighborhoodsByCityService
+    SaveNeighborhoodsByCityService,
+    GetCountryByNameOrAliasService
   ]
 })
 export class NeighborhoodsModule {}
