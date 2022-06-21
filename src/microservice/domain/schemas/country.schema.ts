@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CountriesDocument = Countries & Document;
+export type CountryDocument = Country & Document;
 
 @Schema()
-export class Countries {
+export class Country {
   @Prop({ required: true })
   id: string;
 
@@ -23,8 +23,12 @@ export class Countries {
   @Prop({ required: true })
   subregion: string;
 
+  @Prop({ required: false, type: Object })
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  translations: Object;
+
   @Prop({ required: false })
-  translations: string[];
+  alias: string[];
 }
 
-export const CountriesSchema = SchemaFactory.createForClass(Countries);
+export const CountrySchema = SchemaFactory.createForClass(Country);

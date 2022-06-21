@@ -4,6 +4,6 @@ repository:
       url: 'https://www.guiamais.com.br/bairros'
 database:
   mongodb:
-    connection: 'mongodb+srv://dev-seeder-root:hpYpxyjrKExNQviu@devseeder.v6xtv.mongodb.net/places'
+    connection: 'mongodb+srv://dev-seeder-root:hpYpxyjrKExNQviu@devseeder.v6xtv.mongodb.net/places?retryWrites=true&w=majority'
 api:
   port: 3000
