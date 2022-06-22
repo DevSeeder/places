@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
 import { MongooseRepository } from '../../../domain/repository/mongoose.repository';
 import {
   Country,
@@ -14,9 +14,10 @@ export class CountriesMongoose extends MongooseRepository<
 > {
   constructor(
     @InjectModel(Country.name)
-    model: Model<CountryDocument>
+    model: Model<CountryDocument>,
+    @InjectConnection() protected readonly connection: Connection
   ) {
-    super(model);
+    super(model, connection);
   }
 
   async findByNameOrAlias(name: string): Promise<Country[]> {

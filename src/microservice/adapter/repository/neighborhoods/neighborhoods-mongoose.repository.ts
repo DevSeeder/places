@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
 import { SearchNeighborhoods } from 'src/microservice/domain/model/search/search-neighborhoods.model';
 import { MongooseRepository } from '../../../domain/repository/mongoose.repository';
 import {
@@ -15,9 +15,10 @@ export class NeighborhoodsMongoose extends MongooseRepository<
 > {
   constructor(
     @InjectModel(Neighborhood.name)
-    model: Model<NeighborhoodDocument>
+    model: Model<NeighborhoodDocument>,
+    @InjectConnection() protected readonly connection: Connection
   ) {
-    super(model);
+    super(model, connection);
   }
 
   async findBySearchParams(
