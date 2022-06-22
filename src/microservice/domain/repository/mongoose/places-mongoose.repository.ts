@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { MongoError } from 'mongodb';
-import { Connection, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { MongoDBException } from '../../../../core/error-handling/exception/mongodb-.exception';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
@@ -11,11 +11,8 @@ export abstract class PlacesMongooseRepository<
 > extends MongooseRepository<Collection, MongooseModel> {
   protected readonly logger: Logger = new Logger(this.constructor.name);
 
-  constructor(
-    protected model: Model<MongooseModel>,
-    protected readonly connection: Connection
-  ) {
-    super(model, connection);
+  constructor(protected model: Model<MongooseModel>) {
+    super(model);
   }
 
   async insertOne(item: Collection, name: string): Promise<void> {

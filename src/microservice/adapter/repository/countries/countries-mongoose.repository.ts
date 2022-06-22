@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { PlacesMongooseRepository } from '../../../domain/repository/mongoose/places-mongoose.repository';
 import {
   Country,
@@ -14,9 +14,8 @@ export class CountriesMongoose extends PlacesMongooseRepository<
 > {
   constructor(
     @InjectModel(Country.name)
-    model: Model<CountryDocument>,
-    @InjectConnection() protected readonly connection: Connection
+    model: Model<CountryDocument>
   ) {
-    super(model, connection);
+    super(model);
   }
 }

@@ -21,25 +21,15 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     const arrDocument = new NeighborhoodsMongoBuilder(
       neighborhoodsPuppeteer
     ).build(searchParams);
+    for await (const item of arrDocument) {
+      const responseDB = await this.findNeighborhoodInDatabase(
+        searchParams,
+        item.name
+      );
 
-    await this.mongoRepository.startTransaction();
-
-    try {
-      for await (const item of arrDocument) {
-        const responseDB = await this.findNeighborhoodInDatabase(
-          searchParams,
-          item.name
-        );
-
-        if (responseDB.length === 0)
-          await this.createNeighborhood(item, convertedSearch);
-      }
-    } catch (err) {
-      this.mongoRepository.rollback();
-      throw err;
+      if (responseDB.length === 0)
+        await this.createNeighborhood(item, convertedSearch);
     }
-
-    await this.mongoRepository.commit();
   }
 
   async createNeighborhood(

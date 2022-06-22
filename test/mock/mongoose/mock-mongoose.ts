@@ -7,7 +7,12 @@ export const mockModelMongoose = {
   findAll: () => {
     return { exec: jest.fn(() => null) };
   },
-  create: jest.fn(() => null),
+  create: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
   findByIdAndUpdate: () => {
     return { exec: jest.fn(() => null) };
   }
