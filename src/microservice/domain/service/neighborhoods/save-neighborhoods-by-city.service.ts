@@ -19,7 +19,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
       neighborhoodsPuppeteer
     ).build(searchParams);
 
-    arrDocument.forEach(async (item) => {
+    for await (const item of arrDocument) {
       const responseDB = await this.findNeighborhoodInDatabase(
         searchParams,
         item.name
@@ -27,9 +27,10 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
       if (responseDB.length === 0) {
         this.logger.log(`Saving neighborhood '${item.name}'...`);
-        await this.mongoRepository.insert(item);
+        item.name = 'teste';
+        await this.mongoRepository.insertOne(item, item.name);
       }
-    });
+    }
   }
 
   async findNeighborhoodInDatabase(

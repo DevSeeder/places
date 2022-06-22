@@ -5,7 +5,7 @@ export abstract class AbstractController {
   protected readonly logger: Logger = new Logger(this.constructor.name);
 
   async buildResponse(status, body, header = {}) {
-    await this.logger.log('Finishing request application...');
+    await this.logger.log('Finishing application request...');
     return new NestResponseBuilder()
       .setStatus(status)
       .setHeader(header)

@@ -6,6 +6,7 @@ import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/pu
 import { SaveNeighborhoodsByCityService } from './save-neighborhoods-by-city.service';
 import { NeighborhoodsService } from './neighborhoods.service';
 import { GetCountryByNameOrAliasService } from '../countries/get-country-by-name-or-alias.service';
+import { InvalidDataException } from 'src/core/error-handling/exception/invalid-data.exception';
 
 @Injectable()
 export class GetNeighborhoodsByCityService extends NeighborhoodsService {
@@ -59,7 +60,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     this.logger.log(`Validating Country '${country}'...`);
 
     const res = await this.getCountryService.getCountryByNameOrAlias(country);
-    if (res.length === 0) throw new Error(`Invalid Country '${country}'`);
+    if (res.length === 0) throw new InvalidDataException('Country', country);
 
     this.logger.log(`Country: '${res[0].name}'`);
     return res[0].name;

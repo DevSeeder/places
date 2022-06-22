@@ -14,7 +14,7 @@ export class Neighborhood {
   @Prop({ required: true })
   city: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   name: string;
 }
 
