@@ -45,4 +45,12 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
       await this.session.abortTransaction();
     }
   }
+
+  buildRegexFilterQuery(objSearch: object = {}) {
+    const objRegex = {};
+    Object.keys(objSearch).forEach(function (key) {
+      objRegex[key] = new RegExp(objRegex[key], 'i');
+    });
+    return objRegex;
+  }
 }
