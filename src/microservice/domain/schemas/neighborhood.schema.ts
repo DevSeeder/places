@@ -14,8 +14,11 @@ export class Neighborhood {
   @Prop({ required: true })
   city: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string;
 }
 
-export const NeighborhoodSchema = SchemaFactory.createForClass(Neighborhood);
+const schema = SchemaFactory.createForClass(Neighborhood);
+schema.index({ name: 1, country: 1, state: 1, city: 1 }, { unique: true });
+
+export const NeighborhoodSchema = schema;
