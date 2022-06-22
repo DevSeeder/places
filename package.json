@@ -88,7 +88,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/src/main.ts",
-      "/src/app.module.ts"
+      "/src/app.module.ts",
+      "/src/config/database"
     ],
     "testEnvironment": "node"
   }
