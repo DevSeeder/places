@@ -27,7 +27,6 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
       if (responseDB.length === 0) {
         this.logger.log(`Saving neighborhood '${item.name}'...`);
-        item.name = 'teste';
         await this.mongoRepository.insertOne(item, item.name);
       }
     }
