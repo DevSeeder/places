@@ -15,6 +15,9 @@ import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/
 import { Country, CountrySchema } from '../domain/schemas/country.schema';
 import { GetCountryByNameOrAliasService } from '../domain/service/countries/get-country-by-name-or-alias.service';
 import { CountriesMongoose } from './repository/countries/countries-mongoose.repository';
+import { State, StateSchema } from '../domain/schemas/state.schema';
+import { GetStateByNameOrAliasService } from '../domain/service/states/get-state-by-name-or-alias.service';
+import { StatesMongoose } from './repository/states/states-mongoose.repository';
 
 @Module({
   imports: [
@@ -25,7 +28,8 @@ import { CountriesMongoose } from './repository/countries/countries-mongoose.rep
     }),
     MongooseModule.forFeature([
       { name: Neighborhood.name, schema: NeighborhoodSchema },
-      { name: Country.name, schema: CountrySchema }
+      { name: Country.name, schema: CountrySchema },
+      { name: State.name, schema: StateSchema }
     ])
   ],
   controllers: [NeighborhoodsController],
@@ -36,9 +40,11 @@ import { CountriesMongoose } from './repository/countries/countries-mongoose.rep
     },
     NeighborhoodsMongoose,
     CountriesMongoose,
+    StatesMongoose,
     GetNeighborhoodsByCityService,
     SaveNeighborhoodsByCityService,
-    GetCountryByNameOrAliasService
+    GetCountryByNameOrAliasService,
+    GetStateByNameOrAliasService
   ]
 })
 export class NeighborhoodsModule {}

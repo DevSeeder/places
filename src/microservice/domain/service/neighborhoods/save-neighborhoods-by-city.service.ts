@@ -4,6 +4,8 @@ import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods
 import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods-mongo.builder';
 import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
 import { NeighborhoodsService } from './neighborhoods.service';
+import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { Neighborhood } from '../../schemas/neighborhood.schema';
 
 @Injectable()
 export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
@@ -13,7 +15,8 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
   async saveNeighborhoodsByCity(
     neighborhoodsPuppeteer: NeighborhoodsByCity[],
-    searchParams: SearchNeighborhoods
+    searchParams: SearchNeighborhoods,
+    convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<void> {
     const arrDocument = new NeighborhoodsMongoBuilder(
       neighborhoodsPuppeteer
@@ -28,10 +31,8 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
           item.name
         );
 
-        if (responseDB.length === 0) {
-          this.logger.log(`Saving neighborhood '${item.name}'...`);
-          await this.mongoRepository.insertOne(item, item.name);
-        }
+        if (responseDB.length === 0)
+          await this.createNeighborhood(item, convertedSearch);
       }
     } catch (err) {
       this.mongoRepository.rollback();
@@ -39,6 +40,18 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     }
 
     await this.mongoRepository.commit();
+  }
+
+  async createNeighborhood(
+    item: Neighborhood,
+    convertedSearch: ValidOutputSearchNeighborhood
+  ) {
+    item.countryId = convertedSearch.country.id;
+    item.country = convertedSearch.country.name.capitalize();
+    item.stateId = convertedSearch.state.id;
+    item.state = convertedSearch.state.stateCode.toUpperCase();
+    this.logger.log(`Saving neighborhood '${item.name}'...`);
+    await this.mongoRepository.insertOne(item, item.name);
   }
 
   async findNeighborhoodInDatabase(

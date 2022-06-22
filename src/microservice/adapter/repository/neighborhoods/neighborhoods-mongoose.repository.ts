@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { SearchNeighborhoods } from 'src/microservice/domain/model/search/search-neighborhoods.model';
-import { MongooseRepository } from '../../../domain/repository/mongoose.repository';
+import { PlacesMongooseRepository } from '../../../domain/repository/mongoose/places-mongoose.repository';
 import {
   Neighborhood,
   NeighborhoodDocument
 } from '../../../domain/schemas/neighborhood.schema';
 
 @Injectable()
-export class NeighborhoodsMongoose extends MongooseRepository<
+export class NeighborhoodsMongoose extends PlacesMongooseRepository<
   Neighborhood,
   NeighborhoodDocument
 > {

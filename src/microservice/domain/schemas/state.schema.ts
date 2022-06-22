@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Place } from '../interface/place.interface';
 
 export type StateDocument = State & Document;
 
 @Schema()
-export class State {
+export class State implements Place {
   @Prop({ required: true })
-  id: string;
+  id: number;
 
   @Prop({ required: true })
   name: string;
@@ -33,7 +34,7 @@ export class State {
   countryName: string;
 
   @Prop({ required: false })
-  countryId: string;
+  countryId: number;
 }
 
 const schema = SchemaFactory.createForClass(State);

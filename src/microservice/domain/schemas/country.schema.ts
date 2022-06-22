@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Place } from '../interface/place.interface';
 
 export type CountryDocument = Country & Document;
 
 @Schema({ collection: 'countries' })
-export class Country {
+export class Country implements Place {
   @Prop({ required: true })
-  id: string;
+  id: number;
 
   @Prop({ required: true, unique: true })
   name: string;
