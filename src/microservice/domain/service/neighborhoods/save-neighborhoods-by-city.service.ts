@@ -50,6 +50,8 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     item.country = convertedSearch.country.name.capitalize();
     item.stateId = convertedSearch.state.id;
     item.state = convertedSearch.state.stateCode.toUpperCase();
+    item.cityId = convertedSearch.city.id;
+    item.city = convertedSearch.city.name.capitalize();
     this.logger.log(`Saving neighborhood '${item.name}'...`);
     await this.mongoRepository.insertOne(item, item.name);
   }

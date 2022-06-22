@@ -34,6 +34,7 @@ export abstract class PlacesMongooseRepository<
 
   async findByNameOrAlias(name: string, extraSearch = {}): Promise<any[]> {
     const nameRegex = new RegExp(name, 'i');
+    extraSearch = this.buildRegexFilterQuery(extraSearch);
     return this.model
       .find({
         ...extraSearch,
@@ -41,5 +42,13 @@ export abstract class PlacesMongooseRepository<
       })
       .lean()
       .exec();
+  }
+
+  buildRegexFilterQuery(objSearch: object = {}) {
+    const objRegex = {};
+    Object.keys(objSearch).forEach(function (key) {
+      objRegex[key] = new RegExp(objRegex[key], 'i');
+    });
+    return objRegex;
   }
 }

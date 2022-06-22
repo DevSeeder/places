@@ -11,6 +11,8 @@ import { GetStateByNameOrAliasService } from '../states/get-state-by-name-or-ali
 import { Country } from '../../schemas/country.schema';
 import { State } from '../../schemas/state.schema';
 import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { GetCityByNameOrAliasService } from '../cities/get-city-by-name-or-alias.service';
+import { City } from '../../schemas/city.schema';
 
 @Injectable()
 export class GetNeighborhoodsByCityService extends NeighborhoodsService {
@@ -20,6 +22,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
     private readonly getCountryService: GetCountryByNameOrAliasService,
     private readonly getStateService: GetStateByNameOrAliasService,
+    private readonly getCityService: GetCityByNameOrAliasService,
     mongoRepository: NeighborhoodsMongoose
   ) {
     super(mongoRepository);
@@ -65,7 +68,12 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   ): Promise<ValidOutputSearchNeighborhood> {
     const country = await this.validateCountry(searchParams.country);
     const state = await this.validateState(searchParams.state, country.id);
-    return { country, state };
+    const city = await this.validateCity(
+      searchParams.city,
+      country.id,
+      state.id
+    );
+    return { country, state, city };
   }
 
   async validateCountry(country: string): Promise<Country> {
@@ -88,6 +96,24 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     if (res.length === 0) throw new InvalidDataException('State', state);
 
     this.logger.log(`State: '${res[0].name}'`);
+    return res[0];
+  }
+
+  async validateCity(
+    city: string,
+    countryId: number,
+    stateId: number
+  ): Promise<City> {
+    this.logger.log(`Validating City '${city}'...`);
+
+    const res = await this.getCityService.getCityByNameOrAlias(
+      city,
+      countryId,
+      stateId
+    );
+    if (res.length === 0) throw new InvalidDataException('City', city);
+
+    this.logger.log(`City: '${res[0].name}'`);
     return res[0];
   }
 }

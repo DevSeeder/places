@@ -26,6 +26,9 @@ export class Neighborhood implements Place {
   city: string;
 
   @Prop({ required: true })
+  cityId: number;
+
+  @Prop({ required: true })
   name: string;
 }
 
