@@ -1,18 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CountryDocument = Country & Document;
+export type StateDocument = State & Document;
 
-@Schema({ collection: 'countries' })
-export class Country {
+@Schema()
+export class State {
   @Prop({ required: true })
   id: string;
 
-  @Prop({ required: true, unique: true })
-  name: string;
-
   @Prop({ required: true })
-  iso3: string;
+  name: string;
 
   @Prop({ required: true })
   iso2: string;
@@ -23,24 +20,23 @@ export class Country {
   @Prop({ required: true })
   subregion: string;
 
-  @Prop({ required: false, type: Object })
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  translations: Object;
-
   @Prop({ required: false })
   alias: string[];
 
   @Prop({ required: false })
-  numericCode: string;
+  stateCode: string;
 
   @Prop({ required: false })
-  phoneCode: string;
+  countryCode: string;
 
   @Prop({ required: false })
-  currencyName: string;
+  countryName: string;
 
   @Prop({ required: false })
-  currencySymbol: string;
+  countryId: string;
 }
 
-export const CountrySchema = SchemaFactory.createForClass(Country);
+const schema = SchemaFactory.createForClass(State);
+schema.index({ name: 1, countryId: 1 }, { unique: true });
+
+export const StateSchema = schema;

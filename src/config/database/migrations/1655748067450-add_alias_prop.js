@@ -10,7 +10,7 @@ const model = startConnection('countries', 'country');
  * Make any changes you need to make to the database here
  */
 async function up() {
-  const res = model.aggregate([
+  const res = (await model).aggregate([
     {
       $project: {
         alias: { $objectToArray: '$translations' },
@@ -26,7 +26,9 @@ async function up() {
     arrAlias.push(item.name);
     arrAlias.push(item.iso2);
     arrAlias.push(item.iso3);
-    await model
+    await (
+      await model
+    )
       .findByIdAndUpdate(item._id, {
         $set: {
           alias: arrAlias
@@ -40,7 +42,9 @@ async function up() {
  * Make any changes that UNDO the up function side effects here (if possible)
  */
 async function down() {
-  await model
+  await (
+    await model
+  )
     .updateMany(
       {},
       {

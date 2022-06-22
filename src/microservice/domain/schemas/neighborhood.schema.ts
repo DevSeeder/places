@@ -9,6 +9,9 @@ export class Neighborhood {
   country: string;
 
   @Prop({ required: true })
+  countryId: string;
+
+  @Prop({ required: true })
   state: string;
 
   @Prop({ required: true })
