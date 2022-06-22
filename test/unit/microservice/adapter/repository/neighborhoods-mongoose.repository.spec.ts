@@ -6,7 +6,10 @@ import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper
 import { NeighborhoodsMongoose } from '../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
-import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
+import {
+  mockModelMongoose,
+  mockMongooseConnection
+} from '../../../../mock/mongoose/mock-mongoose';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -46,6 +49,10 @@ describe('NeighborhoodsMongoose', () => {
     })
   };
 
+  beforeAll(async () => {
+    jest.mock('mongoose', mockMongooseConnection);
+  });
+
   beforeEach(async () => {
     app = await Test.createTestingModule({
       imports: [ExtensionsModule],
@@ -55,6 +62,10 @@ describe('NeighborhoodsMongoose', () => {
         {
           provide: getModelToken(Neighborhood.name),
           useValue: mockModelMongoose
+        },
+        {
+          provide: 'DatabaseConnection',
+          useFactory: mockMongooseConnection
         }
       ]
     }).compile();
@@ -92,7 +103,7 @@ describe('NeighborhoodsMongoose', () => {
 
       const doc = new Neighborhood();
 
-      await sut.insert(doc);
+      await sut.insertOne(doc, 'any');
 
       sinon.assert.calledOnceWithExactly(createSpy, doc);
 

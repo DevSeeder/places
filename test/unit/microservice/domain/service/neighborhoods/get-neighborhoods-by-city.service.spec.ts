@@ -10,6 +10,12 @@ import '../../../../../../src/microservice/adapter/helper/extensions/exensions.m
 import { GetCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { StatesMongoose } from '../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
+import { GetCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
+import { GetStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
+import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
+import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -26,7 +32,7 @@ describe('GetNeighborhoodsByCityService', () => {
     }
   };
 
-  const mockCountryMongooseRepository = {
+  const mockPlacesMongooseRepository = {
     findByNameOrAlias: () => {
       return [];
     }
@@ -44,6 +50,18 @@ describe('GetNeighborhoodsByCityService', () => {
   const mockGetCountryService = {
     getCountryByNameOrAlias: () => {
       return [new Country()];
+    }
+  };
+
+  const mockGetStateService = {
+    getStateByNameOrAlias: () => {
+      return [new State()];
+    }
+  };
+
+  const mockGetCityService = {
+    getCityByNameOrAlias: () => {
+      return [new City()];
     }
   };
 
@@ -80,7 +98,15 @@ describe('GetNeighborhoodsByCityService', () => {
         },
         {
           provide: CountriesMongoose,
-          useValue: mockCountryMongooseRepository
+          useValue: mockPlacesMongooseRepository
+        },
+        {
+          provide: StatesMongoose,
+          useValue: mockPlacesMongooseRepository
+        },
+        {
+          provide: CitiesMongoose,
+          useValue: mockPlacesMongooseRepository
         },
         {
           provide: SaveNeighborhoodsByCityService,
@@ -89,6 +115,14 @@ describe('GetNeighborhoodsByCityService', () => {
         {
           provide: GetCountryByNameOrAliasService,
           useFactory: () => mockGetCountryService
+        },
+        {
+          provide: GetStateByNameOrAliasService,
+          useFactory: () => mockGetStateService
+        },
+        {
+          provide: GetCityByNameOrAliasService,
+          useFactory: () => mockGetCityService
         },
         GetNeighborhoodsByCityService
       ]

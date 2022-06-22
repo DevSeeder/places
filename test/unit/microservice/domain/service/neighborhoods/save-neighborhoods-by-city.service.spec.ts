@@ -6,6 +6,9 @@ import { ExtensionsModule } from '../../../../../../src/microservice/adapter/hel
 import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
 import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
+import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 
 describe('SaveNeighborhoodsByCityService', () => {
   let sut: SaveNeighborhoodsByCityService;
@@ -25,7 +28,16 @@ describe('SaveNeighborhoodsByCityService', () => {
     findBySearchParams: () => {
       return [];
     },
-    insert: () => {
+    insertOne: () => {
+      return;
+    },
+    startTransaction: () => {
+      return;
+    },
+    commit: () => {
+      return;
+    },
+    rollback: () => {
       return;
     }
   };
@@ -35,6 +47,21 @@ describe('SaveNeighborhoodsByCityService', () => {
     const item1 = new Neighborhood();
     arr.push(item1);
     return arr;
+  };
+
+  const mockConvertedSearch = () => {
+    const mockCountry = new Country();
+    mockCountry.name = 'any';
+    const mockState = new State();
+    mockState.name = 'any';
+    mockState.stateCode = 'any';
+    const mockCity = new City();
+    mockCity.name = 'any';
+    return {
+      country: mockCountry,
+      state: mockState,
+      city: mockCity
+    };
   };
 
   beforeEach(async () => {
@@ -61,11 +88,18 @@ describe('SaveNeighborhoodsByCityService', () => {
         .stub(sut, 'findNeighborhoodInDatabase')
         .returns([]);
 
-      const insertSpy = sinon.spy(mockNeighborhoodMongooseRepository, 'insert');
+      const insertSpy = sinon.spy(
+        mockNeighborhoodMongooseRepository,
+        'insertOne'
+      );
 
       const searchParams = new SearchNeighborhoods('brasil', 'sc', 'orleans');
 
-      await sut.saveNeighborhoodsByCity(mockNeighborhoods, searchParams);
+      await sut.saveNeighborhoodsByCity(
+        mockNeighborhoods,
+        searchParams,
+        mockConvertedSearch()
+      );
 
       sinon.assert.calledTwice(insertSpy);
 
@@ -78,11 +112,18 @@ describe('SaveNeighborhoodsByCityService', () => {
         .stub(sut, 'findNeighborhoodInDatabase')
         .returns(mockMongoNeighborhoods());
 
-      const insertSpy = sinon.spy(mockNeighborhoodMongooseRepository, 'insert');
+      const insertSpy = sinon.spy(
+        mockNeighborhoodMongooseRepository,
+        'insertOne'
+      );
 
       const searchParams = new SearchNeighborhoods('brasil', 'sc', 'orleans');
 
-      await sut.saveNeighborhoodsByCity(mockNeighborhoods, searchParams);
+      await sut.saveNeighborhoodsByCity(
+        mockNeighborhoods,
+        searchParams,
+        mockConvertedSearch()
+      );
 
       sinon.assert.notCalled(insertSpy);
 

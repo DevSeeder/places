@@ -6,7 +6,7 @@ import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/pu
 import { SaveNeighborhoodsByCityService } from './save-neighborhoods-by-city.service';
 import { NeighborhoodsService } from './neighborhoods.service';
 import { GetCountryByNameOrAliasService } from '../countries/get-country-by-name-or-alias.service';
-import { InvalidDataException } from 'src/core/error-handling/exception/invalid-data.exception';
+import { InvalidDataException } from '../../../../core/error-handling/exception/invalid-data.exception';
 import { GetStateByNameOrAliasService } from '../states/get-state-by-name-or-alias.service';
 import { Country } from '../../schemas/country.schema';
 import { State } from '../../schemas/state.schema';

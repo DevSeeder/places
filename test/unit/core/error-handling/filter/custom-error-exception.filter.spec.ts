@@ -11,30 +11,25 @@ import * as sinon from 'sinon';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../../../../../src/app.module';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
-import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
+import {
+  mockModelMongoose,
+  mockMongooseConnection
+} from '../../../../mock/mongoose/mock-mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import { State } from '../../../../../src/microservice/domain/schemas/state.schema';
+import { Country } from '../../../../../src/microservice/domain/schemas/country.schema';
+import { City } from '../../../../../src/microservice/domain/schemas/city.schema';
 
 jest.setTimeout(25000);
-jest.mock('mongoose', () => {
-  return {
-    createConnection: jest.fn(() => {
-      return {
-        asPromise: jest.fn(() => {
-          return {
-            model: jest.fn(),
-            close: jest.fn()
-          };
-        })
-      };
-    }),
-    Schema: jest.fn()
-  };
-});
 
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;
   let app: TestingModule;
   let server: INestApplication;
+
+  beforeAll(async () => {
+    jest.mock('mongoose', mockMongooseConnection);
+  });
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
@@ -43,6 +38,12 @@ describe('CustomErrorExceptionFilter', () => {
       providers: [CustomErrorExceptionFilter]
     })
       .overrideProvider(getModelToken(Neighborhood.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(Country.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(State.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(City.name))
       .useValue(mockModelMongoose)
       .compile();
 

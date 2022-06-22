@@ -12,3 +12,23 @@ export const mockModelMongoose = {
     return { exec: jest.fn(() => null) };
   }
 };
+
+export const mockMongooseConnection = () => {
+  return {
+    createConnection: jest.fn(() => {
+      return {
+        asPromise: jest.fn(() => {
+          return {
+            model: jest.fn(),
+            close: jest.fn()
+          };
+        })
+      };
+    }),
+    Schema: jest.fn(() => {
+      return {
+        index: jest.fn()
+      };
+    })
+  };
+};
