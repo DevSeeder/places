@@ -99,15 +99,14 @@ describe('NeighborhoodsMongoose', () => {
         name: new RegExp('any', 'i')
       };
 
-      const findManyStub = sinon
-        .stub(mockModelMongoose, 'find')
-        .returns(mockFindNeighborhoods);
-
       const actual = await sut.buildRegexFilterQuery(mockParams);
 
       expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockRegex));
+    });
 
-      findManyStub.restore();
+    it('should call buildRegexFilterQuery and return regex filter with empty obj', async () => {
+      const actual = await sut.buildRegexFilterQuery();
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
     });
   });
 

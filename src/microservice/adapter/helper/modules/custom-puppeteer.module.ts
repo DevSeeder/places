@@ -6,8 +6,7 @@ export class CustomPuppeteerModule extends PuppeteerModule {
   static forRootLaunchOptions(options) {
     return {
       module: PuppeteerModule,
-      global:
-        options === null || options === void 0 ? void 0 : options.isGlobal,
+      global: options === null ? false : options.isGlobal,
       imports: [PuppeteerCoreModule.forRoot(options)]
     };
   }
