@@ -83,6 +83,34 @@ describe('NeighborhoodsMongoose', () => {
     });
   });
 
+  describe('buildRegexFilterQuery', () => {
+    it('should call buildRegexFilterQuery and return regex filter', async () => {
+      const mockParams = {
+        countryId: 1,
+        stateId: 2,
+        cityId: 3,
+        name: 'any'
+      };
+
+      const mockRegex = {
+        countryId: 1,
+        stateId: 2,
+        cityId: 3,
+        name: new RegExp('any', 'i')
+      };
+
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'find')
+        .returns(mockFindNeighborhoods);
+
+      const actual = await sut.buildRegexFilterQuery(mockParams);
+
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockRegex));
+
+      findManyStub.restore();
+    });
+  });
+
   describe('insertOne', () => {
     it('should call insertOne and call model.create with the correct params', async () => {
       const doc = new Neighborhood();
