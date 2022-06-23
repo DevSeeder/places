@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
+import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from './save-neighborhoods-by-city.service';
@@ -13,6 +13,7 @@ import { State } from '../../schemas/state.schema';
 import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { GetCityByNameOrAliasService } from '../cities/get-city-by-name-or-alias.service';
 import { City } from '../../schemas/city.schema';
+import { SearchNeighborhoodsDB } from '../../model/search/search-neighborhoods-db.model';
 
 @Injectable()
 export class GetNeighborhoodsByCityService extends NeighborhoodsService {
@@ -33,15 +34,17 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     state: string,
     city: string
   ): Promise<NeighborhoodsByCity[]> {
-    const searchParams = new SearchNeighborhoods(country, state, city);
+    const searchParams = new SearchNeighborhoodsInput(country, state, city);
 
     const convertedSearch = await this.validateAndConvertSearchParams(
       searchParams
     );
 
-    const resMongo = await this.findInDatabase(searchParams);
+    const resMongo = await this.findNeighborhoodsByCityInDatabase(
+      convertedSearch
+    );
 
-    if (!resMongo.length) {
+    if (resMongo.length === 0) {
       this.logger.log('Searching by puppeteer...');
       const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
         searchParams
@@ -64,7 +67,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async validateAndConvertSearchParams(
-    searchParams: SearchNeighborhoods
+    searchParams: SearchNeighborhoodsInput
   ): Promise<ValidOutputSearchNeighborhood> {
     const country = await this.validateCountry(searchParams.country);
     const state = await this.validateState(searchParams.state, country.id);
@@ -115,5 +118,16 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
 
     this.logger.log(`City: '${res[0].name}'`);
     return res[0];
+  }
+
+  async findNeighborhoodsByCityInDatabase(
+    convertedSearch: ValidOutputSearchNeighborhood
+  ): Promise<NeighborhoodsByCity[]> {
+    const searchDB = new SearchNeighborhoodsDB(
+      convertedSearch.country.id,
+      convertedSearch.state.id,
+      convertedSearch.city.id
+    );
+    return this.findInDatabase(searchDB);
   }
 }

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
+import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
@@ -69,7 +69,7 @@ describe('NeighborhoodsMongoose', () => {
 
   describe('findBySearchParams', () => {
     it('should call findBySearchParams and return an array', async () => {
-      const mockSearchParams = new SearchNeighborhoods(
+      const mockSearchParams = new SearchNeighborhoodsInput(
         'USA',
         'NJ',
         'Gotham City'

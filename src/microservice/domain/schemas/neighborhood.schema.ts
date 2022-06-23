@@ -20,6 +20,9 @@ export class Neighborhood implements Place {
   state: string;
 
   @Prop({ required: true })
+  stateName: string;
+
+  @Prop({ required: true })
   stateId: number;
 
   @Prop({ required: true })

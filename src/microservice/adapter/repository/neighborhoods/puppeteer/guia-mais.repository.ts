@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
 import { NeighborhoodsByCity } from '../../../../domain/model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from '../../../../domain/model/search/search-neighborhoods.model';
+import { SearchNeighborhoodsInput } from '../../../../domain/model/search/search-neighborhoods-input.model';
 import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
@@ -42,7 +42,9 @@ export class GuiaMaisRepository
     return arrNeighborhoods;
   }
 
-  async callEndpoint(searchParams: SearchNeighborhoods): Promise<CheerioAPI> {
+  async callEndpoint(
+    searchParams: SearchNeighborhoodsInput
+  ): Promise<CheerioAPI> {
     const url = `${this.url}/${searchParams.city}-${searchParams.state}`;
     return this.getDocumentHtml(url);
   }

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods-mongo.builder';
-import { SearchNeighborhoods } from '../../model/search/search-neighborhoods.model';
+import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
+import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhoods-input.model';
 import { NeighborhoodsService } from './neighborhoods.service';
 import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { Neighborhood } from '../../schemas/neighborhood.schema';
+import { SearchNeighborhoodsDBBuilder } from 'src/microservice/adapter/helper/builder/neighborhoods/search-neighborhoods-db.builder';
 
 @Injectable()
 export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
@@ -15,15 +16,16 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
   async saveNeighborhoodsByCity(
     neighborhoodsPuppeteer: NeighborhoodsByCity[],
-    searchParams: SearchNeighborhoods,
+    searchParams: SearchNeighborhoodsInput,
     convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<void> {
     const arrDocument = new NeighborhoodsMongoBuilder(
       neighborhoodsPuppeteer
-    ).build(searchParams);
+    ).build(convertedSearch);
+
     for await (const item of arrDocument) {
       const responseDB = await this.findNeighborhoodInDatabase(
-        searchParams,
+        convertedSearch,
         item.name
       );
 
@@ -40,6 +42,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     item.country = convertedSearch.country.name.capitalize();
     item.stateId = convertedSearch.state.id;
     item.state = convertedSearch.state.stateCode.toUpperCase();
+    item.stateName = convertedSearch.state.name.capitalize();
     item.cityId = convertedSearch.city.id;
     item.city = convertedSearch.city.name.capitalize();
     this.logger.log(`Saving neighborhood '${item.name}'...`);
@@ -47,10 +50,14 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async findNeighborhoodInDatabase(
-    searchParams: SearchNeighborhoods,
+    convertedSearch: ValidOutputSearchNeighborhood,
     name: string
   ) {
+    const searchParams = new SearchNeighborhoodsDBBuilder(
+      convertedSearch
+    ).build();
     searchParams.name = name;
+
     return this.findInDatabase(searchParams);
   }
 }

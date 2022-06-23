@@ -1,8 +1,8 @@
-import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
-import { NeighborhoodsMongoBuilder } from '../../../../../../src/microservice/adapter/helper/builder/neighborhoods-mongo.builder';
-import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
-import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { NeighborhoodsMongoBuilder } from '../../../../../../../src/microservice/adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
+import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 
 const mockNeighborhoodsByCity = [
   {
@@ -37,7 +37,11 @@ const mockMongoNeighborhoods = () => {
 describe('NeighborhoodsMongoBuilder ', () => {
   it('Should instanciate NeighborhoodsMongoBuilder and build correctly', function () {
     const nestBuilder = new NeighborhoodsMongoBuilder(mockNeighborhoodsByCity);
-    const mockSearch = new SearchNeighborhoods('USA', 'NY', 'New York City');
+    const mockSearch = new SearchNeighborhoodsInput(
+      'USA',
+      'NY',
+      'New York City'
+    );
     const actual = nestBuilder.build(mockSearch);
     expect(JSON.stringify(actual)).to.be.equal(
       JSON.stringify(mockMongoNeighborhoods())

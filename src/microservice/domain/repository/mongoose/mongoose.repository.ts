@@ -43,11 +43,13 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   //   }
   // }
 
-  // buildRegexFilterQuery(objSearch: object = {}) {
-  //   const objRegex = {};
-  //   Object.keys(objSearch).forEach(function (key) {
-  //     objRegex[key] = new RegExp(objRegex[key], 'i');
-  //   });
-  //   return objRegex;
-  // }
+  buildRegexFilterQuery(objSearch: object = {}) {
+    const objSearchRegex = {};
+    Object.keys(objSearch).forEach(function (key) {
+      objSearchRegex[key] = objSearch[key];
+      if (isNaN(objSearch[key]))
+        objSearchRegex[key] = new RegExp(objSearch[key], 'i');
+    });
+    return objSearchRegex;
+  }
 }

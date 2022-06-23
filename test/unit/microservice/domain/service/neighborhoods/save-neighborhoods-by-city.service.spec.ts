@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
+import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
 import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
@@ -93,7 +93,11 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoods('brasil', 'sc', 'orleans');
+      const searchParams = new SearchNeighborhoodsInput(
+        'brasil',
+        'sc',
+        'orleans'
+      );
 
       await sut.saveNeighborhoodsByCity(
         mockNeighborhoods,
@@ -117,7 +121,11 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoods('brasil', 'sc', 'orleans');
+      const searchParams = new SearchNeighborhoodsInput(
+        'brasil',
+        'sc',
+        'orleans'
+      );
 
       await sut.saveNeighborhoodsByCity(
         mockNeighborhoods,
@@ -136,7 +144,11 @@ describe('SaveNeighborhoodsByCityService', () => {
     it('should call saveNeighborhoodsByCity and call insert twice', async () => {
       const findInDatabaseStub = sinon.stub(sut, 'findInDatabase').returns();
 
-      const searchParams = new SearchNeighborhoods('brasil', 'sc', 'orleans');
+      const searchParams = new SearchNeighborhoodsInput(
+        'brasil',
+        'sc',
+        'orleans'
+      );
 
       await sut.findNeighborhoodInDatabase(searchParams, 'Alto Paraná');
 
