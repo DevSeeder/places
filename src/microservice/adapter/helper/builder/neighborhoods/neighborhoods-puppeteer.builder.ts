@@ -1,5 +1,5 @@
-import { NeighborhoodsByCity } from '../../../domain/model/neighborhoods-by-city.model';
-import { Neighborhood } from '../../../domain/schemas/neighborhood.schema';
+import { NeighborhoodsByCity } from '../../../../domain/model/neighborhoods-by-city.model';
+import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsPuppeteerBuilder {
   constructor(private readonly mongoResponse: Neighborhood[]) {}

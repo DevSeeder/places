@@ -1,6 +1,6 @@
 import { CheerioAPI } from 'cheerio';
 import { NeighborhoodsByCity } from '../../../model/neighborhoods-by-city.model';
-import { SearchNeighborhoods } from '../../../model/search/search-neighborhoods.model';
+import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
@@ -10,7 +10,7 @@ export abstract class PuppeteerNeighborhoodRepository
   implements IPuppeteerNeighborhoodRepository
 {
   async getNeighborhoodsByCity(
-    searchParams: SearchNeighborhoods
+    searchParams: SearchNeighborhoodsInput
   ): Promise<NeighborhoodsByCity[]> {
     this.validateInput(searchParams);
 
@@ -27,11 +27,11 @@ export abstract class PuppeteerNeighborhoodRepository
   }
 
   abstract buildElementsFromDocument(
-    _searchParams: SearchNeighborhoods,
+    _searchParams: SearchNeighborhoodsInput,
     _$: CheerioAPI
   );
 
   abstract callEndpoint(
-    _searchParams: SearchNeighborhoods
+    _searchParams: SearchNeighborhoodsInput
   ): Promise<CheerioAPI>;
 }

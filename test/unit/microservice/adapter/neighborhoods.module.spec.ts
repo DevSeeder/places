@@ -7,6 +7,12 @@ import { NeighborhoodsMongoose } from '../../../../src/microservice/adapter/repo
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../mock/mongoose/mock-mongoose';
+import { Country } from '../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { State } from '../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../src/microservice/domain/schemas/city.schema';
+import { StatesMongoose } from '../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
+import { CitiesMongoose } from '../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 
 describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
@@ -18,12 +24,18 @@ describe('NeighborhoodsModule', () => {
     }
   };
 
-  const mockMongooseRepository = {
+  const mockNeighborhoodsMongooseRepository = {
     findBySearchParams: () => {
       return [];
     },
     insert: () => {
       return;
+    }
+  };
+
+  const mockPlacesMongooseRepository = {
+    findByNameOrAlias: () => {
+      return [];
     }
   };
 
@@ -35,8 +47,20 @@ describe('NeighborhoodsModule', () => {
       .overrideProvider('GuiaMaisRepository')
       .useValue(mockGuiaMaisRepository)
       .overrideProvider(NeighborhoodsMongoose)
-      .useValue(mockMongooseRepository)
+      .useValue(mockNeighborhoodsMongooseRepository)
+      .overrideProvider(CountriesMongoose)
+      .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(StatesMongoose)
+      .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(CitiesMongoose)
+      .useValue(mockPlacesMongooseRepository)
       .overrideProvider(getModelToken(Neighborhood.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(Country.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(State.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(City.name))
       .useValue(mockModelMongoose)
       .compile();
 
