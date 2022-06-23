@@ -1,4 +1,4 @@
-export class SearchNeighborhoods {
+export class SearchNeighborhoodsInput {
   public name: string;
 
   constructor(

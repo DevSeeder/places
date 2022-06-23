@@ -1,7 +1,7 @@
-import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
-import { NeighborhoodsPuppeteerBuilder } from '../../../../../../src/microservice/adapter/helper/builder/neighborhoods-puppeteer.builder';
-import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { NeighborhoodsPuppeteerBuilder } from '../../../../../../../src/microservice/adapter/helper/builder/neighborhoods/neighborhoods-puppeteer.builder';
 
 const mockNeighborhoodsByCity = [
   {

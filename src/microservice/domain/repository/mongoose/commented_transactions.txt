@@ -1,0 +1,26 @@
+// private async startSession(): Promise<ClientSession> {
+  //   this.session = await this.connection.startSession();
+  //   return this.session;
+  // }
+
+  // async startTransaction(): Promise<void> {
+  //   if (!this.session || !this.session.inTransaction())
+  //     await this.startSession();
+
+  //   await this.session.startTransaction();
+  //   this.logger.log('Starting transaction...');
+  // }
+
+  // async commit(): Promise<void> {
+  //   if (this.session.inTransaction()) {
+  //     this.logger.log('Commit transaction...');
+  //     await this.session.commitTransaction();
+  //   }
+  // }
+
+  // async rollback(): Promise<void> {
+  //   if (this.session.inTransaction()) {
+  //     this.logger.error('Rollback transaction...');
+  //     await this.session.abortTransaction();
+  //   }
+  // }

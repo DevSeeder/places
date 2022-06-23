@@ -15,23 +15,9 @@ import { NestResponseBuilder } from '../../../../src/core/http/nest-response.bui
 import { CustomResponse } from '../../../../src/core/interface/custom-response.interface';
 import { of } from 'rxjs';
 import * as sinon from 'sinon';
+import { mockMongooseConnection } from '../../../mock/mongoose/mock-mongoose';
 
 jest.setTimeout(22000);
-jest.mock('mongoose', () => {
-  return {
-    createConnection: jest.fn(() => {
-      return {
-        asPromise: jest.fn(() => {
-          return {
-            model: jest.fn(),
-            close: jest.fn()
-          };
-        })
-      };
-    }),
-    Schema: jest.fn()
-  };
-});
 
 describe('TransformResponseInterceptor ', () => {
   let app: INestApplication;
@@ -40,6 +26,10 @@ describe('TransformResponseInterceptor ', () => {
   const callHandler = {
     handle: jest.fn(() => of([mockNestResponse()]))
   };
+
+  beforeAll(async () => {
+    jest.mock('mongoose', mockMongooseConnection);
+  });
 
   beforeEach(async function () {
     app = await NestFactory.create(AppModule);

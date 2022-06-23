@@ -1,7 +1,11 @@
+import { Logger } from '@nestjs/common';
 import { NestResponseBuilder } from '../../../core/http/nest-response.builder';
 
 export abstract class AbstractController {
-  buildResponse(status, body, header = {}) {
+  protected readonly logger: Logger = new Logger(this.constructor.name);
+
+  async buildResponse(status, body, header = {}) {
+    this.logger.log('Finishing application request...');
     return new NestResponseBuilder()
       .setStatus(status)
       .setHeader(header)
