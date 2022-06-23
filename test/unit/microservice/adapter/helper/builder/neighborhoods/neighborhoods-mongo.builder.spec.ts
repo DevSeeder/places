@@ -1,8 +1,10 @@
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
 import { NeighborhoodsMongoBuilder } from '../../../../../../../src/microservice/adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
 import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
+import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 
 const mockNeighborhoodsByCity = [
   {
@@ -34,15 +36,25 @@ const mockMongoNeighborhoods = () => {
   return arr;
 };
 
+const mockConvertedSearch = () => {
+  const mockCountry = new Country();
+  mockCountry.name = 'USA';
+  const mockState = new State();
+  mockState.name = 'New York';
+  mockState.stateCode = 'NY';
+  const mockCity = new City();
+  mockCity.name = 'New York City';
+  return {
+    country: mockCountry,
+    state: mockState,
+    city: mockCity
+  };
+};
+
 describe('NeighborhoodsMongoBuilder ', () => {
   it('Should instanciate NeighborhoodsMongoBuilder and build correctly', function () {
     const nestBuilder = new NeighborhoodsMongoBuilder(mockNeighborhoodsByCity);
-    const mockSearch = new SearchNeighborhoodsInput(
-      'USA',
-      'NY',
-      'New York City'
-    );
-    const actual = nestBuilder.build(mockSearch);
+    const actual = nestBuilder.build(mockConvertedSearch());
     expect(JSON.stringify(actual)).to.be.equal(
       JSON.stringify(mockMongoNeighborhoods())
     );

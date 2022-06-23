@@ -9,6 +9,7 @@ import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
+import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-db.model';
 
 describe('SaveNeighborhoodsByCityService', () => {
   let sut: SaveNeighborhoodsByCityService;
@@ -51,12 +52,15 @@ describe('SaveNeighborhoodsByCityService', () => {
 
   const mockConvertedSearch = () => {
     const mockCountry = new Country();
-    mockCountry.name = 'any';
+    mockCountry.name = 'Brazil';
+    mockCountry.id = 1;
     const mockState = new State();
-    mockState.name = 'any';
-    mockState.stateCode = 'any';
+    mockState.name = 'Santa Catarina';
+    mockState.id = 2;
+    mockState.stateCode = 'SC';
     const mockCity = new City();
-    mockCity.name = 'any';
+    mockCity.name = 'Orleans';
+    mockCity.id = 3;
     return {
       country: mockCountry,
       state: mockState,
@@ -144,13 +148,12 @@ describe('SaveNeighborhoodsByCityService', () => {
     it('should call saveNeighborhoodsByCity and call insert twice', async () => {
       const findInDatabaseStub = sinon.stub(sut, 'findInDatabase').returns();
 
-      const searchParams = new SearchNeighborhoodsInput(
-        'brasil',
-        'sc',
-        'orleans'
-      );
+      const searchParams = new SearchNeighborhoodsDB(1, 2, 3);
 
-      await sut.findNeighborhoodInDatabase(searchParams, 'Alto Paraná');
+      await sut.findNeighborhoodInDatabase(
+        mockConvertedSearch(),
+        'Alto Paraná'
+      );
 
       searchParams.name = 'Alto Paraná';
 

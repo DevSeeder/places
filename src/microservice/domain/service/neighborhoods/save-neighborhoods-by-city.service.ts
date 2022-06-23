@@ -6,7 +6,7 @@ import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhood
 import { NeighborhoodsService } from './neighborhoods.service';
 import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { Neighborhood } from '../../schemas/neighborhood.schema';
-import { SearchNeighborhoodsDBBuilder } from 'src/microservice/adapter/helper/builder/neighborhoods/search-neighborhoods-db.builder';
+import { SearchNeighborhoodsDBBuilder } from '../../../adapter/helper/builder/neighborhoods/search-neighborhoods-db.builder';
 
 @Injectable()
 export class SaveNeighborhoodsByCityService extends NeighborhoodsService {

@@ -1,5 +1,5 @@
-import { ValidOutputSearchNeighborhood } from 'src/microservice/domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { SearchNeighborhoodsDB } from 'src/microservice/domain/model/search/search-neighborhoods-db.model';
+import { ValidOutputSearchNeighborhood } from '../../../../domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { SearchNeighborhoodsDB } from '../../../../domain/model/search/search-neighborhoods-db.model';
 
 export class SearchNeighborhoodsDBBuilder {
   constructor(

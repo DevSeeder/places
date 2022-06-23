@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../../../mock/mongoose/mock-mongoose';
 import { MongoDBException } from '../../../../../../src/core/error-handling/exception/mongodb-.exception';
+import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-db.model';
 
 jest.useFakeTimers();
 jest.setTimeout(20000);
@@ -69,11 +69,7 @@ describe('NeighborhoodsMongoose', () => {
 
   describe('findBySearchParams', () => {
     it('should call findBySearchParams and return an array', async () => {
-      const mockSearchParams = new SearchNeighborhoodsInput(
-        'USA',
-        'NJ',
-        'Gotham City'
-      );
+      const mockSearchParams = new SearchNeighborhoodsDB(1, 2, 3);
 
       const findManyStub = sinon
         .stub(mockModelMongoose, 'find')
