@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/Countries/Countries-mongoose.repository';
+import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../../../mock/mongoose/mock-mongoose';

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/Countries/Countries-mongoose.repository';
+import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { GetCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';

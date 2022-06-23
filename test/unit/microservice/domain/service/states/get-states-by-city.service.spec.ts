@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { StatesMongoose } from '../../../../../../src/microservice/adapter/repository/States/States-mongoose.repository';
+import { StatesMongoose } from '../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/States/get-State-by-name-or-alias.service';
-import { State } from '../../../../../../src/microservice/domain/schemas/State.schema';
+import { GetStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
+import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 
 describe('GetStateByNameOrAliasService', () => {
   let sut: GetStateByNameOrAliasService;

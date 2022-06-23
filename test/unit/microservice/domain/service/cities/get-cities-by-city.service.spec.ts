@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/Cities/Cities-mongoose.repository';
+import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/Cities/get-City-by-name-or-alias.service';
-import { City } from '../../../../../../src/microservice/domain/schemas/City.schema';
+import { GetCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
+import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 
 describe('GetCityByNameOrAliasService', () => {
   let sut: GetCityByNameOrAliasService;
