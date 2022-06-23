@@ -18,15 +18,19 @@ export class TransformResponseInterceptor implements NestInterceptor {
     this.httpAdapter = adapterHost.httpAdapter;
   }
 
+  /* istanbul ignore next */
   intercept(
     context: ExecutionContext,
     next: CallHandler
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       /* istanbul ignore next */
-      map((responseController: NestResponse) => {
-        return this.interceptResponse(responseController, context);
-      })
+      map(
+        /* istanbul ignore next */
+        (responseController: NestResponse) => {
+          return this.interceptResponse(responseController, context);
+        }
+      )
     );
   }
 

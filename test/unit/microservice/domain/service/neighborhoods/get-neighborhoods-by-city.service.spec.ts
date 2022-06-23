@@ -166,5 +166,53 @@ describe('GetNeighborhoodsByCityService', () => {
 
       mongoFindStub.restore();
     });
+
+    describe('validateCountry', () => {
+      it('should call validateCountry and throws invalid data exception', async () => {
+        const getCountryStub = sinon
+          .stub(mockGetCountryService, 'getCountryByNameOrAlias')
+          .returns([]);
+
+        try {
+          await sut.validateCountry('brasil');
+        } catch (err) {
+          expect(err.message).to.be.equal(`Invalid Country 'brasil'`);
+        }
+
+        getCountryStub.restore();
+      });
+    });
+
+    describe('validateState', () => {
+      it('should call validateState and throws invalid data exception', async () => {
+        const getStateStub = sinon
+          .stub(mockGetStateService, 'getStateByNameOrAlias')
+          .returns([]);
+
+        try {
+          await sut.validateState('sc', 1);
+        } catch (err) {
+          expect(err.message).to.be.equal(`Invalid State 'sc'`);
+        }
+
+        getStateStub.restore();
+      });
+    });
+
+    describe('validateCity', () => {
+      it('should call validateCity and throws invalid data exception', async () => {
+        const getCityStub = sinon
+          .stub(mockGetCityService, 'getCityByNameOrAlias')
+          .returns([]);
+
+        try {
+          await sut.validateCity('orleans', 1, 2);
+        } catch (err) {
+          expect(err.message).to.be.equal(`Invalid City 'orleans'`);
+        }
+
+        getCityStub.restore();
+      });
+    });
   });
 });

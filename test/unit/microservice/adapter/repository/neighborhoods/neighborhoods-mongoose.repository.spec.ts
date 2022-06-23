@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { SearchNeighborhoods } from '../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
-import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { NeighborhoodsMongoose } from '../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { SearchNeighborhoods } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods.model';
+import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
-import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
-import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
+import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { mockModelMongoose } from '../../../../../mock/mongoose/mock-mongoose';
+import { MongoDBException } from '../../../../../../src/core/error-handling/exception/mongodb-.exception';
 
 jest.useFakeTimers();
 jest.setTimeout(20000);
@@ -86,8 +87,8 @@ describe('NeighborhoodsMongoose', () => {
     });
   });
 
-  describe('insert', () => {
-    it('should call insert and call model.create with the correct params', async () => {
+  describe('insertOne', () => {
+    it('should call insertOne and call model.create with the correct params', async () => {
       const doc = new Neighborhood();
 
       const createStubMongo = sinon
@@ -105,6 +106,24 @@ describe('NeighborhoodsMongoose', () => {
 
       createStubMongo.restore();
       createStubSpy.restore();
+    });
+
+    it('should call insertOne and call model.create and throws a errors', async () => {
+      const doc = new Neighborhood();
+
+      const createStubMongo = sinon
+        .stub(mockModelMongoose, 'create')
+        .yields(new MongoDBException('any', 4), () => {
+          return;
+        });
+
+      try {
+        await sut.insertOne(doc, 'any');
+      } catch (err) {
+        expect(err.message).to.be.equal('any');
+      }
+
+      createStubMongo.restore();
     });
   });
 });
