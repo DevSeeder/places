@@ -70,5 +70,20 @@ describe('ValidateCountryByNameOrAliasService', () => {
 
       mongoFindStub.restore();
     });
+
+    it('should call validateCountry and return a object', async () => {
+      const country = new Country();
+      country.name = 'any';
+
+      const getCountryStub = sinon
+        .stub(mockCountriesMongooseRepository, 'findByNameOrAlias')
+        .returns([country]);
+
+      const actual = await sut.validateCountry('orleans');
+
+      expect(actual).to.be.equal(country);
+
+      getCountryStub.restore();
+    });
   });
 });

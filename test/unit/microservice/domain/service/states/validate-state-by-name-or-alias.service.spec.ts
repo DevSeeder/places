@@ -70,5 +70,19 @@ describe('ValidateStateByNameOrAliasService', () => {
 
       getStateStub.restore();
     });
+
+    it('should call validateState and return a object', async () => {
+      const state = new State();
+      state.name = 'any';
+      const getStateStub = sinon
+        .stub(mockStatesMongooseRepository, 'findByNameOrAlias')
+        .returns([state]);
+
+      const actual = await sut.validateState('orleans', 1);
+
+      expect(actual).to.be.equal(state);
+
+      getStateStub.restore();
+    });
   });
 });

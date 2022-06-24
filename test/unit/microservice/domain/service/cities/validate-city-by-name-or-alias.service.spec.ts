@@ -70,5 +70,20 @@ describe('ValidateCityByNameOrAliasService', () => {
 
       getCityStub.restore();
     });
+
+    it('should call validateCity and return a object', async () => {
+      const city = new City();
+      city.name = 'any';
+
+      const getCityStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .returns([city]);
+
+      const actual = await sut.validateCity('orleans', 1, 2);
+
+      expect(actual).to.be.equal(city);
+
+      getCityStub.restore();
+    });
   });
 });

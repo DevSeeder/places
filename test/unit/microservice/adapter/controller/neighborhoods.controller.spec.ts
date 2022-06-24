@@ -102,9 +102,9 @@ describe('NeighborhoodsController', () => {
     );
   });
 
-  describe('NeighborhoodsController', () => {
+  describe('getNeighborhoodsByCity', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
-      const guiaMaisStub = sinon
+      const getServiceStub = sinon
         .stub(mockGetNeighborhoodsService, 'getNeighborhoodsByCity')
         .returns(mockNeighborhoods);
 
@@ -121,7 +121,50 @@ describe('NeighborhoodsController', () => {
       expect(actual.body).to.be.an('array').that.contains;
       expect(actual.body).to.have.lengthOf(2);
 
-      guiaMaisStub.restore();
+      getServiceStub.restore();
+    });
+  });
+
+  describe('getNeighborhoodsByState', () => {
+    it('should call getNeighborhoodsByState and return an array', async () => {
+      const getServiceStub = sinon
+        .stub(mockGetNeighborhoodsByStateService, 'getNeighborhoodsByState')
+        .returns(mockNeighborhoods);
+
+      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+
+      const actual = await neighborhoodsController.getNeighborhoodsByState(
+        searchParams
+      );
+
+      expect(actual.body).to.be.an('array').that.contains;
+      expect(actual.body).to.have.lengthOf(2);
+
+      getServiceStub.restore();
+    });
+  });
+
+  describe('seedNeighborhoodsByState', () => {
+    it('should call seedNeighborhoodsByState and return a response', async () => {
+      const mockResponseSeed = {
+        success: true,
+        response: 'Seeded'
+      };
+
+      const seedServiceStub = sinon
+        .stub(mockSeedNeighborhoodsByStateService, 'seedNeighborhoodsByState')
+        .returns(mockResponseSeed);
+
+      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+
+      const actual = await neighborhoodsController.seedNeighborhoodsByState(
+        searchParams
+      );
+
+      expect(actual.body.success).to.be.equal(true);
+      expect(actual.body.response).to.be.equal('Seeded');
+
+      seedServiceStub.restore();
     });
   });
 });
