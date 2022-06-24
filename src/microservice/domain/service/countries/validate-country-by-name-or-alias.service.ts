@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InvalidDataException } from 'src/core/error-handling/exception/invalid-data.exception';
+import { InvalidDataException } from '../../../../core/error-handling/exception/invalid-data.exception';
 import { CountriesMongoose } from '../../../adapter/repository/countries/countries-mongoose.repository';
 import { Country } from '../../schemas/country.schema';
 import { CountriesService } from './countries.service';

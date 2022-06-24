@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { MongoError } from 'mongodb';
-import { MongoDBException } from 'src/core/error-handling/exception/mongodb-.exception';
+import { MongoDBException } from '../../../../core/error-handling/exception/mongodb-.exception';
 
 export abstract class MongooseRepository<Collection, MongooseModel> {
   protected readonly logger: Logger = new Logger(this.constructor.name);

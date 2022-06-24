@@ -7,16 +7,14 @@ import { SaveNeighborhoodsByCityService } from '../../../../../../../src/microse
 import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { ValidateCountryByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';
-import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { CountriesMongoose } from '../../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { StatesMongoose } from '../../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { ValidateCityByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
-import { ValidateStateByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
-import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
-import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
+import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -48,21 +46,12 @@ describe('GetNeighborhoodsByCityService', () => {
     }
   };
 
-  const mockGetCountryService = {
-    getCountryByNameOrAlias: () => {
-      return [new Country()];
-    }
-  };
-
-  const mockGetStateService = {
-    getStateByNameOrAlias: () => {
-      return [new State()];
-    }
-  };
-
-  const mockGetCityService = {
-    getCityByNameOrAlias: () => {
-      return [new City()];
+  const mockValidateService = {
+    validateAndConvertSearchByState: () => {
+      return {};
+    },
+    validateAndConvertSearchByCity: () => {
+      return {};
     }
   };
 
@@ -83,6 +72,20 @@ describe('GetNeighborhoodsByCityService', () => {
       city: 'Orleans-SC'
     }
   ];
+
+  const mockConvertedSearch = () => {
+    const country = new Country();
+    country.id = 31;
+    country.name = 'Brazil';
+    const state = new State();
+    state.id = 2014;
+    state.name = 'Santa Catarina';
+    state.stateCode = 'SC';
+    const city = new City();
+    city.id = 1;
+    city.name = 'Orleans';
+    return { country, city, state };
+  };
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -114,16 +117,8 @@ describe('GetNeighborhoodsByCityService', () => {
           useFactory: () => mockSaveNeighborhoodsService
         },
         {
-          provide: ValidateCountryByNameOrAliasService,
-          useFactory: () => mockGetCountryService
-        },
-        {
-          provide: ValidateStateByNameOrAliasService,
-          useFactory: () => mockGetStateService
-        },
-        {
-          provide: ValidateCityByNameOrAliasService,
-          useFactory: () => mockGetCityService
+          provide: ValidateInputParamsService,
+          useFactory: () => mockValidateService
         },
         GetNeighborhoodsByCityService
       ]
@@ -138,6 +133,10 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
         .returns(mockNeighborhoods);
 
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .returns(mockConvertedSearch());
+
       const searchParams = new SearchNeighborhoodsInput(
         'brasil',
         'sc',
@@ -150,6 +149,7 @@ describe('GetNeighborhoodsByCityService', () => {
       expect(actual.length).to.be.equal(2);
 
       guiaMaisStub.restore();
+      validateStub.restore();
     });
 
     it('should call getNeighborhoodsByCity and return an array by mongodb', async () => {
@@ -157,10 +157,14 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(sut, 'findInDatabase')
         .returns(mockMongoNeighborhoods());
 
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .returns(mockConvertedSearch());
+
       const searchParams = new SearchNeighborhoodsInput(
-        'brasil',
-        'sc',
-        'orleans'
+        'Brazil',
+        'SC',
+        'Orleans'
       );
 
       const actual = await sut.getNeighborhoodsByCity(searchParams);
@@ -170,6 +174,7 @@ describe('GetNeighborhoodsByCityService', () => {
       );
 
       mongoFindStub.restore();
+      validateStub.restore();
     });
   });
 });

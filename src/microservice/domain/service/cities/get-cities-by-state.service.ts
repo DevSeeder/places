@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NeighborhoodsMongoose } from 'src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { CitiesMongoose } from '../../../adapter/repository/cities/cities-mongoose.repository';
 import { AgregatedNeighborhoodsCity } from '../../interface/agregated/agregated-neighborhoods-city.interface';
 import { SearchCitiesDB } from '../../model/search/search-cities-db.model';
