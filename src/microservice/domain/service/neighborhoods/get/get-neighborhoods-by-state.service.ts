@@ -12,7 +12,7 @@ import { AgregatedNeighborhoodsCity } from 'src/microservice/domain/interface/ag
 import {
   NeighborhoodsByState,
   NeighborhooodAgregatedByCity
-} from 'src/microservice/domain/model/neighborhoods/neighborhood-by-state.model';
+} from 'src/microservice/domain/model/neighborhoods/neighborhoods-by-state.model';
 
 @Injectable()
 export class GetNeighborhoodsByStateService extends GetNeighborhoodsService {
