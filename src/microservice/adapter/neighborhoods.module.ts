@@ -25,6 +25,9 @@ import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/
 import { ValidateInputParamsService } from '../domain/service/validate-input-params.service';
 import { SeedNeighborhoodsByStateService } from '../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
 import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-state.service';
+import { LogSeed, LogSeedSchema } from '../domain/schemas/logseed.schema';
+import { LogSeedMongoose } from './repository/logseed/logseed-mongoose.repository';
+import { LogSeedJobService } from '../domain/service/logseed/log-seed-job.service';
 
 @Module({
   imports: [
@@ -37,7 +40,8 @@ import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-
       { name: Neighborhood.name, schema: NeighborhoodSchema },
       { name: Country.name, schema: CountrySchema },
       { name: State.name, schema: StateSchema },
-      { name: City.name, schema: CitySchema }
+      { name: City.name, schema: CitySchema },
+      { name: LogSeed.name, schema: LogSeedSchema }
     ])
   ],
   controllers: [NeighborhoodsController],
@@ -50,6 +54,7 @@ import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-
     CountriesMongoose,
     StatesMongoose,
     CitiesMongoose,
+    LogSeedMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
     SaveNeighborhoodsByCityService,
@@ -58,6 +63,7 @@ import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-
     ValidateCityByNameOrAliasService,
     ValidateInputParamsService,
     SeedNeighborhoodsByStateService,
+    LogSeedJobService,
     GetCitiesByStateService
   ]
 })

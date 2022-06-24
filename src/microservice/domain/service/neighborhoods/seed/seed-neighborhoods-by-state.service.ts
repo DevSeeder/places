@@ -9,6 +9,7 @@ import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-s
 import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
 import { City } from '../../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { LogSeedJobService } from '../../logseed/log-seed-job.service';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
@@ -16,7 +17,8 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     mongoRepository: NeighborhoodsMongoose,
     private readonly validateService: ValidateInputParamsService,
     private readonly getNeighborhoodsService: GetNeighborhoodsByCityService,
-    private readonly getCitiesByStateService: GetCitiesByStateService
+    private readonly getCitiesByStateService: GetCitiesByStateService,
+    private readonly logSeedService: LogSeedJobService
   ) {
     super(mongoRepository);
   }
@@ -46,10 +48,16 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
       try {
         await this.seedByCity(convertedSearch, item);
       } catch (err) {
-        console.log(`Error City... ${item.name} - ${item.id}`);
-        this.logger.log(`Error City... ${item.name} - ${item.id}`);
-        this.logger.log(err.message);
-        console.log(err);
+        this.logger.error(`Error City... ${item.name} - ${item.id}`);
+        this.logger.error(err.message);
+        console.error(err);
+
+        await this.logSeedService.logSeedByState(
+          convertedSearch.country.id,
+          convertedSearch.state.id,
+          item.id,
+          err
+        );
       }
     }
   }
@@ -61,7 +69,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
       city.name
     );
     convertedSearch.city = city;
-    this.logger.log(`Seeding city ${city.name}...`);
+    this.logger.log(`Seeding city[${city.id}] ${city.name}...`);
     await this.getNeighborhoodsService.searchByPuppeterAndSave(
       searchParamsByCity,
       convertedSearch
