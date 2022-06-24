@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
-import { NeighborhoodsByCity } from '../../../../domain/model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { SearchNeighborhoodsInput } from '../../../../domain/model/search/search-neighborhoods-input.model';
 import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
@@ -23,15 +23,12 @@ export class GuiaMaisRepository
     );
   }
 
-  buildElementsFromDocument(
-    searchParams,
-    $: CheerioAPI
-  ): NeighborhoodsByCity[] {
+  buildElementsFromDocument(searchParams, $: CheerioAPI): NeighborhoodByCity[] {
     const arrNeighborhoods = [];
     $('.cities.centerContent')
       .find('a')
       .each(function () {
-        const neighborhood = new NeighborhoodsByCity();
+        const neighborhood = new NeighborhoodByCity();
 
         neighborhood.name = $(this).text();
         neighborhood.city = `${searchParams.city.capitalize()} - ${searchParams.state.toUpperCase()}`;

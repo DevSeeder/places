@@ -1,13 +1,13 @@
-import { NeighborhoodsByCity } from '../../../../domain/model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsPuppeteerBuilder {
   constructor(private readonly mongoResponse: Neighborhood[]) {}
 
-  build(): NeighborhoodsByCity[] {
+  build(): NeighborhoodByCity[] {
     const arr = [];
     this.mongoResponse.forEach((document) => {
-      const obj = new NeighborhoodsByCity();
+      const obj = new NeighborhoodByCity();
       obj.city = `${document.city.capitalize()} - ${document.state.toUpperCase()}`;
       obj.name = document.name;
       arr.push(obj);

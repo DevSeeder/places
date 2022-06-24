@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/get-neighborhoods-by-city.service';
+import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
-import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
-import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
-import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
-import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
-import { CountriesMongoose } from '../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
-import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
-import { StatesMongoose } from '../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { GetCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
-import { GetStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
-import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
+import { NeighborhoodByCity } from '../../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
+import { SaveNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
+import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { GetCountryByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
+import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { StatesMongoose } from '../../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
+import { GetCityByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
+import { GetStateByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
+import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
+import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -72,7 +72,7 @@ describe('GetNeighborhoodsByCityService', () => {
     return arr;
   };
 
-  const mockNeighborhoods: NeighborhoodsByCity[] = [
+  const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
       city: 'Orleans-SC'

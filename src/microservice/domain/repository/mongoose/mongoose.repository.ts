@@ -15,6 +15,33 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     });
   }
 
+  async groupBy(group, match = {}, select = {}): Promise<any[]> {
+    const agregateParams = [];
+
+    if (Object.keys(match).length > 0) agregateParams.push({ $match: match });
+
+    agregateParams.push({
+      $group: {
+        _id: group,
+        count: { $sum: 1 },
+        ...this.buildSelectAgregated(select)
+      }
+    });
+    return this.model.aggregate(agregateParams);
+  }
+
+  buildSelectAgregated(groupSelect: object = {}) {
+    const objGroup = {};
+    if (Object.keys(groupSelect).length > 0) {
+      Object.keys(groupSelect).forEach((key) => {
+        objGroup[key] = {
+          $first: `$${groupSelect[key]}`
+        };
+      });
+    }
+    return objGroup;
+  }
+
   buildRegexFilterQuery(objSearch: object = {}) {
     const objSearchRegex = {};
     Object.keys(objSearch).forEach(function (key) {

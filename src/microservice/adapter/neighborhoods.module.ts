@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
-import { GetNeighborhoodsByCityService } from '../domain/service/neighborhoods/get-neighborhoods-by-city.service';
+import { GetNeighborhoodsByCityService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import configuration from '../../config/configuration';
 import { NeighborhoodsMongoose } from './repository/neighborhoods/neighborhoods-mongoose.repository';
 import {
@@ -21,6 +21,7 @@ import { StatesMongoose } from './repository/states/states-mongoose.repository';
 import { City, CitySchema } from '../domain/schemas/city.schema';
 import { GetCityByNameOrAliasService } from '../domain/service/cities/get-city-by-name-or-alias.service';
 import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
+import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
     StatesMongoose,
     CitiesMongoose,
     GetNeighborhoodsByCityService,
+    GetNeighborhoodsByStateService,
     SaveNeighborhoodsByCityService,
     GetCountryByNameOrAliasService,
     GetStateByNameOrAliasService,

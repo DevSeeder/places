@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NeighborhoodsByCity } from '../../model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
 import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhoods-input.model';
@@ -15,7 +15,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async saveNeighborhoodsByCity(
-    neighborhoodsPuppeteer: NeighborhoodsByCity[],
+    neighborhoodsPuppeteer: NeighborhoodByCity[],
     searchParams: SearchNeighborhoodsInput,
     convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<void> {
@@ -45,6 +45,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     item.stateName = convertedSearch.state.name.capitalize();
     item.cityId = convertedSearch.city.id;
     item.city = convertedSearch.city.name.capitalize();
+    item.alias = [item.name];
     this.logger.log(`Saving neighborhood '${item.name}'...`);
     await this.mongoRepository.insertOne(item, item.name);
   }

@@ -4,9 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from '../../../../../src/config/configuration';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { NeighborhoodsByCity } from '../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/get-neighborhoods-by-city.service';
+import { GetNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { SaveNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
 
 describe('NeighborhoodsController', () => {
@@ -27,7 +27,7 @@ describe('NeighborhoodsController', () => {
     }
   };
 
-  const mockNeighborhoods: NeighborhoodsByCity[] = [
+  const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
       city: 'Orleans-SC'
