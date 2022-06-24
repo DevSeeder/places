@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { NeighborhoodByCity } from '../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
+import { NeighborhoodByCity } from '../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 
 describe('NeighborhoodByCity', () => {
   it('should instance NeighborhoodByCity and return the object with the correct properties', async () => {

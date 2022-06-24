@@ -24,7 +24,7 @@ export class LogSeedJobService extends AbstractService {
     logSeed.type = type;
     logSeed.reference = reference;
     logSeed.datetime = new Date();
-    logSeed.ip = 'request.ip';
+    logSeed.ip = 'localhost';
     logSeed.success = false;
     logSeed.processed = false;
     logSeed.error = error;
