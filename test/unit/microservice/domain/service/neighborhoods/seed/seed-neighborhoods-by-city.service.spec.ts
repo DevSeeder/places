@@ -67,19 +67,20 @@ describe('SeedNeighborhoodsByStateService', () => {
     return [city1, city2];
   };
 
+  const country = new Country();
+  country.id = 31;
+  country.name = 'Brazil';
+  country.translations = new Translations();
+  country.translations[EnumTranslations.BR] = 'brasil';
+  const state = new State();
+  state.id = 2014;
+  state.name = 'Santa Catarina';
+  state.stateCode = 'SC';
+  const city = new City();
+  city.id = 1;
+  city.name = 'Orleans';
+
   const mockConvertedSearch = () => {
-    const country = new Country();
-    country.id = 31;
-    country.name = 'Brazil';
-    country.translations = new Translations();
-    country.translations[EnumTranslations.BR] = 'brasil';
-    const state = new State();
-    state.id = 2014;
-    state.name = 'Santa Catarina';
-    state.stateCode = 'SC';
-    const city = new City();
-    city.id = 1;
-    city.name = 'Orleans';
     return { country, city, state };
   };
 
@@ -211,17 +212,17 @@ describe('SeedNeighborhoodsByStateService', () => {
 
       sinon.assert.calledWithExactly(
         logSeedServiceStub,
-        31,
-        2014,
-        1,
+        country,
+        state,
+        city,
         mockError
       );
 
       sinon.assert.calledWithExactly(
         logSeedServiceStub,
-        31,
-        2014,
-        2,
+        country,
+        state,
+        city,
         mockError
       );
 

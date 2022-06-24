@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { LogSeedMongoose } from '../../../adapter/repository/logseed/logseed-mongoose.repository';
 import { EnumTypeLogSeed } from '../../enumerators/enum-type-logseed';
+import { City } from '../../schemas/city.schema';
+import { Country } from '../../schemas/country.schema';
 import {
   LogSeed,
   ReferenceLogSeed,
   ReferenceNeighborhoodsByState
 } from '../../schemas/logseed.schema';
+import { State } from '../../schemas/state.schema';
 import { AbstractService } from '../abstract-service.service';
 
 @Injectable()
@@ -32,15 +35,18 @@ export class LogSeedJobService extends AbstractService {
   }
 
   async logSeedByState(
-    countryId: number,
-    stateId: number,
-    cityId: number,
+    country: Country,
+    state: State,
+    city: City,
     error: Error
   ) {
     const reference = new ReferenceNeighborhoodsByState(
-      countryId,
-      stateId,
-      cityId
+      country.id,
+      state.id,
+      city.id,
+      country.name,
+      state.name,
+      city.name
     );
     await this.createLogSeed(
       EnumTypeLogSeed.NeighborhoodsByState,

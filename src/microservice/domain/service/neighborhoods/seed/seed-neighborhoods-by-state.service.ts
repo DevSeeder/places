@@ -60,13 +60,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
         this.logger.error(`Error City... ${item.name} - ${item.id}`);
         this.logger.error(err.message);
         console.error(err);
-
-        await this.logSeedService.logSeedByState(
-          convertedSearch.country.id,
-          convertedSearch.state.id,
-          item.id,
-          err
-        );
+        await this.logErrorSeedJob(convertedSearch, item, err);
       }
     }
 
@@ -74,6 +68,19 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
       success: true,
       response: 'Seeded'
     };
+  }
+
+  async logErrorSeedJob(
+    convertedSearch: ValidOutputSearchNeighborhood,
+    city: City,
+    err: Error
+  ): Promise<void> {
+    await this.logSeedService.logSeedByState(
+      convertedSearch.country,
+      convertedSearch.state,
+      city,
+      err
+    );
   }
 
   async seedByCity(convertedSearch: ValidOutputSearchNeighborhood, city: City) {
