@@ -6,6 +6,11 @@ import { LogSeedMongoose } from '../../../../../../src/microservice/adapter/repo
 import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/schemas/logseed.schema';
 import { NotFoundException } from '../../../../../../src/core/error-handling/exception/not-found.exception';
 import { EnumTypeLogSeed } from '../../../../../../src/microservice/domain/enumerators/enum-type-logseed';
+import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
+import { Translations } from '../../../../../../src/microservice/domain/model/translations.model';
+import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
+import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 
 describe('LogSeedJobService', () => {
   let sut: LogSeedJobService;
@@ -32,7 +37,27 @@ describe('LogSeedJobService', () => {
     sut = app.get<LogSeedJobService>(LogSeedJobService);
   });
 
-  const reference = new ReferenceNeighborhoodsByState(31, 2014, 1);
+  const country = new Country();
+  country.id = 31;
+  country.name = 'Brazil';
+  country.translations = new Translations();
+  country.translations[EnumTranslations.BR] = 'brasil';
+  const state = new State();
+  state.id = 2014;
+  state.name = 'Santa Catarina';
+  state.stateCode = 'SC';
+  const city = new City();
+  city.id = 1;
+  city.name = 'Orleans';
+
+  const reference = new ReferenceNeighborhoodsByState(
+    31,
+    2014,
+    1,
+    'Brazil',
+    'Santa Catarina',
+    'Orleans'
+  );
   const mockError = new NotFoundException('Neighborhoods');
 
   describe('logSeedByState', () => {
@@ -40,7 +65,7 @@ describe('LogSeedJobService', () => {
       const insertOneStub = sinon.stub(mockMongooseRepository, 'insertOne');
       const createLogSeedSpy = sinon.spy(sut, 'createLogSeed');
 
-      await sut.logSeedByState(31, 2014, 1, mockError);
+      await sut.logSeedByState(country, state, city, mockError);
 
       sinon.assert.calledOnceWithExactly(
         createLogSeedSpy,
