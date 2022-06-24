@@ -62,7 +62,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     const objSearchRegex = {};
     Object.keys(objSearch).forEach(function (key) {
       objSearchRegex[key] = objSearch[key];
-      if (isNaN(objSearch[key]))
+      if (typeof objSearch[key] === 'string')
         objSearchRegex[key] = new RegExp(objSearch[key], 'i');
     });
     return objSearchRegex;

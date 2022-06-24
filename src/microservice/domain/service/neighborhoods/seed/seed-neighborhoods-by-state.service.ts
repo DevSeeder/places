@@ -10,6 +10,7 @@ import { EnumTranslations } from '../../../enumerators/enum-translations.enumera
 import { City } from '../../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { LogSeedJobService } from '../../logseed/log-seed-job.service';
+import { CustomResponse } from 'src/core/interface/custom-response.interface';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
@@ -25,7 +26,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
 
   async seedNeighborhoodsByState(
     searchParams: SearchNeighborhoodsInput
-  ): Promise<void> {
+  ): Promise<CustomResponse> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);
 
@@ -44,6 +45,14 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
       arrSeededCities
     );
 
+    if (cities.length === 0) {
+      this.logger.log('Nothing to seed');
+      return {
+        success: true,
+        response: 'Nothing to seed'
+      };
+    }
+
     for await (const item of cities) {
       try {
         await this.seedByCity(convertedSearch, item);
@@ -60,6 +69,11 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
         );
       }
     }
+
+    return {
+      success: true,
+      response: 'Seeded'
+    };
   }
 
   async seedByCity(convertedSearch: ValidOutputSearchNeighborhood, city: City) {

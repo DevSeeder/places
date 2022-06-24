@@ -1,5 +1,5 @@
 export class SearchCitiesDB {
-  public cityId: any;
+  public id: any;
 
   constructor(public countryId: number, public stateId: number) {}
 }
