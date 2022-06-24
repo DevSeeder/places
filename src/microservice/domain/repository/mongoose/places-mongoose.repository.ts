@@ -39,4 +39,12 @@ export abstract class PlacesMongooseRepository<
       .lean()
       .exec();
   }
+
+  async findBySearchParams(searchParams: object): Promise<any[]> {
+    return this.model
+      .find(this.buildRegexFilterQuery(searchParams))
+      .select({ _id: 0 })
+      .lean()
+      .exec();
+  }
 }

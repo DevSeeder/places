@@ -33,24 +33,35 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
 
     if (resMongo.length === 0) {
       this.logger.log('Searching by puppeteer...');
-      const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
-        searchParams
-      );
-
-      await this.saveNeighborhoodsService.saveNeighborhoodsByCity(
-        resPuppeteer,
+      const resPuppeteer = await this.searchByPuppeterAndSave(
         searchParams,
         convertedSearch
       );
 
       this.logger.log('Returning Puppeteer response...');
-
       return resPuppeteer;
     }
 
     this.logger.log('Returning MongoDB response...');
 
     return resMongo;
+  }
+
+  async searchByPuppeterAndSave(
+    searchParams: SearchNeighborhoodsInput,
+    convertedSearch: ValidOutputSearchNeighborhood
+  ): Promise<NeighborhoodByCity[]> {
+    const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
+      searchParams
+    );
+
+    await this.saveNeighborhoodsService.saveNeighborhoodsByCity(
+      resPuppeteer,
+      searchParams,
+      convertedSearch
+    );
+
+    return resPuppeteer;
   }
 
   async findNeighborhoodsByCityInDatabase(

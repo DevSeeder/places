@@ -23,6 +23,8 @@ import { ValidateCityByNameOrAliasService } from '../domain/service/cities/valid
 import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
 import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { ValidateInputParamsService } from '../domain/service/validate-input-params.service';
+import { SeedNeighborhoodsByStateService } from '../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
+import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-state.service';
 
 @Module({
   imports: [
@@ -54,7 +56,9 @@ import { ValidateInputParamsService } from '../domain/service/validate-input-par
     ValidateCountryByNameOrAliasService,
     ValidateStateByNameOrAliasService,
     ValidateCityByNameOrAliasService,
-    ValidateInputParamsService
+    ValidateInputParamsService,
+    SeedNeighborhoodsByStateService,
+    GetCitiesByStateService
   ]
 })
 export class NeighborhoodsModule {}

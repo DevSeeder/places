@@ -7,12 +7,14 @@ import { SearchNeighborhoodsInput } from '../../../../domain/model/search/search
 import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
+import { EnumTranslations } from 'src/microservice/domain/enumerators/enum-translations.enumerator';
 
 @Injectable()
 export class GuiaMaisRepository
   extends PuppeteerNeighborhoodRepository
   implements IPuppeteerNeighborhoodRepository
 {
+  language = EnumTranslations.BR;
   constructor(
     protected configService: ConfigService,
     @InjectPage() protected readonly page: Page

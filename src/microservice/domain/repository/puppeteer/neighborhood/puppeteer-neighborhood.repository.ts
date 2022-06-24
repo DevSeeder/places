@@ -4,11 +4,13 @@ import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborh
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
+import { EnumTranslations } from 'src/microservice/domain/enumerators/enum-translations.enumerator';
 
 export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository
   implements IPuppeteerNeighborhoodRepository
 {
+  language: EnumTranslations;
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoodsInput
   ): Promise<NeighborhoodByCity[]> {

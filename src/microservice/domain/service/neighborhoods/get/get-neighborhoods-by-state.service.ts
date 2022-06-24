@@ -1,24 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
-import { ValidateStateByNameOrAliasService } from '../../states/validate-state-by-name-or-alias.service';
-
 import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-
 import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
-import { AgregatedNeighborhoodsCity } from 'src/microservice/domain/interface/agregated/agregated-neighborhoods-city.interface';
 import {
   NeighborhoodsByState,
   NeighborhooodAgregatedByCity
-} from 'src/microservice/domain/model/neighborhoods/neighborhoods-by-state.model';
+} from '../../../model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
+import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
 
 @Injectable()
 export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   constructor(
     protected readonly validateService: ValidateInputParamsService,
+    protected readonly getCitiesByStateService: GetCitiesByStateService,
     mongoRepository: NeighborhoodsMongoose
   ) {
     super(mongoRepository);
@@ -45,8 +42,9 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     this.logger.log(
       `Searching cities for state '${convertedSearch.state.stateCode}'...`
     );
-    const agregatedByCity = await this.groupByCity(convertedSearch.state.id);
-
+    const agregatedByCity = await this.getCitiesByStateService.groupByCity(
+      convertedSearch.state.id
+    );
     this.logger.log(`Founded cities: ${agregatedByCity.length}`);
     for await (const item of agregatedByCity) {
       const cityId = item._id.cityId;
@@ -82,13 +80,5 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
       cityId
     );
     return this.findInDatabase(searchDB);
-  }
-
-  async groupByCity(stateId: number): Promise<AgregatedNeighborhoodsCity[]> {
-    return this.mongoRepository.groupBy(
-      { cityId: '$cityId' },
-      { stateId },
-      { city: 'city' }
-    );
   }
 }
