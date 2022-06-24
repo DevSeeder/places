@@ -6,7 +6,7 @@ import '../../../../../../src/microservice/adapter/helper/extensions/exensions.m
 import { ValidateCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 
-describe('GetCityByNameOrAliasService', () => {
+describe('ValidateCityByNameOrAliasService', () => {
   let sut: ValidateCityByNameOrAliasService;
 
   const mockCitiesMongooseRepository = {

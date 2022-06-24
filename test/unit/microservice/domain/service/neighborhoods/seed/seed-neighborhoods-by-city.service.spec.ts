@@ -83,7 +83,7 @@ describe('SeedNeighborhoodsByStateService', () => {
     return { country, city, state };
   };
 
-  const mockAgregatedCities = [
+  const mockAggregatedCities = [
     {
       _id: { cityId: 1 },
       count: 60,
@@ -263,7 +263,7 @@ describe('SeedNeighborhoodsByStateService', () => {
     it('should call getSeededCities and return the correct values', async () => {
       const groupByCityStub = sinon
         .stub(mockGetCitiesByStateService, 'groupByCity')
-        .resolves(mockAgregatedCities);
+        .resolves(mockAggregatedCities);
 
       const actual = await sut.getSeededCities(1);
 

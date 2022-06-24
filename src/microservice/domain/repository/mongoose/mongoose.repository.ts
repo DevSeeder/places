@@ -32,21 +32,21 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async groupBy(group, match = {}, select = {}): Promise<any[]> {
-    const agregateParams = [];
+    const aggregateParams = [];
 
-    if (Object.keys(match).length > 0) agregateParams.push({ $match: match });
+    if (Object.keys(match).length > 0) aggregateParams.push({ $match: match });
 
-    agregateParams.push({
+    aggregateParams.push({
       $group: {
         _id: group,
         count: { $sum: 1 },
-        ...this.buildSelectAgregated(select)
+        ...this.buildSelectAggregated(select)
       }
     });
-    return this.model.aggregate(agregateParams);
+    return this.model.aggregate(aggregateParams);
   }
 
-  buildSelectAgregated(groupSelect: object = {}) {
+  buildSelectAggregated(groupSelect: object = {}) {
     const objGroup = {};
     if (Object.keys(groupSelect).length > 0) {
       Object.keys(groupSelect).forEach((key) => {

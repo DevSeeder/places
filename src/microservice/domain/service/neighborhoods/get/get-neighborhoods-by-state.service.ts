@@ -5,7 +5,7 @@ import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-s
 import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
 import {
   NeighborhoodsByState,
-  NeighborhooodAgregatedByCity
+  NeighborhooodAggregatedByCity
 } from '../../../model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
@@ -42,11 +42,11 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     this.logger.log(
       `Searching cities for state '${convertedSearch.state.stateCode}'...`
     );
-    const agregatedByCity = await this.getCitiesByStateService.groupByCity(
+    const aggregatedByCity = await this.getCitiesByStateService.groupByCity(
       convertedSearch.state.id
     );
-    this.logger.log(`Founded cities: ${agregatedByCity.length}`);
-    for await (const item of agregatedByCity) {
+    this.logger.log(`Founded cities: ${aggregatedByCity.length}`);
+    for await (const item of aggregatedByCity) {
       const cityId = item._id.cityId;
       const arrNeighborhoods = await this.findByCityAndStateInDatabase(
         convertedSearch,
@@ -57,15 +57,15 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
         `City "${item.city}": ${arrNeighborhoods.length} Neighborhoods`
       );
 
-      const arrAgregated = await arrNeighborhoods.map((neighborhood) => {
-        const obj = new NeighborhooodAgregatedByCity();
+      const arrAggregated = await arrNeighborhoods.map((neighborhood) => {
+        const obj = new NeighborhooodAggregatedByCity();
         obj.name = neighborhood.name;
         obj.cityId = cityId;
         obj.state = `${convertedSearch.state.name} - ${convertedSearch.country.iso3}`;
         return obj;
       });
 
-      arrResponse[item.city] = arrAgregated;
+      arrResponse[item.city] = arrAggregated;
     }
     return arrResponse;
   }

@@ -1,8 +1,8 @@
 export class NeighborhoodsByState {
-  [key: string]: NeighborhooodAgregatedByCity[];
+  [key: string]: NeighborhooodAggregatedByCity[];
 }
 
-export class NeighborhooodAgregatedByCity {
+export class NeighborhooodAggregatedByCity {
   name: string;
   cityId: number;
   state: string;

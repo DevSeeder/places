@@ -35,6 +35,19 @@ describe('NeighborhoodsMongoose', () => {
     return arr;
   };
 
+  const mockAggregatedCities = [
+    {
+      _id: { cityId: 1 },
+      count: 60,
+      city: 'Orleans'
+    },
+    {
+      _id: { cityId: 2 },
+      count: 13,
+      city: 'Braço do Norte'
+    }
+  ];
+
   const mockFindNeighborhoods = {
     select: jest.fn(() => {
       return {
@@ -147,6 +160,38 @@ describe('NeighborhoodsMongoose', () => {
       }
 
       createStubMongo.restore();
+    });
+  });
+
+  describe('groupBy', () => {
+    const mockAggregatedParams = [
+      { $match: { stateId: 2014 } },
+      {
+        $group: {
+          _id: { cityId: '$cityId' },
+          count: { $sum: 1 },
+          city: { $first: '$city' }
+        }
+      }
+    ];
+
+    it('should call groupBy and return an array and call aggregate with the correct params', async () => {
+      const mockGroup = { cityId: '$cityId' };
+
+      const aggregateStub = sinon
+        .stub(mockModelMongoose, 'aggregate')
+        .returns(mockAggregatedCities);
+
+      const match = { stateId: 2014 };
+      const select = { city: 'city' };
+
+      const actual = await sut.groupBy(mockGroup, match, select);
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      sinon.assert.calledOnceWithExactly(aggregateStub, mockAggregatedParams);
+
+      aggregateStub.restore();
     });
   });
 });

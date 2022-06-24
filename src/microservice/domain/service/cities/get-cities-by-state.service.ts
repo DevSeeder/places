@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { CitiesMongoose } from '../../../adapter/repository/cities/cities-mongoose.repository';
-import { AgregatedNeighborhoodsCity } from '../../interface/agregated/agregated-neighborhoods-city.interface';
+import { AggregatedNeighborhoodsCity } from '../../interface/aggregated/aggregated-neighborhoods-city.interface';
 import { SearchCitiesDB } from '../../model/search/search-cities-db.model';
 import { City } from '../../schemas/city.schema';
 import { CitiesService } from './cities.service';
@@ -23,7 +23,7 @@ export class GetCitiesByStateService extends CitiesService {
     return this.mongoRepository.findBySearchParams(searchParams);
   }
 
-  async groupByCity(stateId: number): Promise<AgregatedNeighborhoodsCity[]> {
+  async groupByCity(stateId: number): Promise<AggregatedNeighborhoodsCity[]> {
     return this.mongoNeighborhoodsRepository.groupBy(
       { cityId: '$cityId' },
       { stateId },

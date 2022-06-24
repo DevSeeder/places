@@ -6,7 +6,7 @@ import '../../../../../../src/microservice/adapter/helper/extensions/exensions.m
 import { ValidateStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 
-describe('GetStateByNameOrAliasService', () => {
+describe('ValidateStateByNameOrAliasService', () => {
   let sut: ValidateStateByNameOrAliasService;
 
   const mockStatesMongooseRepository = {

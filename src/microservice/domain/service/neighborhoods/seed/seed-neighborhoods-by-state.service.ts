@@ -92,10 +92,10 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
 
   async getSeededCities(stateId: number): Promise<number[]> {
     this.logger.log('Getting seeded cities...');
-    const agregatedCities = await this.getCitiesByStateService.groupByCity(
+    const aggregatedCities = await this.getCitiesByStateService.groupByCity(
       stateId
     );
-    return agregatedCities.map((item) => {
+    return aggregatedCities.map((item) => {
       return item._id.cityId;
     });
   }
