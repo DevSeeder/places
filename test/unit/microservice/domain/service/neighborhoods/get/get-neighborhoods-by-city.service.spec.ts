@@ -7,15 +7,16 @@ import { SaveNeighborhoodsByCityService } from '../../../../../../../src/microse
 import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetCountryByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/countries/get-country-by-name-or-alias.service';
+import { ValidateCountryByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { CountriesMongoose } from '../../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { StatesMongoose } from '../../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { GetCityByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
-import { GetStateByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
+import { ValidateCityByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
+import { ValidateStateByNameOrAliasService } from '../../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
+import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -113,15 +114,15 @@ describe('GetNeighborhoodsByCityService', () => {
           useFactory: () => mockSaveNeighborhoodsService
         },
         {
-          provide: GetCountryByNameOrAliasService,
+          provide: ValidateCountryByNameOrAliasService,
           useFactory: () => mockGetCountryService
         },
         {
-          provide: GetStateByNameOrAliasService,
+          provide: ValidateStateByNameOrAliasService,
           useFactory: () => mockGetStateService
         },
         {
-          provide: GetCityByNameOrAliasService,
+          provide: ValidateCityByNameOrAliasService,
           useFactory: () => mockGetCityService
         },
         GetNeighborhoodsByCityService
@@ -137,11 +138,13 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
         .returns(mockNeighborhoods);
 
-      const actual = await sut.getNeighborhoodsByCity(
+      const searchParams = new SearchNeighborhoodsInput(
         'brasil',
         'sc',
         'orleans'
       );
+
+      const actual = await sut.getNeighborhoodsByCity(searchParams);
 
       expect(actual).to.be.an('array');
       expect(actual.length).to.be.equal(2);
@@ -154,65 +157,19 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(sut, 'findInDatabase')
         .returns(mockMongoNeighborhoods());
 
-      const actual = await sut.getNeighborhoodsByCity(
+      const searchParams = new SearchNeighborhoodsInput(
         'brasil',
         'sc',
         'orleans'
       );
+
+      const actual = await sut.getNeighborhoodsByCity(searchParams);
 
       expect(JSON.stringify(actual)).to.be.equal(
         JSON.stringify(mockMongoNeighborhoods())
       );
 
       mongoFindStub.restore();
-    });
-
-    describe('validateCountry', () => {
-      it('should call validateCountry and throws invalid data exception', async () => {
-        const getCountryStub = sinon
-          .stub(mockGetCountryService, 'getCountryByNameOrAlias')
-          .returns([]);
-
-        try {
-          await sut.validateCountry('brasil');
-        } catch (err) {
-          expect(err.message).to.be.equal(`Invalid Country 'brasil'`);
-        }
-
-        getCountryStub.restore();
-      });
-    });
-
-    describe('validateState', () => {
-      it('should call validateState and throws invalid data exception', async () => {
-        const getStateStub = sinon
-          .stub(mockGetStateService, 'getStateByNameOrAlias')
-          .returns([]);
-
-        try {
-          await sut.validateState('sc', 1);
-        } catch (err) {
-          expect(err.message).to.be.equal(`Invalid State 'sc'`);
-        }
-
-        getStateStub.restore();
-      });
-    });
-
-    describe('validateCity', () => {
-      it('should call validateCity and throws invalid data exception', async () => {
-        const getCityStub = sinon
-          .stub(mockGetCityService, 'getCityByNameOrAlias')
-          .returns([]);
-
-        try {
-          await sut.validateCity('orleans', 1, 2);
-        } catch (err) {
-          expect(err.message).to.be.equal(`Invalid City 'orleans'`);
-        }
-
-        getCityStub.restore();
-      });
     });
   });
 });

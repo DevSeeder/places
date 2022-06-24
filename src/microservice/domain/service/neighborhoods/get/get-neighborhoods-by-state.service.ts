@@ -1,35 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { GetCountryByNameOrAliasService } from '../../countries/get-country-by-name-or-alias.service';
-import { GetStateByNameOrAliasService } from '../../states/get-state-by-name-or-alias.service';
+import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
+import { ValidateStateByNameOrAliasService } from '../../states/validate-state-by-name-or-alias.service';
 
 import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 
 import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
-import { GetNeighborhoodsService } from './get-neighborhoods.service';
 import { AgregatedNeighborhoodsCity } from 'src/microservice/domain/interface/agregated/agregated-neighborhoods-city.interface';
 import {
   NeighborhoodsByState,
   NeighborhooodAgregatedByCity
 } from 'src/microservice/domain/model/neighborhoods/neighborhoods-by-state.model';
+import { NeighborhoodsService } from '../neighborhoods.service';
+import { ValidateInputParamsService } from '../../validate-input-params.service';
 
 @Injectable()
-export class GetNeighborhoodsByStateService extends GetNeighborhoodsService {
+export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   constructor(
-    protected readonly getCountryService: GetCountryByNameOrAliasService,
-    protected readonly getStateService: GetStateByNameOrAliasService,
+    protected readonly validateService: ValidateInputParamsService,
     mongoRepository: NeighborhoodsMongoose
   ) {
-    super(mongoRepository, getCountryService, getStateService);
+    super(mongoRepository);
   }
 
   async getNeighborhoodsByState(
     searchParams: SearchNeighborhoodsInput
   ): Promise<NeighborhoodsByState> {
-    const convertedSearch = await this.validateAndConvertSearchParams(
-      searchParams
-    );
+    const convertedSearch =
+      await this.validateService.validateAndConvertSearchByState(searchParams);
 
     const resMongo = await this.findNeighborhoodsByStateInDatabase(
       convertedSearch
@@ -38,19 +37,16 @@ export class GetNeighborhoodsByStateService extends GetNeighborhoodsService {
     return resMongo;
   }
 
-  async validateAndConvertSearchParams(
-    searchParams: SearchNeighborhoodsInput
-  ): Promise<ValidOutputSearchNeighborhood> {
-    const country = await this.validateCountry(searchParams.country);
-    const state = await this.validateState(searchParams.state, country.id);
-    return { country, state, city: null };
-  }
-
   async findNeighborhoodsByStateInDatabase(
     convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<NeighborhoodsByState> {
     const arrResponse: NeighborhoodsByState = {};
+
+    this.logger.log(
+      `Searching cities for state '${convertedSearch.state.stateCode}'...`
+    );
     const agregatedByCity = await this.groupByCity(convertedSearch.state.id);
+
     this.logger.log(`Founded cities: ${agregatedByCity.length}`);
     for await (const item of agregatedByCity) {
       const cityId = item._id.cityId;

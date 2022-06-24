@@ -13,15 +13,16 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { Country, CountrySchema } from '../domain/schemas/country.schema';
-import { GetCountryByNameOrAliasService } from '../domain/service/countries/get-country-by-name-or-alias.service';
+import { ValidateCountryByNameOrAliasService } from '../domain/service/countries/validate-country-by-name-or-alias.service';
 import { CountriesMongoose } from './repository/countries/countries-mongoose.repository';
 import { State, StateSchema } from '../domain/schemas/state.schema';
-import { GetStateByNameOrAliasService } from '../domain/service/states/get-state-by-name-or-alias.service';
+import { ValidateStateByNameOrAliasService } from '../domain/service/states/validate-state-by-name-or-alias.service';
 import { StatesMongoose } from './repository/states/states-mongoose.repository';
 import { City, CitySchema } from '../domain/schemas/city.schema';
-import { GetCityByNameOrAliasService } from '../domain/service/cities/get-city-by-name-or-alias.service';
+import { ValidateCityByNameOrAliasService } from '../domain/service/cities/validate-city-by-name-or-alias.service';
 import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
 import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
+import { ValidateInputParamsService } from '../domain/service/validate-input-params.service';
 
 @Module({
   imports: [
@@ -50,9 +51,10 @@ import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
     SaveNeighborhoodsByCityService,
-    GetCountryByNameOrAliasService,
-    GetStateByNameOrAliasService,
-    GetCityByNameOrAliasService
+    ValidateCountryByNameOrAliasService,
+    ValidateStateByNameOrAliasService,
+    ValidateCityByNameOrAliasService,
+    ValidateInputParamsService
   ]
 })
 export class NeighborhoodsModule {}
