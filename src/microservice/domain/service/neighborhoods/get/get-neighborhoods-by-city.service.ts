@@ -28,12 +28,8 @@ export class GetNeighborhoodsByCityService extends GetNeighborhoodsService {
   }
 
   async getNeighborhoodsByCity(
-    country: string,
-    state: string,
-    city: string
+    searchParams: SearchNeighborhoodsInput
   ): Promise<NeighborhoodByCity[]> {
-    const searchParams = new SearchNeighborhoodsInput(country, state, city);
-
     const convertedSearch = await this.validateAndConvertSearchParams(
       searchParams
     );

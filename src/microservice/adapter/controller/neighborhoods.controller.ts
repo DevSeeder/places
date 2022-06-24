@@ -3,6 +3,8 @@ import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoo
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
+import { SearchNeighborhoodsDB } from 'src/microservice/domain/model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsInput } from 'src/microservice/domain/model/search/search-neighborhoods-input.model';
 
 @Controller('neighborhoods')
 export class NeighborhoodsController extends AbstractController {
@@ -15,31 +17,21 @@ export class NeighborhoodsController extends AbstractController {
 
   @Get('/city/:country/:state/:city')
   async getNeighborhoodsByCity(
-    @Param('country') country,
-    @Param('state') state,
-    @Param('city') city
+    @Param() params: SearchNeighborhoodsInput
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.getNeighborhoodsByCityService.getNeighborhoodsByCity(
-        country,
-        state,
-        city
-      )
+      await this.getNeighborhoodsByCityService.getNeighborhoodsByCity(params)
     );
   }
 
   @Get('/city/:country/:state')
   async getNeighborhoodsByState(
-    @Param('country') country,
-    @Param('state') state
+    @Param() params: SearchNeighborhoodsInput
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.getNeighborhoodsByStateService.getNeighborhoodsByState(
-        country,
-        state
-      )
+      await this.getNeighborhoodsByStateService.getNeighborhoodsByState(params)
     );
   }
 }

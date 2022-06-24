@@ -25,11 +25,8 @@ export class GetNeighborhoodsByStateService extends GetNeighborhoodsService {
   }
 
   async getNeighborhoodsByState(
-    country: string,
-    state: string
+    searchParams: SearchNeighborhoodsInput
   ): Promise<NeighborhoodsByState> {
-    const searchParams = new SearchNeighborhoodsInput(country, state);
-
     const convertedSearch = await this.validateAndConvertSearchParams(
       searchParams
     );
