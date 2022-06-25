@@ -77,10 +77,12 @@ maicksantos05@hotmail.com
 After run the server, make a get in browser, postman or similar
 
 ```bash
-## Url example
+## Neighborhoods By City example
 http://localhost:3000/neighborhoods/city/brazil/sc/orleans
+## Neighborhoods By State example
+http://localhost:3000/neighborhoods/city/brazil/sc
 ```
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/1.0.0)
 
-At the moment, it's working only for Brazil cities.
+At the moment, it's working only for Brazilians cities and states.
