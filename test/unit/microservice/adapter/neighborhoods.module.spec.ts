@@ -13,6 +13,8 @@ import { State } from '../../../../src/microservice/domain/schemas/state.schema'
 import { City } from '../../../../src/microservice/domain/schemas/city.schema';
 import { StatesMongoose } from '../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
 import { CitiesMongoose } from '../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { LogSeed } from '../../../../src/microservice/domain/schemas/logseed.schema';
+import { LogSeedMongoose } from '../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
 
 describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
@@ -39,6 +41,12 @@ describe('NeighborhoodsModule', () => {
     }
   };
 
+  const mockLogSeedMongooseRepository = {
+    insertOne: () => {
+      return;
+    }
+  };
+
   beforeEach(async function () {
     app = await Test.createTestingModule({
       imports: [NeighborhoodsModule, ExtensionsModule],
@@ -54,6 +62,8 @@ describe('NeighborhoodsModule', () => {
       .useValue(mockPlacesMongooseRepository)
       .overrideProvider(CitiesMongoose)
       .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(LogSeedMongoose)
+      .useValue(mockLogSeedMongooseRepository)
       .overrideProvider(getModelToken(Neighborhood.name))
       .useValue(mockModelMongoose)
       .overrideProvider(getModelToken(Country.name))
@@ -61,6 +71,8 @@ describe('NeighborhoodsModule', () => {
       .overrideProvider(getModelToken(State.name))
       .useValue(mockModelMongoose)
       .overrideProvider(getModelToken(City.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(LogSeed.name))
       .useValue(mockModelMongoose)
       .compile();
 

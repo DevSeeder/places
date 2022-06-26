@@ -4,7 +4,7 @@ export class SearchNeighborhoodsInput {
   constructor(
     public country: string,
     public state: string,
-    public city: string
+    public city: string = null
   ) {}
 
   setName(name: string) {

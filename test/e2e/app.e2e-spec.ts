@@ -32,5 +32,13 @@ describe('App (e2e) ', () => {
 
       expect(actual.body).to.be.an('array').that.is.not.empty;
     });
+
+    it('/neighborhoods/state/brasil/sc (GET)', async () => {
+      const actual = await request(app.getHttpServer()).get(
+        '/neighborhoods/state/brasil/sc'
+      );
+      expect(actual.body).to.be.an('object').that.is.not.empty;
+      expect(actual.body.Orleans).to.be.an('array').that.is.not.empty;
+    });
   });
 });

@@ -4,6 +4,11 @@ export const mockModelMongoose = {
       exec: jest.fn(() => null)
     };
   },
+  aggregate: () => {
+    return {
+      exec: jest.fn(() => null)
+    };
+  },
   findAll: () => {
     return { exec: jest.fn(() => null) };
   },

@@ -1,9 +1,9 @@
 import { ValidOutputSearchNeighborhood } from 'src/microservice/domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { NeighborhoodsByCity } from '../../../../domain/model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsMongoBuilder {
-  constructor(private readonly puppeteerResponse: NeighborhoodsByCity[]) {}
+  constructor(private readonly puppeteerResponse: NeighborhoodByCity[]) {}
 
   build(searchParams: ValidOutputSearchNeighborhood): Neighborhood[] {
     const arr = [];

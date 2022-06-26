@@ -4,7 +4,7 @@ import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservi
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
-import { NeighborhoodsByCity } from '../../../../../../src/microservice/domain/model/neighborhoods-by-city.model';
+import { NeighborhoodByCity } from '../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
@@ -14,7 +14,7 @@ import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain
 describe('SaveNeighborhoodsByCityService', () => {
   let sut: SaveNeighborhoodsByCityService;
 
-  const mockNeighborhoods: NeighborhoodsByCity[] = [
+  const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
       city: 'Orleans-SC'
