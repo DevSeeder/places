@@ -6,8 +6,10 @@ export type NeighborhoodDocument = Neighborhood & Document;
 
 @Schema()
 export class Neighborhood implements Place {
+  @Prop({ required: false })
   id: number;
 
+  @Prop({ required: false })
   alias: string[];
 
   @Prop({ required: true })

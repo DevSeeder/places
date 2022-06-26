@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/get-city-by-name-or-alias.service';
+import { ValidateCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 
-describe('GetCityByNameOrAliasService', () => {
-  let sut: GetCityByNameOrAliasService;
+describe('ValidateCityByNameOrAliasService', () => {
+  let sut: ValidateCityByNameOrAliasService;
 
   const mockCitiesMongooseRepository = {
     findByNameOrAlias: () => {
@@ -31,14 +31,16 @@ describe('GetCityByNameOrAliasService', () => {
           provide: CitiesMongoose,
           useValue: mockCitiesMongooseRepository
         },
-        GetCityByNameOrAliasService
+        ValidateCityByNameOrAliasService
       ]
     }).compile();
 
-    sut = app.get<GetCityByNameOrAliasService>(GetCityByNameOrAliasService);
+    sut = app.get<ValidateCityByNameOrAliasService>(
+      ValidateCityByNameOrAliasService
+    );
   });
 
-  describe('GetCityByNameOrAliasService', () => {
+  describe('getCityByNameOrAlias', () => {
     it('should call getCityByCity and return an array by mongodb', async () => {
       const mongoFindStub = sinon
         .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
@@ -51,6 +53,37 @@ describe('GetCityByNameOrAliasService', () => {
       );
 
       mongoFindStub.restore();
+    });
+  });
+
+  describe('validateCity', () => {
+    it('should call validateCity and throws invalid data exception', async () => {
+      const getCityStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .returns([]);
+
+      try {
+        await sut.validateCity('orleans', 1, 2);
+      } catch (err) {
+        expect(err.message).to.be.equal(`Invalid City 'orleans'`);
+      }
+
+      getCityStub.restore();
+    });
+
+    it('should call validateCity and return a object', async () => {
+      const city = new City();
+      city.name = 'any';
+
+      const getCityStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .returns([city]);
+
+      const actual = await sut.validateCity('orleans', 1, 2);
+
+      expect(actual).to.be.equal(city);
+
+      getCityStub.restore();
     });
   });
 });

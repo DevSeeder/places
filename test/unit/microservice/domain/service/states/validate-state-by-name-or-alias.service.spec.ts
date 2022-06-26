@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { StatesMongoose } from '../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { GetStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/get-state-by-name-or-alias.service';
+import { ValidateStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 
-describe('GetStateByNameOrAliasService', () => {
-  let sut: GetStateByNameOrAliasService;
+describe('ValidateStateByNameOrAliasService', () => {
+  let sut: ValidateStateByNameOrAliasService;
 
   const mockStatesMongooseRepository = {
     findByNameOrAlias: () => {
@@ -31,14 +31,16 @@ describe('GetStateByNameOrAliasService', () => {
           provide: StatesMongoose,
           useValue: mockStatesMongooseRepository
         },
-        GetStateByNameOrAliasService
+        ValidateStateByNameOrAliasService
       ]
     }).compile();
 
-    sut = app.get<GetStateByNameOrAliasService>(GetStateByNameOrAliasService);
+    sut = app.get<ValidateStateByNameOrAliasService>(
+      ValidateStateByNameOrAliasService
+    );
   });
 
-  describe('GetStateByNameOrAliasService', () => {
+  describe('getStateByNameOrAlias', () => {
     it('should call getStateByCity and return an array by mongodb', async () => {
       const mongoFindStub = sinon
         .stub(mockStatesMongooseRepository, 'findByNameOrAlias')
@@ -51,6 +53,36 @@ describe('GetStateByNameOrAliasService', () => {
       );
 
       mongoFindStub.restore();
+    });
+  });
+
+  describe('validateState', () => {
+    it('should call validateState and throws invalid data exception', async () => {
+      const getStateStub = sinon
+        .stub(mockStatesMongooseRepository, 'findByNameOrAlias')
+        .returns([]);
+
+      try {
+        await sut.validateState('sc', 1);
+      } catch (err) {
+        expect(err.message).to.be.equal(`Invalid State 'sc'`);
+      }
+
+      getStateStub.restore();
+    });
+
+    it('should call validateState and return a object', async () => {
+      const state = new State();
+      state.name = 'any';
+      const getStateStub = sinon
+        .stub(mockStatesMongooseRepository, 'findByNameOrAlias')
+        .returns([state]);
+
+      const actual = await sut.validateState('orleans', 1);
+
+      expect(actual).to.be.equal(state);
+
+      getStateStub.restore();
     });
   });
 });

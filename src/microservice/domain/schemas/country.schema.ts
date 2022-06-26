@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Place } from '../interface/place.interface';
+import { Translations } from '../model/translations.model';
 
 export type CountryDocument = Country & Document;
 
@@ -25,8 +26,7 @@ export class Country implements Place {
   subregion: string;
 
   @Prop({ required: false, type: Object })
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  translations: Object;
+  translations: Translations;
 
   @Prop({ required: false })
   alias: string[];
