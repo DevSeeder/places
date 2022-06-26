@@ -10,7 +10,7 @@ import { CitiesService } from './cities.service';
 export class GetCitiesByStateService extends CitiesService {
   constructor(
     mongoRepository: CitiesMongoose,
-    private mongoNeighborhoodsRepository: NeighborhoodsMongoose
+    private readonly mongoNeighborhoodsRepository: NeighborhoodsMongoose
   ) {
     super(mongoRepository);
   }

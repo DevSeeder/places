@@ -48,6 +48,17 @@ describe('NeighborhoodsMongoose', () => {
     }
   ];
 
+  const mockAggregatedCities2 = [
+    {
+      _id: { cityId: 1 },
+      count: 60
+    },
+    {
+      _id: { cityId: 2 },
+      count: 13
+    }
+  ];
+
   const mockFindNeighborhoods = {
     select: jest.fn(() => {
       return {
@@ -55,7 +66,8 @@ describe('NeighborhoodsMongoose', () => {
           return {
             exec: jest.fn(() => mockNeighborhoods())
           };
-        })
+        }),
+        exec: jest.fn(() => mockNeighborhoods())
       };
     })
   };
@@ -163,6 +175,13 @@ describe('NeighborhoodsMongoose', () => {
     });
   });
 
+  describe('buildSelectAggregated', () => {
+    it('should call buildSelectAggregated with default params', async () => {
+      const actual = sut.buildSelectAggregated();
+      expect(JSON.stringify(actual)).to.be.equal('{}');
+    });
+  });
+
   describe('groupBy', () => {
     const mockAggregatedParams = [
       { $match: { stateId: 2014 } },
@@ -171,6 +190,15 @@ describe('NeighborhoodsMongoose', () => {
           _id: { cityId: '$cityId' },
           count: { $sum: 1 },
           city: { $first: '$city' }
+        }
+      }
+    ];
+
+    const mockAggregatedParamsDefaultParams = [
+      {
+        $group: {
+          _id: { cityId: '$cityId' },
+          count: { $sum: 1 }
         }
       }
     ];
@@ -190,6 +218,25 @@ describe('NeighborhoodsMongoose', () => {
       expect(actual).to.be.an('array').that.is.not.empty;
 
       sinon.assert.calledOnceWithExactly(aggregateStub, mockAggregatedParams);
+
+      aggregateStub.restore();
+    });
+
+    it('should call groupBy with default params and return an array and call aggregate with the correct params', async () => {
+      const mockGroup = { cityId: '$cityId' };
+
+      const aggregateStub = sinon
+        .stub(mockModelMongoose, 'aggregate')
+        .returns(mockAggregatedCities2);
+
+      const actual = await sut.groupBy(mockGroup);
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      sinon.assert.calledOnceWithExactly(
+        aggregateStub,
+        mockAggregatedParamsDefaultParams
+      );
 
       aggregateStub.restore();
     });

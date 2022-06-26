@@ -106,6 +106,23 @@ describe('GetCitiesByStateService', () => {
     });
   });
 
+  describe('getCitiesByState', () => {
+    it('should call getCitiesByState and return an array by puppeteer', async () => {
+      const arrMockCities = mockCities();
+      const groupByStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findBySearchParams')
+        .returns(arrMockCities);
+
+      const searchParams = new SearchCitiesDB(1, 2);
+
+      const actual = await sut.getCitiesByState(searchParams);
+
+      expect(actual).to.be.equal(arrMockCities);
+
+      groupByStub.restore();
+    });
+  });
+
   describe('groupByCity', () => {
     it('should call groupByCity and return an array by puppeteer', async () => {
       const groupByStub = sinon

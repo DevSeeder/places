@@ -27,13 +27,8 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);
 
-    const resMongo = await this.findNeighborhoodsByStateInDatabase(
-      convertedSearch
-    );
-
-    return resMongo;
+    return this.findNeighborhoodsByStateInDatabase(convertedSearch);
   }
-
   async findNeighborhoodsByStateInDatabase(
     convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<NeighborhoodsByState> {
@@ -57,15 +52,13 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
         `City "${item.city}": ${arrNeighborhoods.length} Neighborhoods`
       );
 
-      const arrAggregated = await arrNeighborhoods.map((neighborhood) => {
+      arrResponse[item.city] = arrNeighborhoods.map((neighborhood) => {
         const obj = new NeighborhooodAggregatedByCity();
         obj.name = neighborhood.name;
         obj.cityId = cityId;
         obj.state = `${convertedSearch.state.name} - ${convertedSearch.country.iso3}`;
         return obj;
       });
-
-      arrResponse[item.city] = arrAggregated;
     }
     return arrResponse;
   }
