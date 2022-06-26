@@ -15,6 +15,7 @@ import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/ada
 import { Translations } from '../../../../../../../src/microservice/domain/model/translations.model';
 import { EnumTranslations } from '../../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { NotFoundException } from '../../../../../../../src/core/error-handling/exception/not-found.exception';
+import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 
 describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;
@@ -22,7 +23,10 @@ describe('SeedNeighborhoodsByStateService', () => {
   const mockGetCitiesByStateService = {
     getCitiesByState: () => {
       return;
-    },
+    }
+  };
+
+  const mockGetNeighborhoodsByStateService = {
     groupByCity: () => {
       return;
     }
@@ -122,6 +126,10 @@ describe('SeedNeighborhoodsByStateService', () => {
           provide: LogSeedJobService,
           useValue: mockLogSeedService
         },
+        {
+          provide: GetNeighborhoodsByStateService,
+          useValue: mockGetNeighborhoodsByStateService
+        },
         SeedNeighborhoodsByStateService
       ]
     }).compile();
@@ -134,7 +142,7 @@ describe('SeedNeighborhoodsByStateService', () => {
   describe('seedNeighborhoodsByStateService', () => {
     it('should call seedNeighborhoodsByStateService and return "Seeded"', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -159,7 +167,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
     it('should call seedNeighborhoodsByStateService and return "Nothing to seed"', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -184,7 +192,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
     it('should call seedNeighborhoodsByStateService with error and call logSeedService', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -263,7 +271,7 @@ describe('SeedNeighborhoodsByStateService', () => {
   describe('getSeededCities', () => {
     it('should call getSeededCities and return the correct values', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .resolves(mockAggregatedCities);
 
       const actual = await sut.getSeededCities(1);

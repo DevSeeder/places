@@ -19,7 +19,6 @@ describe('GetNeighborhoodsByStateService', () => {
     findBySearchParams: () => {
       return [];
     },
-
     groupBy: () => {
       return [];
     }
@@ -31,12 +30,6 @@ describe('GetNeighborhoodsByStateService', () => {
     },
     validateAndConvertSearchByCity: () => {
       return {};
-    }
-  };
-
-  const mockGetCitiesByStateService = {
-    groupByCity: () => {
-      return [];
     }
   };
 
@@ -84,10 +77,6 @@ describe('GetNeighborhoodsByStateService', () => {
           useValue: mockNeighborhoodsMongooseRepository
         },
         {
-          provide: GetCitiesByStateService,
-          useValue: mockGetCitiesByStateService
-        },
-        {
           provide: ValidateInputParamsService,
           useFactory: () => mockValidateService
         },
@@ -111,7 +100,7 @@ describe('GetNeighborhoodsByStateService', () => {
         .returns(mockMongoNeighborhoods());
 
       const groupByStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(sut, 'groupByCity')
         .returns(mockAggregatedCities);
 
       const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
@@ -125,6 +114,20 @@ describe('GetNeighborhoodsByStateService', () => {
 
       findInDatabaseStub.restore();
       validateStub.restore();
+      groupByStub.restore();
+    });
+  });
+
+  describe('groupByCity', () => {
+    it('should call groupByCity and return an array by puppeteer', async () => {
+      const groupByStub = sinon
+        .stub(mockNeighborhoodsMongooseRepository, 'groupBy')
+        .returns(mockAggregatedCities);
+
+      const actual = await sut.groupByCity(1);
+
+      expect(actual).to.be.equal(mockAggregatedCities);
+
       groupByStub.restore();
     });
   });

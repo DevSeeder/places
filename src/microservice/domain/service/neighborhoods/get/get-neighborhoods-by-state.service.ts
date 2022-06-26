@@ -9,14 +9,12 @@ import {
 } from '../../../model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
-import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
 import { AggregatedNeighborhoodsByCity } from '../../../interface/aggregated/aggregated-neighborhoods-city.interface';
 
 @Injectable()
 export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   constructor(
     protected readonly validateService: ValidateInputParamsService,
-    protected readonly getCitiesByStateService: GetCitiesByStateService,
     mongoRepository: NeighborhoodsMongoose
   ) {
     super(mongoRepository);

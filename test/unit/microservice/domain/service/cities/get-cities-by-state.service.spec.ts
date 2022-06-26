@@ -41,19 +41,6 @@ describe('GetCitiesByStateService', () => {
     }
   };
 
-  const mockAggregatedCities = [
-    {
-      _id: { cityId: 1 },
-      count: 60,
-      city: 'Orleans'
-    },
-    {
-      _id: { cityId: 2 },
-      count: 13,
-      city: 'Braço do Norte'
-    }
-  ];
-
   const mockCities = () => {
     const city1 = new City();
     city1.name = 'any';
@@ -118,20 +105,6 @@ describe('GetCitiesByStateService', () => {
       const actual = await sut.getCitiesByState(searchParams);
 
       expect(actual).to.be.equal(arrMockCities);
-
-      groupByStub.restore();
-    });
-  });
-
-  describe('groupByCity', () => {
-    it('should call groupByCity and return an array by puppeteer', async () => {
-      const groupByStub = sinon
-        .stub(mockNeighborhoodsMongooseRepository, 'groupBy')
-        .returns(mockAggregatedCities);
-
-      const actual = await sut.groupByCity(1);
-
-      expect(actual).to.be.equal(mockAggregatedCities);
 
       groupByStub.restore();
     });
