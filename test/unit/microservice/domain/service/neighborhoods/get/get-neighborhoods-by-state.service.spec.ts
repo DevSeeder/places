@@ -9,7 +9,6 @@ import { ValidateInputParamsService } from '../../../../../../../src/microservic
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
-import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get-cities-by-state.service';
 import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 
 describe('GetNeighborhoodsByStateService', () => {
