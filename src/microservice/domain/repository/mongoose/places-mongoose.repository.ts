@@ -21,10 +21,14 @@ export abstract class PlacesMongooseRepository<
       .exec();
   }
 
-  async findBySearchParams(searchParams: object): Promise<any[]> {
+  async findBySearchParams(
+    searchParams: object,
+    select: object = {}
+  ): Promise<any[]> {
+    if (Object.keys(select).length == 0) select = { _id: 0 };
     return this.model
       .find(this.buildRegexFilterQuery(searchParams))
-      .select({ _id: 0 })
+      .select(select)
       .lean()
       .exec();
   }

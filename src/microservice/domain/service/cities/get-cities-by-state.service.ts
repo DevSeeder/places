@@ -32,6 +32,15 @@ export class GetCitiesByStateService extends CitiesService {
     arrIgnore = []
   ): Promise<City[]> {
     if (arrIgnore.length > 0) searchParams.id = { $nin: arrIgnore };
-    return this.mongoRepository.findBySearchParams(searchParams);
+    const select = {
+      _id: 0,
+      id: 1,
+      name: 1,
+      countryId: 1,
+      countryCode: 1,
+      stateId: 1,
+      stateCode: 1
+    };
+    return this.mongoRepository.findBySearchParams(searchParams, select);
   }
 }
