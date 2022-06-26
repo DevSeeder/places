@@ -8,8 +8,11 @@ export class NeighborhoodsPuppeteerBuilder {
     const arr = [];
     this.mongoResponse.forEach((document) => {
       const obj = new NeighborhoodByCity();
-      obj.city = `${document.city.capitalize()} - ${document.state.toUpperCase()}`;
       obj.name = document.name;
+      obj.cityId = document.cityId;
+      obj.city = `${document.city.capitalize()} - ${document.state.toUpperCase()}`;
+      obj.stateId = document.stateId;
+      obj.countryId = document.countryId;
       arr.push(obj);
     });
     return arr;

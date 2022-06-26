@@ -52,7 +52,8 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     convertedSearch: ValidOutputSearchNeighborhood
   ): Promise<NeighborhoodByCity[]> {
     const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
-      searchParams
+      searchParams,
+      convertedSearch
     );
 
     await this.saveNeighborhoodsService.saveNeighborhoodsByCity(
