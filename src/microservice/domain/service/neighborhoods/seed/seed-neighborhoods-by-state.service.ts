@@ -10,14 +10,16 @@ import { EnumTranslations } from '../../../enumerators/enum-translations.enumera
 import { City } from '../../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { LogSeedJobService } from '../../logseed/log-seed-job.service';
-import { CustomResponse } from 'src/core/interface/custom-response.interface';
+import { CustomResponse } from '../../../../../core/interface/custom-response.interface';
+import { GetNeighborhoodsByStateService } from '../get/get-neighborhoods-by-state.service';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
   constructor(
     mongoRepository: NeighborhoodsMongoose,
     private readonly validateService: ValidateInputParamsService,
-    private readonly getNeighborhoodsService: GetNeighborhoodsByCityService,
+    private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
+    private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
     private readonly getCitiesByStateService: GetCitiesByStateService,
     private readonly logSeedService: LogSeedJobService
   ) {
@@ -91,7 +93,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     );
     convertedSearch.city = city;
     this.logger.log(`Seeding city[${city.id}] ${city.name}...`);
-    await this.getNeighborhoodsService.searchByPuppeterAndSave(
+    await this.getNeighborhoodsByCityService.searchByPuppeterAndSave(
       searchParamsByCity,
       convertedSearch
     );
@@ -99,9 +101,8 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
 
   async getSeededCities(stateId: number): Promise<number[]> {
     this.logger.log('Getting seeded cities...');
-    const aggregatedCities = await this.getCitiesByStateService.groupByCity(
-      stateId
-    );
+    const aggregatedCities =
+      await this.getNeighborhoodsByStateService.groupByCity(stateId);
     return aggregatedCities.map((item) => {
       return item._id.cityId;
     });

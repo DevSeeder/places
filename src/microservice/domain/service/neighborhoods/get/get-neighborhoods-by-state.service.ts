@@ -10,6 +10,7 @@ import {
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
 import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
+import { AggregatedNeighborhoodsByCity } from '../../../interface/aggregated/aggregated-neighborhoods-city.interface';
 
 @Injectable()
 export class GetNeighborhoodsByStateService extends NeighborhoodsService {
@@ -37,9 +38,7 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     this.logger.log(
       `Searching cities for state '${convertedSearch.state.stateCode}'...`
     );
-    const aggregatedByCity = await this.getCitiesByStateService.groupByCity(
-      convertedSearch.state.id
-    );
+    const aggregatedByCity = await this.groupByCity(convertedSearch.state.id);
     this.logger.log(`Founded cities: ${aggregatedByCity.length}`);
     for await (const item of aggregatedByCity) {
       const cityId = item._id.cityId;
@@ -73,5 +72,13 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
       cityId
     );
     return this.findInDatabase(searchDB);
+  }
+
+  async groupByCity(stateId: number): Promise<AggregatedNeighborhoodsByCity[]> {
+    return this.mongoRepository.groupBy(
+      { cityId: '$cityId' },
+      { stateId },
+      { city: 'city' }
+    );
   }
 }

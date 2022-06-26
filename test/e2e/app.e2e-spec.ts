@@ -5,7 +5,7 @@ import { AppModule } from '../../src/app.module';
 import { NestFactory } from '@nestjs/core';
 import '../../src/microservice/adapter/helper/extensions/exensions.module';
 
-jest.setTimeout(50000);
+jest.setTimeout(75000);
 
 describe('App (e2e) ', () => {
   let app: INestApplication;
