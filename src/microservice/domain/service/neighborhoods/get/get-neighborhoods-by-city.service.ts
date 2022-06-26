@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NeighborhoodByCity } from '../../../model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from '../save-neighborhoods-by-city.service';
 import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
 

@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
 import { Page } from '../../interface/puppeteer/page.interface';
-import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
 
 export abstract class PuppeteerRepository {
   protected readonly logger: Logger = new Logger(this.constructor.name);

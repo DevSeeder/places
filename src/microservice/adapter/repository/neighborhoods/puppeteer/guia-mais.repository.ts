@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../../domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../../domain/model/search/neighborhoods/search-neighborhoods-input.model';
 import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';

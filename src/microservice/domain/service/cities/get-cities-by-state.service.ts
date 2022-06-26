@@ -1,20 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { CitiesMongoose } from '../../../adapter/repository/cities/cities-mongoose.repository';
-import { SearchCitiesDB } from '../../model/search/search-cities-db.model';
+import { SearchCitiesDB } from '../../model/search/cities/search-cities-db.model';
+import { SearchCitiesInput } from '../../model/search/cities/search-cities-input.model';
 import { City } from '../../schemas/city.schema';
+import { ValidateInputParamsService } from '../validate-input-params.service';
 import { CitiesService } from './cities.service';
 
 @Injectable()
 export class GetCitiesByStateService extends CitiesService {
   constructor(
     mongoRepository: CitiesMongoose,
-    private readonly mongoNeighborhoodsRepository: NeighborhoodsMongoose
+    protected readonly validateService: ValidateInputParamsService
   ) {
     super(mongoRepository);
   }
 
-  async getCitiesByState(
+  async getCitiesByState(searchParams: SearchCitiesInput): Promise<City[]> {
+    const convertedSearch =
+      await this.validateService.validateAndConvertSearchByState(searchParams);
+
+    const searchDB = new SearchCitiesDB(
+      convertedSearch.country.id,
+      convertedSearch.state.id
+    );
+
+    return this.findCitiesByState(searchDB);
+  }
+
+  async findCitiesByState(
     searchParams: SearchCitiesDB,
     arrIgnore = []
   ): Promise<City[]> {

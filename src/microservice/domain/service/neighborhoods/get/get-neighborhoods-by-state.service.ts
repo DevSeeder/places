@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
 import {
   NeighborhoodsByState,
   NeighborhooodAggregatedByCity

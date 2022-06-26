@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate-input-params.service';
 import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
-import { SearchCitiesDB } from '../../../model/search/search-cities-db.model';
+import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
 import { GetNeighborhoodsByCityService } from '../get/get-neighborhoods-by-city.service';
 import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
@@ -42,7 +42,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     );
 
     this.logger.log(`Getting cities for state '${searchParams.state}'...`);
-    const cities = await this.getCitiesByStateService.getCitiesByState(
+    const cities = await this.getCitiesByStateService.findCitiesByState(
       searchCities,
       arrSeededCities
     );

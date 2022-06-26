@@ -4,6 +4,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FiltersModule } from './core/error-handling/filters.module';
 import { TransformResponseInterceptor } from './core/http/transform-response.interceptor';
+import { CitiesModule } from './microservice/adapter/cities.module';
 import { ExtensionsModule } from './microservice/adapter/helper/extensions/exensions.module';
 import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/custom-puppeteer.module';
 import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module';
@@ -23,7 +24,8 @@ import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module
         uri: config.get<string>('database.mongodb.connection')
       })
     }),
-    NeighborhoodsModule
+    NeighborhoodsModule,
+    CitiesModule
   ],
   controllers: [],
   providers: [

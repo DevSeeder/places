@@ -21,7 +21,7 @@ describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;
 
   const mockGetCitiesByStateService = {
-    getCitiesByState: () => {
+    findCitiesByState: () => {
       return;
     }
   };
@@ -150,7 +150,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns(mockCities());
 
       const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
@@ -175,7 +175,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns([]);
 
       const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
@@ -200,7 +200,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns(mockCities());
 
       const mockError = new NotFoundException('Neighborhoods');

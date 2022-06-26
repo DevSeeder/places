@@ -6,7 +6,7 @@ import '../../../../../../src/microservice/adapter/helper/extensions/exensions.m
 import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate-input-params.service';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { GetCitiesByStateService } from '../../../../../../src/microservice/domain/service/cities/get-cities-by-state.service';
-import { SearchCitiesDB } from '../../../../../../src/microservice/domain/model/search/search-cities-db.model';
+import { SearchCitiesDB } from '../../../../../../src/microservice/domain/model/search/cities/search-cities-db.model';
 import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 
 describe('GetCitiesByStateService', () => {
@@ -74,8 +74,8 @@ describe('GetCitiesByStateService', () => {
     sut = app.get<GetCitiesByStateService>(GetCitiesByStateService);
   });
 
-  describe('getCitiesByState', () => {
-    it('should call getCitiesByState and return an array by puppeteer', async () => {
+  describe('findCitiesByState', () => {
+    it('should call findCitiesByState and return an array by puppeteer', async () => {
       const arrMockCities = mockCities();
       const groupByStub = sinon
         .stub(mockCitiesMongooseRepository, 'findBySearchParams')
@@ -85,7 +85,7 @@ describe('GetCitiesByStateService', () => {
 
       const arrIgnore = [3, 4, 5];
 
-      const actual = await sut.getCitiesByState(searchParams, arrIgnore);
+      const actual = await sut.findCitiesByState(searchParams, arrIgnore);
 
       expect(actual).to.be.equal(arrMockCities);
 
@@ -93,8 +93,8 @@ describe('GetCitiesByStateService', () => {
     });
   });
 
-  describe('getCitiesByState', () => {
-    it('should call getCitiesByState and return an array by puppeteer', async () => {
+  describe('findCitiesByState', () => {
+    it('should call findCitiesByState and return an array by puppeteer', async () => {
       const arrMockCities = mockCities();
       const groupByStub = sinon
         .stub(mockCitiesMongooseRepository, 'findBySearchParams')
@@ -102,7 +102,7 @@ describe('GetCitiesByStateService', () => {
 
       const searchParams = new SearchCitiesDB(1, 2);
 
-      const actual = await sut.getCitiesByState(searchParams);
+      const actual = await sut.findCitiesByState(searchParams);
 
       expect(actual).to.be.equal(arrMockCities);
 

@@ -3,7 +3,7 @@ import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoo
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
-import { SearchNeighborhoodsInput } from '../../domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../domain/model/search/neighborhoods/search-neighborhoods-input.model';
 import { SeedNeighborhoodsByStateService } from '../../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
 
 @Controller('neighborhoods')

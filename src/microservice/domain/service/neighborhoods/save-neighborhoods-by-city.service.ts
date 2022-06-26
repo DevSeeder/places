@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NeighborhoodByCity } from '../../model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
-import { SearchNeighborhoodsInput } from '../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsService } from './neighborhoods.service';
 import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { Neighborhood } from '../../schemas/neighborhood.schema';

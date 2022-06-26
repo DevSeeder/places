@@ -1,6 +1,6 @@
 import { CheerioAPI } from 'cheerio';
 import { NeighborhoodByCity } from '../../../model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';

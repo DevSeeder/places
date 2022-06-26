@@ -9,7 +9,7 @@ import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-db.model';
 
 describe('SaveNeighborhoodsByCityService', () => {
   let sut: SaveNeighborhoodsByCityService;
