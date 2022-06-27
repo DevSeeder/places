@@ -5,7 +5,7 @@ import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
 import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
-import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByCity } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 
 export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository
@@ -14,7 +14,7 @@ export abstract class PuppeteerNeighborhoodRepository
   language: EnumTranslations;
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoodsInput,
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     this.validateInput(searchParams);
 
@@ -36,7 +36,7 @@ export abstract class PuppeteerNeighborhoodRepository
 
   abstract buildElementsFromDocument(
     _searchParams: SearchNeighborhoodsInput,
-    convertedSearch: ValidOutputSearchNeighborhood,
+    convertedSearch: ValidOutputSearchByCity,
     _$: CheerioAPI
   );
 

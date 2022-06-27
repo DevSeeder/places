@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { ValidateStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
-import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';

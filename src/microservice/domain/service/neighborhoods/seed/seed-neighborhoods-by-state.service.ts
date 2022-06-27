@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
-import { ValidateInputParamsService } from '../../validate-input-params.service';
-import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
+import { GetCitiesByStateService } from '../../cities/get/get-cities-by-state.service';
 import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
 import { GetNeighborhoodsByCityService } from '../get/get-neighborhoods-by-city.service';
-import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
 import { City } from '../../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
@@ -73,7 +73,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
   }
 
   async logErrorSeedJob(
-    convertedSearch: ValidOutputSearchNeighborhood,
+    convertedSearch: ValidOutputSearchByState,
     city: City,
     err: Error
   ): Promise<void> {
@@ -85,17 +85,20 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     );
   }
 
-  async seedByCity(convertedSearch: ValidOutputSearchNeighborhood, city: City) {
+  async seedByCity(convertedSearch: ValidOutputSearchByState, city: City) {
     const searchParamsByCity = new SearchNeighborhoodsInput(
       convertedSearch.country.translations[EnumTranslations.BR],
       convertedSearch.state.stateCode,
       city.name
     );
-    convertedSearch.city = city;
     this.logger.log(`Seeding city[${city.id}] ${city.name}...`);
     await this.getNeighborhoodsByCityService.searchByPuppeterAndSave(
       searchParamsByCity,
-      convertedSearch
+      {
+        country: convertedSearch.country,
+        state: convertedSearch.state,
+        city
+      }
     );
   }
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CitiesMongoose } from '../../../adapter/repository/cities/cities-mongoose.repository';
-import { CitiesByState } from '../../model/cities/cities-by-state.model';
-import { SearchCitiesDB } from '../../model/search/cities/search-cities-db.model';
-import { SearchCitiesInput } from '../../model/search/cities/search-cities-input.model';
-import { City } from '../../schemas/city.schema';
-import { ValidateInputParamsService } from '../validate-input-params.service';
-import { CitiesService } from './cities.service';
+import { CitiesMongoose } from '../../../../adapter/repository/cities/cities-mongoose.repository';
+import { CitiesByState } from '../../../model/cities/cities-by-state.model';
+import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
+import { SearchCitiesInput } from '../../../model/search/cities/search-cities-input.model';
+import { City } from '../../../schemas/city.schema';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
+import { CitiesService } from '../cities.service';
 
 @Injectable()
 export class GetCitiesByStateService extends CitiesService {

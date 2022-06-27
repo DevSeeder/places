@@ -11,7 +11,7 @@ import { SaveNeighborhoodsByCityService } from '../../../../../src/microservice/
 import { SearchNeighborhoodsInput } from '../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
 import { GetNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
-import { ValidateInputParamsService } from '../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 
 describe('NeighborhoodsController', () => {
   let neighborhoodsController: NeighborhoodsController;

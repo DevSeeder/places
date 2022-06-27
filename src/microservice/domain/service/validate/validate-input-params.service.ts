@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../model/search/neighborhoods/search-neighborhoods-input.model';
-import { ValidOutputSearchNeighborhood } from '../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { AbstractService } from './abstract-service.service';
-import { ValidateCountryByNameOrAliasService } from './countries/validate-country-by-name-or-alias.service';
-import { ValidateStateByNameOrAliasService } from './states/validate-state-by-name-or-alias.service';
-import { ValidateCityByNameOrAliasService } from './cities/validate-city-by-name-or-alias.service';
-import { SearchCitiesInput } from '../model/search/cities/search-cities-input.model';
+import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
+import {
+  ValidOutputSearchByCity,
+  ValidOutputSearchByState
+} from '../../interface/valid-output-search/valid-outpu-search.interface';
+import { AbstractService } from '../abstract-service.service';
+import { ValidateCountryByNameOrAliasService } from '../countries/validate-country-by-name-or-alias.service';
+import { ValidateStateByNameOrAliasService } from '../states/validate-state-by-name-or-alias.service';
+import { ValidateCityByNameOrAliasService } from '../cities/validate-city-by-name-or-alias.service';
+import { SearchCitiesInput } from '../../model/search/cities/search-cities-input.model';
 
 @Injectable()
 export class ValidateInputParamsService extends AbstractService {
@@ -19,7 +22,7 @@ export class ValidateInputParamsService extends AbstractService {
 
   async validateAndConvertSearchByState(
     searchParams: SearchNeighborhoodsInput | SearchCitiesInput
-  ): Promise<ValidOutputSearchNeighborhood> {
+  ): Promise<ValidOutputSearchByState> {
     const country = await this.getCountryService.validateCountry(
       searchParams.country
     );
@@ -27,12 +30,12 @@ export class ValidateInputParamsService extends AbstractService {
       searchParams.state,
       country.id
     );
-    return { country, state, city: null };
+    return { country, state };
   }
 
   async validateAndConvertSearchByCity(
     searchParams: SearchNeighborhoodsInput
-  ): Promise<ValidOutputSearchNeighborhood> {
+  ): Promise<ValidOutputSearchByCity> {
     const country = await this.getCountryService.validateCountry(
       searchParams.country
     );

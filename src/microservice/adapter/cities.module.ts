@@ -11,9 +11,10 @@ import { StatesMongoose } from './repository/states/states-mongoose.repository';
 import { City, CitySchema } from '../domain/schemas/city.schema';
 import { ValidateCityByNameOrAliasService } from '../domain/service/cities/validate-city-by-name-or-alias.service';
 import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
-import { ValidateInputParamsService } from '../domain/service/validate-input-params.service';
-import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-state.service';
+import { ValidateInputParamsService } from '../domain/service/validate/validate-input-params.service';
+import { GetCitiesByStateService } from '../domain/service/cities/get/get-cities-by-state.service';
 import { CitiesController } from './controller/cities.controller';
+import { GetCitiesByCountryService } from '../domain/service/cities/get/get-cities-by-country.service';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { CitiesController } from './controller/cities.controller';
     ValidateStateByNameOrAliasService,
     ValidateCityByNameOrAliasService,
     ValidateInputParamsService,
-    GetCitiesByStateService
+    GetCitiesByStateService,
+    GetCitiesByCountryService
   ]
 })
 export class CitiesModule {}

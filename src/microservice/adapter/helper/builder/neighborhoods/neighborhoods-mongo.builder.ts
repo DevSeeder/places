@@ -1,11 +1,11 @@
-import { ValidOutputSearchNeighborhood } from '../../../../domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 
 export class NeighborhoodsMongoBuilder {
   constructor(private readonly puppeteerResponse: NeighborhoodByCity[]) {}
 
-  build(searchParams: ValidOutputSearchNeighborhood): Neighborhood[] {
+  build(searchParams: ValidOutputSearchByCity): Neighborhood[] {
     const arr = [];
 
     this.puppeteerResponse.forEach((item) => {

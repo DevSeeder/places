@@ -3,9 +3,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { GetCitiesByStateService } from '../../../../../../src/microservice/domain/service/cities/get-cities-by-state.service';
+import { GetCitiesByStateService } from '../../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
 import { SearchCitiesDB } from '../../../../../../src/microservice/domain/model/search/cities/search-cities-db.model';
 import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 

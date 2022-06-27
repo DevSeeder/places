@@ -5,7 +5,7 @@ import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/ada
 import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
-import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';

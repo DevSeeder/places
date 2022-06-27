@@ -4,10 +4,10 @@ import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/se
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from '../save-neighborhoods-by-city.service';
-import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByCity } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
-import { ValidateInputParamsService } from '../../validate-input-params.service';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
 
 @Injectable()
 export class GetNeighborhoodsByCityService extends NeighborhoodsService {
@@ -49,7 +49,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
 
   async searchByPuppeterAndSave(
     searchParams: SearchNeighborhoodsInput,
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
       searchParams,
@@ -66,7 +66,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async findNeighborhoodsByCityInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     const searchDB = new SearchNeighborhoodsDB(
       convertedSearch.country.id,

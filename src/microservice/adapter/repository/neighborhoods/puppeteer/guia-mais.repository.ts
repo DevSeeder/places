@@ -8,7 +8,7 @@ import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/p
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
 import { EnumTranslations } from '../../../../domain/enumerators/enum-translations.enumerator';
-import { ValidOutputSearchNeighborhood } from '../../../../domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 
 @Injectable()
 export class GuiaMaisRepository
@@ -28,7 +28,7 @@ export class GuiaMaisRepository
 
   buildElementsFromDocument(
     searchParams,
-    convertedSearch: ValidOutputSearchNeighborhood,
+    convertedSearch: ValidOutputSearchByCity,
     $: CheerioAPI
   ): NeighborhoodByCity[] {
     const arrNeighborhoods = [];

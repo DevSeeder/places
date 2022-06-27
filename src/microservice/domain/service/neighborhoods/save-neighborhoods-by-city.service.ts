@@ -4,7 +4,7 @@ import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods
 import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
 import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsService } from './neighborhoods.service';
-import { ValidOutputSearchNeighborhood } from '../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByCity } from '../../interface/valid-output-search/valid-outpu-search.interface';
 import { Neighborhood } from '../../schemas/neighborhood.schema';
 import { SearchNeighborhoodsDBBuilder } from '../../../adapter/helper/builder/neighborhoods/search-neighborhoods-db.builder';
 
@@ -17,7 +17,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
   async saveNeighborhoodsByCity(
     neighborhoodsPuppeteer: NeighborhoodByCity[],
     searchParams: SearchNeighborhoodsInput,
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByCity
   ): Promise<void> {
     const arrDocument = new NeighborhoodsMongoBuilder(
       neighborhoodsPuppeteer
@@ -36,7 +36,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
   async createNeighborhood(
     item: Neighborhood,
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByCity
   ) {
     item.countryId = convertedSearch.country.id;
     item.country = convertedSearch.country.name.capitalize();
@@ -51,7 +51,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async findNeighborhoodInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood,
+    convertedSearch: ValidOutputSearchByCity,
     name: string
   ) {
     const searchParams = new SearchNeighborhoodsDBBuilder(

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
 import {
   NeighborhoodsByState,
   NeighborhooodAggregatedByCity
 } from '../../../model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
-import { ValidateInputParamsService } from '../../validate-input-params.service';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
 import { AggregatedNeighborhoodsByCity } from '../../../interface/aggregated/aggregated-neighborhoods-city.interface';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     return this.findNeighborhoodsByStateInDatabase(convertedSearch);
   }
   async findNeighborhoodsByStateInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByState
   ): Promise<NeighborhoodsByState> {
     const arrResponse: NeighborhoodsByState = {};
 
@@ -61,7 +61,7 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   }
 
   async findByCityAndStateInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood,
+    convertedSearch: ValidOutputSearchByState,
     cityId: number
   ) {
     const searchDB = new SearchNeighborhoodsDB(
