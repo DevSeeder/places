@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CountryResponse } from 'src/microservice/domain/model/countries/country-response.model';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
@@ -12,6 +12,9 @@ export class CountriesController extends AbstractController {
     super();
   }
 
+  @ApiOperation({
+    description: 'Get All Countries'
+  })
   @ApiOkResponse({
     description: 'Countries found.',
     isArray: true,

@@ -8,6 +8,7 @@ import { SeedNeighborhoodsByStateService } from '../../domain/service/neighborho
 import {
   ApiExcludeEndpoint,
   ApiOkResponse,
+  ApiOperation,
   ApiParam,
   ApiTags
 } from '@nestjs/swagger';
@@ -25,6 +26,9 @@ export class NeighborhoodsController extends AbstractController {
     super();
   }
 
+  @ApiOperation({
+    description: 'Get Neighborhoods By City Reference'
+  })
   @ApiOkResponse({
     description: 'Neighborhoods found.',
     isArray: true,
@@ -58,6 +62,9 @@ export class NeighborhoodsController extends AbstractController {
     );
   }
 
+  @ApiOperation({
+    description: 'Get Neighborhoods By State Reference'
+  })
   @ApiOkResponse({
     description: 'Neighborhoods found.',
     type: NeighborhoodsByState

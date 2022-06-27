@@ -4,7 +4,12 @@ import { AbstractController } from '../../domain/controller/abstract-controller'
 import { GetCitiesByStateService } from '../../domain/service/cities/get/get-cities-by-state.service';
 import { SearchCitiesInput } from '../../domain/model/search/cities/search-cities-input.model';
 import { GetCitiesByCountryService } from '../../domain/service/cities/get/get-cities-by-country.service';
-import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags
+} from '@nestjs/swagger';
 import { CityResponse } from '../../domain/model/cities/city-response.model';
 
 @ApiTags('cities')
@@ -17,6 +22,9 @@ export class CitiesController extends AbstractController {
     super();
   }
 
+  @ApiOperation({
+    description: 'Get Cities By State Reference'
+  })
   @ApiOkResponse({
     description: 'Cities found.',
     isArray: true,
@@ -44,6 +52,9 @@ export class CitiesController extends AbstractController {
     );
   }
 
+  @ApiOperation({
+    description: 'Get Cities By Country Reference'
+  })
   @ApiOkResponse({
     description: 'Cities found.',
     isArray: true,
