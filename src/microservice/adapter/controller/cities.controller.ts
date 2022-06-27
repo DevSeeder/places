@@ -15,7 +15,7 @@ export class CitiesController extends AbstractController {
   }
 
   @Get('/state/:country/:state')
-  async getNeighborhoodsByState(
+  async getCitiesByState(
     @Param() params: SearchCitiesInput
   ): Promise<NestResponse> {
     return this.buildResponse(
@@ -25,7 +25,7 @@ export class CitiesController extends AbstractController {
   }
 
   @Get('/country/:country')
-  async getNeighborhoodsByCountry(
+  async getCitiesByCountry(
     @Param('country') country: string
   ): Promise<NestResponse> {
     return this.buildResponse(
