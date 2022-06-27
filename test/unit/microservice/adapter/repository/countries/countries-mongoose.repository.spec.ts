@@ -61,7 +61,7 @@ describe('CountriesMongoose', () => {
         .stub(mockModelMongoose, 'find')
         .returns(mockFindCountries);
 
-      const actual = await sut.findByNameOrAlias('any');
+      const actual = await sut.findByNameOrAliasOrId('any');
 
       expect(actual).to.be.an('array').that.is.not.empty;
 

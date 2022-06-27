@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { parse } from 'path';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
 
@@ -10,12 +11,15 @@ export abstract class PlacesMongooseRepository<
     super(model);
   }
 
-  async findByNameOrAlias(name: string, extraSearch = {}): Promise<any[]> {
-    const nameRegex = new RegExp(name, 'i');
+  async findByNameOrAliasOrId(ref: string, extraSearch = {}): Promise<any[]> {
+    const nameRegex = new RegExp(ref, 'i');
     return this.model
       .find({
         ...extraSearch,
-        $or: [{ name: nameRegex }, { alias: { $in: [nameRegex] } }]
+        $or: [
+          { alias: { $in: [nameRegex] } },
+          isNaN(parseInt(ref)) ? { name: nameRegex } : { id: ref }
+        ]
       })
       .lean()
       .exec();
