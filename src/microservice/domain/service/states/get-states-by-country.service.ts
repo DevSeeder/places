@@ -6,7 +6,7 @@ import { ValidateCountryByNameOrAliasService } from '../countries/validate-count
 import { StatesService } from './states.service';
 
 @Injectable()
-export class GetStateByCountryService extends StatesService {
+export class GetStatesByCountryService extends StatesService {
   constructor(
     mongoRepository: StatesMongoose,
     protected readonly validateCountryService: ValidateCountryByNameOrAliasService

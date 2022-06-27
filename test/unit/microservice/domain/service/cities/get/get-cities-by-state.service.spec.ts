@@ -8,6 +8,9 @@ import { City } from '../../../../../../../src/microservice/domain/schemas/city.
 import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
 import { SearchCitiesDB } from '../../../../../../../src/microservice/domain/model/search/cities/search-cities-db.model';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { SearchCitiesInput } from '../../../../../../../src/microservice/domain/model/search/cities/search-cities-input.model';
+import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
+import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 
 describe('GetCitiesByStateService', () => {
   let sut: GetCitiesByStateService;
@@ -39,6 +42,18 @@ describe('GetCitiesByStateService', () => {
     validateAndConvertSearchByCity: () => {
       return {};
     }
+  };
+
+  const mockConvertedSearch = () => {
+    const mockCountry = new Country();
+    mockCountry.name = 'USA';
+    const mockState = new State();
+    mockState.name = 'New York';
+    mockState.stateCode = 'NY';
+    return {
+      country: mockCountry,
+      state: mockState
+    };
   };
 
   const mockCities = () => {
@@ -91,9 +106,7 @@ describe('GetCitiesByStateService', () => {
 
       groupByStub.restore();
     });
-  });
 
-  describe('findCitiesByState', () => {
     it('should call findCitiesByState and return an array by puppeteer', async () => {
       const arrMockCities = mockCities();
       const groupByStub = sinon
@@ -107,6 +120,28 @@ describe('GetCitiesByStateService', () => {
       expect(actual).to.be.equal(arrMockCities);
 
       groupByStub.restore();
+    });
+  });
+
+  describe('getCitiesByState', () => {
+    it('should call getCitiesByState and return an array', async () => {
+      const arrMockCities = mockCities();
+      const groupByStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findBySearchParams')
+        .returns(arrMockCities);
+
+      const convertedSearchStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByState')
+        .returns(mockConvertedSearch());
+
+      const searchParams = new SearchCitiesInput('Brazil', 'SC');
+
+      const actual = await sut.getCitiesByState(searchParams);
+
+      expect(actual).to.be.equal(arrMockCities);
+
+      groupByStub.restore();
+      convertedSearchStub.restore();
     });
   });
 });
