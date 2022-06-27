@@ -20,7 +20,10 @@
 
 API to get Places by Local Names.
 
-- Only Neighborhoods for now
+- Neighborhoods
+- Cities
+- States
+- Countries
 
 ## Installation
 
@@ -81,8 +84,16 @@ After run the server, make a get in browser, postman or similar
 http://localhost:3000/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
 http://localhost:3000/neighborhoods/city/brazil/sc
+## Cities By State example
+http://localhost:3000/cities/brazil/sc
+## Cities By Country example
+http://localhost:3000/cities/brazil
+## States By Country example
+http://localhost:3000/states/brazil
+## Countries example
+http://localhost:3000/countries/
 ```
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/1.0.0)
 
-At the moment, it's working only for Brazilians cities and states.
+At the moment, it's working only for Brazilians places.

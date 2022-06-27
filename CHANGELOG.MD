@@ -32,3 +32,12 @@ All notable changes to this project will be documented in this file.
 - Route Neighborhoods By State
 - Route Seed Neighborhoods By State
 - logSeed Collection
+
+## [0.0.5] - 2022-06-27
+
+### Added
+
+- Route Cities By State
+- Route Cities By Country
+- Route States By Country
+- Route Countries
