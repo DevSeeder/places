@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CitiesByCountry } from 'src/microservice/domain/model/cities/cities-by-country.model';
 import { CitiesMongoose } from '../../../../adapter/repository/cities/cities-mongoose.repository';
-import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
 import { SearchCitiesInput } from '../../../model/search/cities/search-cities-input.model';
 import { City } from '../../../schemas/city.schema';
-import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
+import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
 import { CitiesService } from '../cities.service';
 
 @Injectable()
 export class GetCitiesByCountryService extends CitiesService {
   constructor(
     mongoRepository: CitiesMongoose,
-    protected readonly validateService: ValidateInputParamsService
+    protected readonly validateCountryService: ValidateCountryByNameOrAliasService
   ) {
     super(mongoRepository);
   }
@@ -19,12 +18,13 @@ export class GetCitiesByCountryService extends CitiesService {
   async getCitiesByCountry(
     searchParams: SearchCitiesInput
   ): Promise<CitiesByCountry[]> {
-    const convertedSearch =
-      await this.validateService.validateAndConvertSearchByState(searchParams);
+    const country = await this.validateCountryService.validateCountry(
+      searchParams.country
+    );
 
     this.logger.log('Searching cities in database...');
 
-    return this.findCitiesByCountry(convertedSearch.country.id);
+    return this.findCitiesByCountry(country.id);
   }
 
   async findCitiesByCountry(countryId: number): Promise<City[]> {
