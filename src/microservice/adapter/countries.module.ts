@@ -16,6 +16,7 @@ import { GetCountriesService } from '../domain/service/countries/get-countries.s
     MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }])
   ],
   controllers: [CountriesController],
-  providers: [CountriesMongoose, GetCountriesService]
+  providers: [CountriesMongoose, GetCountriesService],
+  exports: [CountriesMongoose]
 })
 export class CountriesModule {}
