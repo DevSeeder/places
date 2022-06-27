@@ -9,7 +9,7 @@ import { Country } from '../../../../../../src/microservice/domain/schemas/count
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';
 import { ValidateCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 
 describe('ValidateInputParamsService', () => {
   let sut: ValidateInputParamsService;
@@ -87,7 +87,7 @@ describe('ValidateInputParamsService', () => {
         return { country, state, city };
       };
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -119,7 +119,7 @@ describe('ValidateInputParamsService', () => {
         return { country, state };
       };
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.validateAndConvertSearchByState(searchParams);
 

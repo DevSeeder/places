@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
@@ -21,7 +21,7 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   }
 
   async getNeighborhoodsByState(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<NeighborhoodsByState> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);

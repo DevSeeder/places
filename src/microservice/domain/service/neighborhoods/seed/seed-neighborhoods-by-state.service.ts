@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
 import { GetCitiesByStateService } from '../../cities/get/get-cities-by-state.service';
@@ -27,7 +27,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
   }
 
   async seedNeighborhoodsByState(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<CustomResponse> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);
@@ -86,7 +86,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
   }
 
   async seedByCity(convertedSearch: ValidOutputSearchByState, city: City) {
-    const searchParamsByCity = new SearchNeighborhoodsInput(
+    const searchParamsByCity = new SearchNeighborhoodsDTO(
       convertedSearch.country.translations[EnumTranslations.BR],
       convertedSearch.state.stateCode,
       city.name

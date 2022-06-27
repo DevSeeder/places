@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import {
   ValidOutputSearchByCity,
   ValidOutputSearchByState
@@ -21,7 +21,7 @@ export class ValidateInputParamsService extends AbstractService {
   }
 
   async validateAndConvertSearchByState(
-    searchParams: SearchNeighborhoodsInput | SearchCitiesInput
+    searchParams: SearchNeighborhoodsDTO | SearchCitiesInput
   ): Promise<ValidOutputSearchByState> {
     const country = await this.getCountryService.validateCountry(
       searchParams.country
@@ -34,7 +34,7 @@ export class ValidateInputParamsService extends AbstractService {
   }
 
   async validateAndConvertSearchByCity(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<ValidOutputSearchByCity> {
     const country = await this.getCountryService.validateCountry(
       searchParams.country

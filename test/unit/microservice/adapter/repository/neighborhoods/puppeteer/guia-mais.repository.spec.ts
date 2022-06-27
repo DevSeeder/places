@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { GuiaMaisRepository } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import * as fs from 'fs';
 import { ExtensionsModule } from '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import * as cheerio from 'cheerio';
@@ -74,7 +74,7 @@ describe('GuiaMaisRepository', () => {
 
   describe('getNeighborhoodsByCity', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
-      const mockSearchParams = new SearchNeighborhoodsInput(
+      const mockSearchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -98,7 +98,7 @@ describe('GuiaMaisRepository', () => {
 
   describe('callEndpoint', () => {
     it('should call callEndpoint and call getDocumentHtml with the correct params', async () => {
-      const mockSearchParams = new SearchNeighborhoodsInput(
+      const mockSearchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'

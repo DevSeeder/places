@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodByCity } from '../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
@@ -103,7 +103,7 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -131,7 +131,7 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'

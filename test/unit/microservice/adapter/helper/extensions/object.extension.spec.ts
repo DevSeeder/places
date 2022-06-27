@@ -1,6 +1,6 @@
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 
 describe('object.extension', () => {
   describe('getMethods', function () {
@@ -13,7 +13,7 @@ describe('object.extension', () => {
   describe('validateIsAnyEmptyKey', function () {
     it('Should call validateIsAnyEmptyKey and throw exccption', function () {
       const validation = () => {
-        const obj = new SearchNeighborhoodsInput('brasil', 'sc', 'orleans');
+        const obj = new SearchNeighborhoodsDTO('brasil', 'sc', 'orleans');
         obj.city = '';
         obj.validateIsAnyEmptyKey();
       };

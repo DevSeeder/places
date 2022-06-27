@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NeighborhoodByCity } from '../../../model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { GuiaMaisRepository } from '../../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from '../save-neighborhoods-by-city.service';
@@ -22,7 +22,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async getNeighborhoodsByCity(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<NeighborhoodByCity[]> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByCity(searchParams);
@@ -48,7 +48,7 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   }
 
   async searchByPuppeterAndSave(
-    searchParams: SearchNeighborhoodsInput,
+    searchParams: SearchNeighborhoodsDTO,
     convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(

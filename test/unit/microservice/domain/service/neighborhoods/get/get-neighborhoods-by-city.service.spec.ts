@@ -10,7 +10,7 @@ import '../../../../../../../src/microservice/adapter/helper/extensions/exension
 import { CountriesMongoose } from '../../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { StatesMongoose } from '../../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
@@ -143,7 +143,7 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(mockValidateService, 'validateAndConvertSearchByCity')
         .returns(mockConvertedSearch());
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -167,7 +167,7 @@ describe('GetNeighborhoodsByCityService', () => {
         .stub(mockValidateService, 'validateAndConvertSearchByCity')
         .returns(mockConvertedSearch());
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'Brazil',
         'SC',
         'Orleans'

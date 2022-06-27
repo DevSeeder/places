@@ -3,7 +3,7 @@ import { SeedNeighborhoodsByStateService } from '../../../../../../../src/micros
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
@@ -153,7 +153,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns(mockCities());
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.seedNeighborhoodsByState(searchParams);
 
@@ -178,7 +178,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns([]);
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.seedNeighborhoodsByState(searchParams);
 
@@ -214,7 +214,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         'logSeedByState'
       );
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       await sut.seedNeighborhoodsByState(searchParams);
 
@@ -254,7 +254,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
       await sut.seedByCity(mockConvertedSearch(), mockCity);
 
-      const spySearch = new SearchNeighborhoodsInput('brasil', 'SC', 'Orleans');
+      const spySearch = new SearchNeighborhoodsDTO('brasil', 'SC', 'Orleans');
       const spyConvertedSearch = mockConvertedSearch();
       spyConvertedSearch.city = mockCity;
 

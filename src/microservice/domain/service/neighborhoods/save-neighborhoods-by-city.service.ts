@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NeighborhoodByCity } from '../../model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodsMongoBuilder } from '../../../adapter/helper/builder/neighborhoods/neighborhoods-mongo.builder';
-import { SearchNeighborhoodsInput } from '../../model/search/neighborhoods/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodsService } from './neighborhoods.service';
 import { ValidOutputSearchByCity } from '../../interface/valid-output-search/valid-outpu-search.interface';
 import { Neighborhood } from '../../schemas/neighborhood.schema';
@@ -16,7 +16,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
 
   async saveNeighborhoodsByCity(
     neighborhoodsPuppeteer: NeighborhoodByCity[],
-    searchParams: SearchNeighborhoodsInput,
+    searchParams: SearchNeighborhoodsDTO,
     convertedSearch: ValidOutputSearchByCity
   ): Promise<void> {
     const arrDocument = new NeighborhoodsMongoBuilder(
