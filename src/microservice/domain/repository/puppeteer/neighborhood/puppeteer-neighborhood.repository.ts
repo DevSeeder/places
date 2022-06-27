@@ -4,8 +4,8 @@ import { SearchNeighborhoodsInput } from '../../../model/search/neighborhoods/se
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
-import { EnumTranslations } from 'src/microservice/domain/enumerators/enum-translations.enumerator';
-import { ValidOutputSearchNeighborhood } from 'src/microservice/domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
+import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 
 export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository

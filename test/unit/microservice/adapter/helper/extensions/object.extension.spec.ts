@@ -1,6 +1,6 @@
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
 
 describe('object.extension', () => {
   describe('getMethods', function () {

@@ -9,7 +9,7 @@ import { Country } from '../../../../../../src/microservice/domain/schemas/count
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';
 import { ValidateCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
 
 describe('ValidateInputParamsService', () => {
   let sut: ValidateInputParamsService;

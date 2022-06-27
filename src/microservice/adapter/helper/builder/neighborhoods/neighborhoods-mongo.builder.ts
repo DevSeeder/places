@@ -1,4 +1,4 @@
-import { ValidOutputSearchNeighborhood } from 'src/microservice/domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { ValidOutputSearchNeighborhood } from '../../../../domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 

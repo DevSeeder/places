@@ -3,7 +3,7 @@ import { SeedNeighborhoodsByStateService } from '../../../../../../../src/micros
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get-cities-by-state.service';

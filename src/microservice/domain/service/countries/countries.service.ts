@@ -1,4 +1,4 @@
-import { CountriesMongoose } from 'src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { CountriesMongoose } from '../../../adapter/repository/countries/countries-mongoose.repository';
 import { AbstractService } from '../abstract-service.service';
 
 export abstract class CountriesService extends AbstractService {

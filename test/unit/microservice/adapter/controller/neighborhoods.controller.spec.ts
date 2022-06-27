@@ -8,7 +8,7 @@ import { NeighborhoodByCity } from '../../../../../src/microservice/domain/model
 import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { GetNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { SaveNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
-import { SearchNeighborhoodsInput } from '../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsInput } from '../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-input.model';
 import { GetNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
 import { ValidateInputParamsService } from '../../../../../src/microservice/domain/service/validate-input-params.service';
@@ -55,11 +55,17 @@ describe('NeighborhoodsController', () => {
   const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
-      city: 'Orleans-SC'
+      city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 1
     },
     {
       name: 'Alto Paraná',
-      city: 'Orleans-SC'
+      city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 2
     }
   ];
 
