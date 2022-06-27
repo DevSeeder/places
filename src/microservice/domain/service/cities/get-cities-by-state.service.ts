@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CitiesMongoose } from '../../../adapter/repository/cities/cities-mongoose.repository';
+import { CitiesByState } from '../../model/cities/cities-by-state.model';
 import { SearchCitiesDB } from '../../model/search/cities/search-cities-db.model';
 import { SearchCitiesInput } from '../../model/search/cities/search-cities-input.model';
 import { City } from '../../schemas/city.schema';
@@ -15,7 +16,9 @@ export class GetCitiesByStateService extends CitiesService {
     super(mongoRepository);
   }
 
-  async getCitiesByState(searchParams: SearchCitiesInput): Promise<City[]> {
+  async getCitiesByState(
+    searchParams: SearchCitiesInput
+  ): Promise<CitiesByState[]> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);
 
@@ -23,6 +26,8 @@ export class GetCitiesByStateService extends CitiesService {
       convertedSearch.country.id,
       convertedSearch.state.id
     );
+
+    this.logger.log('Searching cities in database...');
 
     return this.findCitiesByState(searchDB);
   }
