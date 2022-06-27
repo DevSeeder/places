@@ -1,5 +1,4 @@
 import { Model } from 'mongoose';
-import { parse } from 'path';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
 
