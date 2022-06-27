@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CitiesResponse {
+export class CityResponse {
   @ApiProperty({
     type: Number,
     description: 'City Id reference in database',

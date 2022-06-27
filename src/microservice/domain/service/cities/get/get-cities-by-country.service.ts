@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CitiesResponse } from 'src/microservice/domain/model/cities/cities-by-state.model';
+import { CityResponse } from 'src/microservice/domain/model/cities/city-response.model';
 import { CitiesMongoose } from '../../../../adapter/repository/cities/cities-mongoose.repository';
 import { City } from '../../../schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
@@ -14,7 +14,7 @@ export class GetCitiesByCountryService extends CitiesService {
     super(mongoRepository);
   }
 
-  async getCitiesByCountry(countryRef: string): Promise<CitiesResponse[]> {
+  async getCitiesByCountry(countryRef: string): Promise<CityResponse[]> {
     const country = await this.validateCountryService.validateCountry(
       countryRef
     );

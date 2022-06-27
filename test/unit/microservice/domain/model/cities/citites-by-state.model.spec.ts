@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { CitiesResponse } from '../../../../../../src/microservice/domain/model/cities/cities-by-state.model';
+import { CityResponse } from '../../../../../../src/microservice/domain/model/cities/city-response.model';
 
 describe('CitiesByState', () => {
   it('should instance CitiesByState and return the object with the correct properties', async () => {
-    const model = new CitiesResponse();
+    const model = new CityResponse();
     model.name = 'Torres';
     model.stateCode = 'RS';
 
