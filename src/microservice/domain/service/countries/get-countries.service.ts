@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CountriesMongoose } from 'src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { CountriesMongoose } from '../../../adapter/repository/countries/countries-mongoose.repository';
 import { CountryResponse } from '../../model/countries/country-response.model';
 import { CountriesService } from './countries.service';
 

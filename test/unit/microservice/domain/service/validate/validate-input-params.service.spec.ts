@@ -116,7 +116,7 @@ describe('ValidateInputParamsService', () => {
         .returns(state);
 
       const mockConvertedSearch = () => {
-        return { country, state, city: null };
+        return { country, state };
       };
 
       const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
