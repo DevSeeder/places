@@ -76,6 +76,18 @@ describe('CountriesMongoose', () => {
 
       findManyStub.restore();
     });
+
+    it('should call findByNameOrAliasOrId with number param and return an array', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'find')
+        .returns(mockFindCountries);
+
+      const actual = await sut.findByNameOrAliasOrId('1');
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
   });
 
   describe('findAll', () => {
