@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FiltersModule } from './core/error-handling/filters.module';
 import { TransformResponseInterceptor } from './core/http/transform-response.interceptor';
 import { CitiesModule } from './microservice/adapter/cities.module';
+import { CountriesModule } from './microservice/adapter/countries.module';
 import { ExtensionsModule } from './microservice/adapter/helper/extensions/exensions.module';
 import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/custom-puppeteer.module';
 import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module';
@@ -27,7 +28,8 @@ import { StatesModule } from './microservice/adapter/states.module';
     }),
     NeighborhoodsModule,
     CitiesModule,
-    StatesModule
+    StatesModule,
+    CountriesModule
   ],
   controllers: [],
   providers: [

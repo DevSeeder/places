@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CitiesByCountry } from 'src/microservice/domain/model/cities/cities-by-country.model';
 import { CitiesMongoose } from '../../../../adapter/repository/cities/cities-mongoose.repository';
-import { SearchCitiesInput } from '../../../model/search/cities/search-cities-input.model';
 import { City } from '../../../schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
 import { CitiesService } from '../cities.service';
