@@ -15,11 +15,9 @@ export class GetCitiesByCountryService extends CitiesService {
     super(mongoRepository);
   }
 
-  async getCitiesByCountry(
-    searchParams: SearchCitiesInput
-  ): Promise<CitiesByCountry[]> {
+  async getCitiesByCountry(countryRef: string): Promise<CitiesByCountry[]> {
     const country = await this.validateCountryService.validateCountry(
-      searchParams.country
+      countryRef
     );
 
     this.logger.log('Searching cities in database...');

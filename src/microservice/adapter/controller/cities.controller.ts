@@ -26,11 +26,11 @@ export class CitiesController extends AbstractController {
 
   @Get('/country/:country')
   async getNeighborhoodsByCountry(
-    @Param() params: SearchCitiesInput
+    @Param('country') country: string
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.getCitiesByCountryService.getCitiesByCountry(params)
+      await this.getCitiesByCountryService.getCitiesByCountry(country)
     );
   }
 }

@@ -8,6 +8,7 @@ import { CitiesModule } from './microservice/adapter/cities.module';
 import { ExtensionsModule } from './microservice/adapter/helper/extensions/exensions.module';
 import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/custom-puppeteer.module';
 import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module';
+import { StatesModule } from './microservice/adapter/states.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module
       })
     }),
     NeighborhoodsModule,
-    CitiesModule
+    CitiesModule,
+    StatesModule
   ],
   controllers: [],
   providers: [
