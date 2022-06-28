@@ -2,10 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DTO } from '../../dto.model';
 
 export class SearchNeighborhoodsDTO extends DTO {
-  @ApiProperty({
-    type: String,
-    description: 'The name of the Neighborhood'
-  })
   public name: string;
 
   @ApiProperty({

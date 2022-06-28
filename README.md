@@ -94,6 +94,6 @@ http://localhost:3000/states/brazil
 http://localhost:3000/countries/
 ```
 
-[Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/1.0.0)
+[Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/)
 
 At the moment, it's working only for Brazilians places.
