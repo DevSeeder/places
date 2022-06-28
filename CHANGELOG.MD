@@ -41,3 +41,4 @@ All notable changes to this project will be documented in this file.
 - Route Cities By Country
 - Route States By Country
 - Route Countries
+- Swagger Openapi automation
