@@ -14,16 +14,17 @@ async function bootstrap() {
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  const config = new DocumentBuilder()
+  const configService = app.get<ConfigService>(ConfigService);
+
+  const docApi = new DocumentBuilder()
     .setTitle('Places')
     .setDescription('Places API')
-    .setVersion('1.0')
+    .setVersion(configService.get<string>('doc.version'))
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, docApi);
   SwaggerModule.setup('api', app, document);
 
-  const configService = app.get<ConfigService>(ConfigService);
   return await app.listen(configService.get<string>('api.port'));
 }
 
