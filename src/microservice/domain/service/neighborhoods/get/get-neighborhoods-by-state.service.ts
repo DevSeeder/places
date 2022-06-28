@@ -47,7 +47,11 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
       convertedSearch.country.id,
       convertedSearch.state.id
     );
-    return this.mongoRepository.findBySearchParams(searchDB);
+    return this.mongoRepository.findBySearchParams(
+      searchDB,
+      { _id: 0, name: 1, cityId: 1, state: 1, city: 1 },
+      { city: 1, name: 1 }
+    );
   }
 
   async groupByCity(stateId: number): Promise<AggregatedNeighborhoodsByCity[]> {

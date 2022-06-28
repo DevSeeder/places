@@ -26,14 +26,15 @@ export abstract class PlacesMongooseRepository<
 
   async findBySearchParams(
     searchParams: object,
-    select: object = {}
+    select: object = {},
+    sort: any = { name: 1 }
   ): Promise<any[]> {
-    console.log(JSON.stringify(searchParams));
     if (Object.keys(select).length == 0) select = { _id: 0 };
-    return this.model
-      .find(this.buildRegexFilterQuery(searchParams))
-      .select(select)
-      .lean()
-      .exec();
+    let res = this.model.find(this.buildRegexFilterQuery(searchParams));
+
+    if (typeof sort === 'object' && Object.keys(sort).length > 0)
+      res = res.sort(sort);
+
+    return res.select(select).lean().exec();
   }
 }

@@ -41,6 +41,9 @@ export class GetCitiesByCountryService extends CitiesService {
       cityId: 1
     };
 
-    return this.mongoRepository.findBySearchParams({ countryId }, select);
+    return this.mongoRepository.findBySearchParams({ countryId }, select, {
+      stateName: 1,
+      name: 1
+    });
   }
 }
