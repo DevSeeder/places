@@ -11,10 +11,11 @@ export class CitiesByCountryBuilder extends Builder<City[], CitiesByCountry> {
     const builtElement = new CitiesByCountry();
     for (const item of this.inputElement) {
       const keyState = `${item.stateName.capitalize()} - ${item.stateCode.toUpperCase()}`;
-      if (Object.keys(builtElement).includes(keyState)) {
-        delete item.stateName;
-        builtElement[keyState].push(item);
-      } else builtElement[keyState] = [];
+      if (!Object.keys(builtElement).includes(keyState))
+        builtElement[keyState] = [];
+
+      delete item.stateName;
+      builtElement[keyState].push(item);
     }
 
     return builtElement;

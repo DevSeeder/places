@@ -18,13 +18,14 @@ export class NeighborhoodsByStateBuilder extends Builder<
     const builtElement = new NeighborhoodsByState();
     for (const item of this.inputElement) {
       const keyCity = item.city.capitalize();
-      if (Object.keys(builtElement).includes(keyCity)) {
-        const obj = new NeighborhooodAggregatedByCity();
-        obj.name = item.name;
-        obj.cityId = item.cityId;
-        obj.state = `${convertedSearch.state.name} - ${convertedSearch.country.iso3}`;
-        builtElement[keyCity].push(obj);
-      } else builtElement[keyCity] = [];
+      if (!Object.keys(builtElement).includes(keyCity))
+        builtElement[keyCity] = [];
+
+      const obj = new NeighborhooodAggregatedByCity();
+      obj.name = item.name;
+      obj.cityId = item.cityId;
+      obj.state = `${convertedSearch.state.name} - ${convertedSearch.country.iso3}`;
+      builtElement[keyCity].push(obj);
     }
     return builtElement;
   }

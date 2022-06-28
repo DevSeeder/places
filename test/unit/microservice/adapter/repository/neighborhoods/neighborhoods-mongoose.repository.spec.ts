@@ -60,14 +60,18 @@ describe('NeighborhoodsMongoose', () => {
   ];
 
   const mockFindNeighborhoods = {
-    select: jest.fn(() => {
+    sort: jest.fn(() => {
       return {
-        lean: jest.fn(() => {
+        select: jest.fn(() => {
           return {
+            lean: jest.fn(() => {
+              return {
+                exec: jest.fn(() => mockNeighborhoods())
+              };
+            }),
             exec: jest.fn(() => mockNeighborhoods())
           };
-        }),
-        exec: jest.fn(() => mockNeighborhoods())
+        })
       };
     })
   };

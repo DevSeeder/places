@@ -35,9 +35,13 @@ describe('GetCitiesByCountryService', () => {
   const mockCities = () => {
     const city1 = new City();
     city1.name = 'any';
+    city1.stateName = 'anystate';
+    city1.stateCode = 'A2';
 
     const city2 = new City();
-    city2.name = 'any';
+    city2.name = 'any2';
+    city2.stateName = 'anystate2';
+    city2.stateCode = 'A1';
     return [city1, city2];
   };
 
@@ -74,7 +78,10 @@ describe('GetCitiesByCountryService', () => {
 
       const actual = await sut.getCitiesByCountry('any');
 
-      expect(actual).to.be.equal(arrMockCities);
+      expect(actual['Anystate - A2']).to.be.an('array');
+      expect(actual['Anystate - A2'].length).to.be.equal(1);
+      expect(actual['Anystate2 - A1']).to.be.an('array');
+      expect(actual['Anystate2 - A1'].length).to.be.equal(1);
 
       getCitiesStub.restore();
     });

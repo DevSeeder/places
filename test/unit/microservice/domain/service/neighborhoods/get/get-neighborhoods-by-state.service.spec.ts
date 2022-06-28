@@ -8,7 +8,6 @@ import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/do
 import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
-import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 
 describe('GetNeighborhoodsByStateService', () => {
@@ -37,7 +36,15 @@ describe('GetNeighborhoodsByStateService', () => {
     const item1 = new Neighborhood();
     item1.id = 1;
     item1.name = 'any';
+    item1.city = 'Orleans';
+    item1.cityId = 1;
     arr.push(item1);
+    const item2 = new Neighborhood();
+    item2.id = 2;
+    item2.name = 'any1';
+    item2.city = 'Braço do Norte';
+    item2.cityId = 2;
+    arr.push(item2);
     return arr;
   };
 
@@ -45,12 +52,12 @@ describe('GetNeighborhoodsByStateService', () => {
     const country = new Country();
     country.id = 31;
     country.name = 'Brazil';
+    country.iso3 = 'BRA';
     const state = new State();
     state.id = 2014;
     state.name = 'Santa Catarina';
     state.stateCode = 'SC';
-    const city = new City();
-    return { country, city, state };
+    return { country, state };
   };
 
   const mockAggregatedCities = [
@@ -89,18 +96,14 @@ describe('GetNeighborhoodsByStateService', () => {
   });
 
   describe('getNeighborhoodsByState', () => {
-    it('should call getNeighborhoodsByState and return an array by puppeteer', async () => {
+    it('should call getNeighborhoodsByState and return an array', async () => {
       const validateStub = sinon
         .stub(mockValidateService, 'validateAndConvertSearchByState')
         .returns(mockConvertedSearch());
 
       const findInDatabaseStub = sinon
-        .stub(sut, 'findInDatabase')
+        .stub(mockNeighborhoodsMongooseRepository, 'findBySearchParams')
         .returns(mockMongoNeighborhoods());
-
-      const groupByStub = sinon
-        .stub(sut, 'groupByCity')
-        .returns(mockAggregatedCities);
 
       const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
@@ -108,17 +111,16 @@ describe('GetNeighborhoodsByStateService', () => {
 
       expect(actual.Orleans).to.be.an('array');
       expect(actual.Orleans.length).to.be.equal(1);
-      expect(actual['Braço do Norte']).to.be.an('array');
-      expect(actual['Braço do Norte'].length).to.be.equal(1);
+      expect(actual['Braço Do Norte']).to.be.an('array');
+      expect(actual['Braço Do Norte'].length).to.be.equal(1);
 
       findInDatabaseStub.restore();
       validateStub.restore();
-      groupByStub.restore();
     });
   });
 
   describe('groupByCity', () => {
-    it('should call groupByCity and return an array by puppeteer', async () => {
+    it('should call groupByCity and return an array', async () => {
       const groupByStub = sinon
         .stub(mockNeighborhoodsMongooseRepository, 'groupBy')
         .returns(mockAggregatedCities);
