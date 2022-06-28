@@ -137,6 +137,13 @@ describe('NeighborhoodsMongoose', () => {
       const actual = await sut.buildRegexFilterQuery();
       expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
     });
+
+    it('should call buildRegexFilterQuery with null param and return regex filter with empty obj', async () => {
+      const actual = await sut.buildRegexFilterQuery({
+        name: null
+      });
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
+    });
   });
 
   describe('insertOne', () => {
