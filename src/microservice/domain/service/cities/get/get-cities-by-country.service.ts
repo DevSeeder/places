@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CityResponse } from 'src/microservice/domain/model/cities/city-response.model';
+import { CitiesByCountry } from '../../../model/cities/cities-by-country.model';
 import { CitiesMongoose } from '../../../../adapter/repository/cities/cities-mongoose.repository';
 import { City } from '../../../schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
 import { CitiesService } from '../cities.service';
+import { CitiesByCountryBuilder } from '../../../../adapter/helper/builder/cities/cities-by-country.builder';
 
 @Injectable()
 export class GetCitiesByCountryService extends CitiesService {
@@ -14,14 +15,15 @@ export class GetCitiesByCountryService extends CitiesService {
     super(mongoRepository);
   }
 
-  async getCitiesByCountry(countryRef: string): Promise<CityResponse[]> {
+  async getCitiesByCountry(countryRef: string): Promise<CitiesByCountry> {
     const country = await this.validateCountryService.validateCountry(
       countryRef
     );
 
     this.logger.log('Searching cities in database...');
 
-    return this.findCitiesByCountry(country.id);
+    const arrCities = await this.findCitiesByCountry(country.id);
+    return new CitiesByCountryBuilder(arrCities).build();
   }
 
   async findCitiesByCountry(countryId: number): Promise<City[]> {
@@ -32,6 +34,7 @@ export class GetCitiesByCountryService extends CitiesService {
       countryId: 1,
       countryCode: 1,
       stateId: 1,
+      stateName: 1,
       state: 1,
       stateCode: 1,
       city: 1,

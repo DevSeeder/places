@@ -11,6 +11,7 @@ import {
   ApiTags
 } from '@nestjs/swagger';
 import { CityResponse } from '../../domain/model/cities/city-response.model';
+import { CitiesByCountry } from '../../domain/model/cities/cities-by-country.model';
 
 @ApiTags('cities')
 @Controller('cities')
@@ -57,8 +58,7 @@ export class CitiesController extends AbstractController {
   })
   @ApiOkResponse({
     description: 'Cities found.',
-    isArray: true,
-    type: CityResponse
+    type: CitiesByCountry
   })
   @ApiParam({
     name: 'country',
