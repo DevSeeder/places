@@ -61,6 +61,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   buildRegexFilterQuery(objSearch: object = {}) {
     const objSearchRegex = {};
     Object.keys(objSearch).forEach(function (key) {
+      if (objSearch[key] == null) return;
       objSearchRegex[key] = objSearch[key];
       if (typeof objSearch[key] === 'string')
         objSearchRegex[key] = new RegExp(objSearch[key], 'i');

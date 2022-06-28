@@ -28,6 +28,7 @@ export abstract class PlacesMongooseRepository<
     searchParams: object,
     select: object = {}
   ): Promise<any[]> {
+    console.log(JSON.stringify(searchParams));
     if (Object.keys(select).length == 0) select = { _id: 0 };
     return this.model
       .find(this.buildRegexFilterQuery(searchParams))
