@@ -29,7 +29,7 @@ export abstract class PlacesMongooseRepository<
     select: object = {},
     sort: any = { name: 1 }
   ): Promise<any[]> {
-    if (Object.keys(select).length == 0) select = { _id: 0 };
+    if (Object.keys(select).length === 0) select = { _id: 0 };
     let res = this.model.find(this.buildRegexFilterQuery(searchParams));
 
     if (typeof sort === 'object' && Object.keys(sort).length > 0)
