@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { DTO } from '../../dto.model';
 
-export class SearchCitiesInput {
+export class SearchCitiesDTO extends DTO {
   @ApiProperty({
     type: String,
     description: 'The country of the City'
@@ -14,6 +15,7 @@ export class SearchCitiesInput {
   public state: string;
 
   constructor(country: string, state: string) {
+    super();
     this.country = country;
     this.state = state;
   }

@@ -8,7 +8,7 @@ import { City } from '../../../../../../../src/microservice/domain/schemas/city.
 import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
 import { SearchCitiesDB } from '../../../../../../../src/microservice/domain/model/search/cities/search-cities-db.model';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
-import { SearchCitiesInput } from '../../../../../../../src/microservice/domain/model/search/cities/search-cities-input.model';
+import { SearchCitiesDTO } from '../../../../../../../src/microservice/domain/model/search/cities/search-cities-dto.model';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 
@@ -134,7 +134,7 @@ describe('GetCitiesByStateService', () => {
         .stub(mockValidateService, 'validateAndConvertSearchByState')
         .returns(mockConvertedSearch());
 
-      const searchParams = new SearchCitiesInput('Brazil', 'SC');
+      const searchParams = new SearchCitiesDTO('Brazil', 'SC');
 
       const actual = await sut.getCitiesByState(searchParams);
 

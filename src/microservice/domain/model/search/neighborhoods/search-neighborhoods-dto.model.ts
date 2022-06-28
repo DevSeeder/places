@@ -1,15 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EmptyPropException } from 'src/core/error-handling/exception/empty-prop.exception';
-
-export class DTO {
-  validateIsAnyEmptyKey() {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const context = this;
-    Object.keys(this).forEach(function (key) {
-      if (context[key].length === 0) throw new EmptyPropException(key);
-    });
-  }
-}
+import { DTO } from '../../dto.model';
 
 export class SearchNeighborhoodsDTO extends DTO {
   @ApiProperty({

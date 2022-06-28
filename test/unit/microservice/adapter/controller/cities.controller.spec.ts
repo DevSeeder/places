@@ -8,7 +8,7 @@ import { ValidateInputParamsService } from '../../../../../src/microservice/doma
 import { CitiesController } from '../../../../../src/microservice/adapter/controller/cities.controller';
 import { GetCitiesByStateService } from '../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
 import { GetCitiesByCountryService } from '../../../../../src/microservice/domain/service/cities/get/get-cities-by-country.service';
-import { SearchCitiesInput } from '../../../../../src/microservice/domain/model/search/cities/search-cities-input.model';
+import { SearchCitiesDTO } from '../../../../../src/microservice/domain/model/search/cities/search-cities-dto.model';
 import { City } from '../../../../../src/microservice/domain/schemas/city.schema';
 
 describe('CitiesController', () => {
@@ -79,7 +79,7 @@ describe('CitiesController', () => {
         .stub(mockGetCitiesByStateService, 'getCitiesByState')
         .returns(mockCities());
 
-      const searchParams = new SearchCitiesInput('brasil', 'sc');
+      const searchParams = new SearchCitiesDTO('brasil', 'sc');
 
       const actual = await citiesController.getCitiesByState(searchParams);
 

@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { GetCitiesByStateService } from '../../domain/service/cities/get/get-cities-by-state.service';
-import { SearchCitiesInput } from '../../domain/model/search/cities/search-cities-input.model';
+import { SearchCitiesDTO } from '../../domain/model/search/cities/search-cities-dto.model';
 import { GetCitiesByCountryService } from '../../domain/service/cities/get/get-cities-by-country.service';
 import {
   ApiOkResponse,
@@ -44,7 +44,7 @@ export class CitiesController extends AbstractController {
   })
   @Get('/state/:country/:state')
   async getCitiesByState(
-    @Param() params: SearchCitiesInput
+    @Param() params: SearchCitiesDTO
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,

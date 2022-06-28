@@ -3,7 +3,7 @@ import { GetStatesByCountryService } from '../../domain/service/states/get-state
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { StatesByCountry } from 'src/microservice/domain/model/states/states-by-country.model';
+import { StatesByCountry } from '../../domain/model/states/states-by-country.model';
 
 @ApiTags('states')
 @Controller('states')

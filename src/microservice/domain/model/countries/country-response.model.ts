@@ -9,11 +9,11 @@ export class CountryResponse {
   id: number;
 
   @ApiProperty({
-    type: Number,
+    type: String,
     description: 'Country Name',
     example: 'Brasil'
   })
-  name: number;
+  name: string;
 
   @ApiProperty({
     type: String,

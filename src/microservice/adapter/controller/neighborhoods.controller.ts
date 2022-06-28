@@ -12,8 +12,8 @@ import {
   ApiParam,
   ApiTags
 } from '@nestjs/swagger';
-import { NeighborhoodByCity } from 'src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
-import { NeighborhoodsByState } from 'src/microservice/domain/model/neighborhoods/neighborhoods-by-state.model';
+import { NeighborhoodByCity } from '../../domain/model/neighborhoods/neighborhood-by-city.model';
+import { NeighborhoodsByState } from '../../domain/model/neighborhoods/neighborhoods-by-state.model';
 
 @ApiTags('neighborhoods')
 @Controller('neighborhoods')

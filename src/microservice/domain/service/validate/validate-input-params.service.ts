@@ -8,7 +8,7 @@ import { AbstractService } from '../abstract-service.service';
 import { ValidateCountryByNameOrAliasService } from '../countries/validate-country-by-name-or-alias.service';
 import { ValidateStateByNameOrAliasService } from '../states/validate-state-by-name-or-alias.service';
 import { ValidateCityByNameOrAliasService } from '../cities/validate-city-by-name-or-alias.service';
-import { SearchCitiesInput } from '../../model/search/cities/search-cities-input.model';
+import { SearchCitiesDTO } from '../../model/search/cities/search-cities-dto.model';
 
 @Injectable()
 export class ValidateInputParamsService extends AbstractService {
@@ -21,7 +21,7 @@ export class ValidateInputParamsService extends AbstractService {
   }
 
   async validateAndConvertSearchByState(
-    searchParams: SearchNeighborhoodsDTO | SearchCitiesInput
+    searchParams: SearchNeighborhoodsDTO | SearchCitiesDTO
   ): Promise<ValidOutputSearchByState> {
     const country = await this.getCountryService.validateCountry(
       searchParams.country
