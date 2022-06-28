@@ -56,7 +56,9 @@ describe('App (e2e) ', () => {
         '/cities/country/brasil'
       );
 
-      expect(actual.body).to.be.an('array').that.is.not.empty;
+      expect(actual.body).to.be.an('object').that.is.not.empty;
+      expect(actual.body['Santa Catarina - SC']).to.be.an('array').that.is.not
+        .empty;
     });
   });
 
