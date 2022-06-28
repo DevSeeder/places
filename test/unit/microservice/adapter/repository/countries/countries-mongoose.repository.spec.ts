@@ -32,6 +32,15 @@ describe('CountriesMongoose', () => {
       return {
         exec: jest.fn(() => mockCountries())
       };
+    }),
+    select: jest.fn(() => {
+      return {
+        lean: jest.fn(() => {
+          return {
+            exec: jest.fn(() => mockCountries())
+          };
+        })
+      };
     })
   };
 
@@ -55,13 +64,39 @@ describe('CountriesMongoose', () => {
     await app.close();
   });
 
-  describe('findBySearchParams', () => {
-    it('should call findBySearchParams and return an array', async () => {
+  describe('findByNameOrAliasOrId', () => {
+    it('should call findByNameOrAliasOrId and return an array', async () => {
       const findManyStub = sinon
         .stub(mockModelMongoose, 'find')
         .returns(mockFindCountries);
 
-      const actual = await sut.findByNameOrAlias('any');
+      const actual = await sut.findByNameOrAliasOrId('any');
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
+
+    it('should call findByNameOrAliasOrId with number param and return an array', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'find')
+        .returns(mockFindCountries);
+
+      const actual = await sut.findByNameOrAliasOrId('1');
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
+  });
+
+  describe('findAll', () => {
+    it('should call findAll and return an array', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'find')
+        .returns(mockFindCountries);
+
+      const actual = await sut.findAll();
 
       expect(actual).to.be.an('array').that.is.not.empty;
 

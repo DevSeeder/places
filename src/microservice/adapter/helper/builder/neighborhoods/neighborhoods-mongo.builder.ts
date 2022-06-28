@@ -1,14 +1,20 @@
-import { ValidOutputSearchNeighborhood } from 'src/microservice/domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
+import { Builder } from '../../../../domain/helper/builder/builder.builder';
+import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../domain/schemas/neighborhood.schema';
 
-export class NeighborhoodsMongoBuilder {
-  constructor(private readonly puppeteerResponse: NeighborhoodByCity[]) {}
+export class NeighborhoodsMongoBuilder extends Builder<
+  NeighborhoodByCity[],
+  Neighborhood[]
+> {
+  constructor(inputElement: NeighborhoodByCity[]) {
+    super(inputElement);
+  }
 
-  build(searchParams: ValidOutputSearchNeighborhood): Neighborhood[] {
+  build(searchParams: ValidOutputSearchByCity): Neighborhood[] {
     const arr = [];
 
-    this.puppeteerResponse.forEach((item) => {
+    this.inputElement.forEach((item) => {
       const obj = new Neighborhood();
       obj.countryId = searchParams.country.id;
       obj.country = searchParams.country.name;

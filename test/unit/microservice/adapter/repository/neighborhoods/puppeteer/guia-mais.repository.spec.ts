@@ -4,10 +4,13 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { GuiaMaisRepository } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import * as fs from 'fs';
 import { ExtensionsModule } from '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import * as cheerio from 'cheerio';
+import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
+import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -23,6 +26,21 @@ describe('GuiaMaisRepository', () => {
       flag: 'r'
     }
   );
+
+  const mockConvertedSearch = () => {
+    const mockCountry = new Country();
+    mockCountry.name = 'USA';
+    const mockState = new State();
+    mockState.name = 'New York';
+    mockState.stateCode = 'NY';
+    const mockCity = new City();
+    mockCity.name = 'New York City';
+    return {
+      country: mockCountry,
+      state: mockState,
+      city: mockCity
+    };
+  };
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
@@ -56,7 +74,7 @@ describe('GuiaMaisRepository', () => {
 
   describe('getNeighborhoodsByCity', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
-      const mockSearchParams = new SearchNeighborhoodsInput(
+      const mockSearchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -64,7 +82,10 @@ describe('GuiaMaisRepository', () => {
       const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
       const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
-      const actual = await sut.getNeighborhoodsByCity(mockSearchParams);
+      const actual = await sut.getNeighborhoodsByCity(
+        mockSearchParams,
+        mockConvertedSearch()
+      );
 
       expect(actual).to.be.an('array').that.is.not.empty;
       expect(actual[0].city).to.be.equal('Orleans - SC');
@@ -77,7 +98,7 @@ describe('GuiaMaisRepository', () => {
 
   describe('callEndpoint', () => {
     it('should call callEndpoint and call getDocumentHtml with the correct params', async () => {
-      const mockSearchParams = new SearchNeighborhoodsInput(
+      const mockSearchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'

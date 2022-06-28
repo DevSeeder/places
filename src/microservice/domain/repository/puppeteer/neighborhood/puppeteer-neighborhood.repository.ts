@@ -1,10 +1,11 @@
 import { CheerioAPI } from 'cheerio';
 import { NeighborhoodByCity } from '../../../model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { PuppeteerRepository } from '../puppeteer.repository';
 import { IPuppeteerNeighborhoodRepository } from '../../../interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
-import { EnumTranslations } from 'src/microservice/domain/enumerators/enum-translations.enumerator';
+import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
+import { ValidOutputSearchByCity } from '../../../interface/valid-output-search/valid-outpu-search.interface';
 
 export abstract class PuppeteerNeighborhoodRepository
   extends PuppeteerRepository
@@ -12,12 +13,17 @@ export abstract class PuppeteerNeighborhoodRepository
 {
   language: EnumTranslations;
   async getNeighborhoodsByCity(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO,
+    convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     this.validateInput(searchParams);
 
     const $ = await this.callEndpoint(searchParams);
-    const elements = this.buildElementsFromDocument(searchParams, $);
+    const elements = this.buildElementsFromDocument(
+      searchParams,
+      convertedSearch,
+      $
+    );
 
     this.validateOutput(elements);
 
@@ -29,11 +35,12 @@ export abstract class PuppeteerNeighborhoodRepository
   }
 
   abstract buildElementsFromDocument(
-    _searchParams: SearchNeighborhoodsInput,
+    _searchParams: SearchNeighborhoodsDTO,
+    convertedSearch: ValidOutputSearchByCity,
     _$: CheerioAPI
   );
 
   abstract callEndpoint(
-    _searchParams: SearchNeighborhoodsInput
+    _searchParams: SearchNeighborhoodsDTO
   ): Promise<CheerioAPI>;
 }

@@ -5,15 +5,22 @@ import { Neighborhood } from '../../../../../../../src/microservice/domain/schem
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
+import { NeighborhoodByCity } from '../../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 
-const mockNeighborhoodsByCity = [
+const mockNeighborhoods: NeighborhoodByCity[] = [
   {
     name: 'Harlem',
-    city: 'New York City - NY'
+    city: 'New York City - NY',
+    countryId: 31,
+    stateId: 41,
+    cityId: 3
   },
   {
     name: `Hell's Kitchen`,
-    city: 'New York City - NY'
+    city: 'New York City - NY',
+    countryId: 31,
+    stateId: 41,
+    cityId: 4
   }
 ];
 
@@ -53,7 +60,7 @@ const mockConvertedSearch = () => {
 
 describe('NeighborhoodsMongoBuilder ', () => {
   it('Should instanciate NeighborhoodsMongoBuilder and build correctly', function () {
-    const nestBuilder = new NeighborhoodsMongoBuilder(mockNeighborhoodsByCity);
+    const nestBuilder = new NeighborhoodsMongoBuilder(mockNeighborhoods);
     const actual = nestBuilder.build(mockConvertedSearch());
     expect(JSON.stringify(actual)).to.be.equal(
       JSON.stringify(mockMongoNeighborhoods())

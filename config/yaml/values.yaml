@@ -7,3 +7,5 @@ database:
     connection: 'mongodb+srv://dev-seeder-root:hpYpxyjrKExNQviu@devseeder.v6xtv.mongodb.net/places?retryWrites=true&w=majority&ssl=true&wtimeoutMS=0'
 api:
   port: 3000
+doc:
+  version: 0.0.5

@@ -10,22 +10,31 @@ export abstract class PlacesMongooseRepository<
     super(model);
   }
 
-  async findByNameOrAlias(name: string, extraSearch = {}): Promise<any[]> {
-    const nameRegex = new RegExp(name, 'i');
+  async findByNameOrAliasOrId(ref: string, extraSearch = {}): Promise<any[]> {
+    const nameRegex = new RegExp(ref, 'i');
     return this.model
       .find({
         ...extraSearch,
-        $or: [{ name: nameRegex }, { alias: { $in: [nameRegex] } }]
+        $or: [
+          { alias: { $in: [nameRegex] } },
+          isNaN(parseInt(ref)) ? { name: nameRegex } : { id: ref }
+        ]
       })
       .lean()
       .exec();
   }
 
-  async findBySearchParams(searchParams: object): Promise<any[]> {
-    return this.model
-      .find(this.buildRegexFilterQuery(searchParams))
-      .select({ _id: 0 })
-      .lean()
-      .exec();
+  async findBySearchParams(
+    searchParams: object,
+    select: object = {},
+    sort: any = { name: 1 }
+  ): Promise<any[]> {
+    if (Object.keys(select).length === 0) select = { _id: 0 };
+    let res = this.model.find(this.buildRegexFilterQuery(searchParams));
+
+    if (typeof sort === 'object' && Object.keys(sort).length > 0)
+      res = res.sort(sort);
+
+    return res.select(select).lean().exec();
   }
 }

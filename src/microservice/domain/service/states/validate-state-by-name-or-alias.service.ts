@@ -14,7 +14,7 @@ export class ValidateStateByNameOrAliasService extends StatesService {
     name: string,
     countryId: number
   ): Promise<State[]> {
-    return this.mongoRepository.findByNameOrAlias(name, { countryId });
+    return this.mongoRepository.findByNameOrAliasOrId(name, { countryId });
   }
 
   async validateState(state: string, countryId: number): Promise<State> {

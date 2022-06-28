@@ -4,6 +4,6 @@ export class SearchNeighborhoodsDB {
   constructor(
     public countryId: number,
     public stateId: number,
-    public cityId: number
+    public cityId: number = null
   ) {}
 }
