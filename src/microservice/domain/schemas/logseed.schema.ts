@@ -19,7 +19,7 @@ export class ReferenceNeighborhoodsByState extends ReferenceLogSeed {
 
 export type LogSeedDocument = LogSeed & Document;
 
-@Schema({ collection: 'logSeed' })
+@Schema({ collection: 'logSeed', timestamps: true })
 export class LogSeed {
   @Prop({ required: true, type: String })
   type: EnumTypeLogSeed;
