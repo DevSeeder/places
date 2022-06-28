@@ -11,7 +11,7 @@ export class ValidateCountryByNameOrAliasService extends CountriesService {
   }
 
   async getCountryByNameOrAlias(name: string): Promise<Country[]> {
-    return this.mongoRepository.findByNameOrAlias(name);
+    return this.mongoRepository.findByNameOrAliasOrId(name);
   }
 
   async validateCountry(country: string): Promise<Country> {

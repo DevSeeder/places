@@ -10,7 +10,7 @@ describe('ValidateCityByNameOrAliasService', () => {
   let sut: ValidateCityByNameOrAliasService;
 
   const mockCitiesMongooseRepository = {
-    findByNameOrAlias: () => {
+    findByNameOrAliasOrId: () => {
       return [new City()];
     }
   };
@@ -43,7 +43,7 @@ describe('ValidateCityByNameOrAliasService', () => {
   describe('getCityByNameOrAlias', () => {
     it('should call getCityByCity and return an array by mongodb', async () => {
       const mongoFindStub = sinon
-        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAliasOrId')
         .returns(mockMongoCities());
 
       const actual = await sut.getCityByNameOrAlias('orleans', 1, 2);
@@ -59,7 +59,7 @@ describe('ValidateCityByNameOrAliasService', () => {
   describe('validateCity', () => {
     it('should call validateCity and throws invalid data exception', async () => {
       const getCityStub = sinon
-        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAliasOrId')
         .returns([]);
 
       try {
@@ -76,7 +76,7 @@ describe('ValidateCityByNameOrAliasService', () => {
       city.name = 'any';
 
       const getCityStub = sinon
-        .stub(mockCitiesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCitiesMongooseRepository, 'findByNameOrAliasOrId')
         .returns([city]);
 
       const actual = await sut.validateCity('orleans', 1, 2);

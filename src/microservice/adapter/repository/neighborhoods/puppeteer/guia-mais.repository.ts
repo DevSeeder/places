@@ -3,11 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
-import { SearchNeighborhoodsInput } from '../../../../domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
 import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
 import { EnumTranslations } from '../../../../domain/enumerators/enum-translations.enumerator';
+import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 
 @Injectable()
 export class GuiaMaisRepository
@@ -25,7 +26,11 @@ export class GuiaMaisRepository
     );
   }
 
-  buildElementsFromDocument(searchParams, $: CheerioAPI): NeighborhoodByCity[] {
+  buildElementsFromDocument(
+    searchParams,
+    convertedSearch: ValidOutputSearchByCity,
+    $: CheerioAPI
+  ): NeighborhoodByCity[] {
     const arrNeighborhoods = [];
     $('.cities.centerContent')
       .find('a')
@@ -33,7 +38,10 @@ export class GuiaMaisRepository
         const neighborhood = new NeighborhoodByCity();
 
         neighborhood.name = $(this).text();
+        neighborhood.cityId = convertedSearch.city.id;
         neighborhood.city = `${searchParams.city.capitalize()} - ${searchParams.state.toUpperCase()}`;
+        neighborhood.stateId = convertedSearch.state.id;
+        neighborhood.countryId = convertedSearch.country.id;
 
         arrNeighborhoods.push(neighborhood);
       });
@@ -42,7 +50,7 @@ export class GuiaMaisRepository
   }
 
   async callEndpoint(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<CheerioAPI> {
     const url = `${this.url}/${searchParams.city}-${searchParams.state}`;
     return this.getDocumentHtml(url);

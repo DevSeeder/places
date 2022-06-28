@@ -7,7 +7,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { mockModelMongoose } from '../../../../../mock/mongoose/mock-mongoose';
 import { MongoDBException } from '../../../../../../src/core/error-handling/exception/mongodb-.exception';
-import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-db.model';
 
 jest.useFakeTimers();
 jest.setTimeout(20000);
@@ -60,14 +60,18 @@ describe('NeighborhoodsMongoose', () => {
   ];
 
   const mockFindNeighborhoods = {
-    select: jest.fn(() => {
+    sort: jest.fn(() => {
       return {
-        lean: jest.fn(() => {
+        select: jest.fn(() => {
           return {
+            lean: jest.fn(() => {
+              return {
+                exec: jest.fn(() => mockNeighborhoods())
+              };
+            }),
             exec: jest.fn(() => mockNeighborhoods())
           };
-        }),
-        exec: jest.fn(() => mockNeighborhoods())
+        })
       };
     })
   };
@@ -131,6 +135,13 @@ describe('NeighborhoodsMongoose', () => {
 
     it('should call buildRegexFilterQuery and return regex filter with empty obj', async () => {
       const actual = await sut.buildRegexFilterQuery();
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
+    });
+
+    it('should call buildRegexFilterQuery with null param and return regex filter with empty obj', async () => {
+      const actual = await sut.buildRegexFilterQuery({
+        name: null
+      });
       expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
     });
   });

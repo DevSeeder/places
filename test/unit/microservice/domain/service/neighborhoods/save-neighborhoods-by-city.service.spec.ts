@@ -3,13 +3,13 @@ import * as sinon from 'sinon';
 import { SaveNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { NeighborhoodsMongoose } from '../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { ExtensionsModule } from '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodByCity } from '../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 import { Neighborhood } from '../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-db.model';
+import { SearchNeighborhoodsDB } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-db.model';
 
 describe('SaveNeighborhoodsByCityService', () => {
   let sut: SaveNeighborhoodsByCityService;
@@ -17,11 +17,17 @@ describe('SaveNeighborhoodsByCityService', () => {
   const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
-      city: 'Orleans-SC'
+      city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 1
     },
     {
       name: 'Alto Paraná',
-      city: 'Orleans-SC'
+      city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 2
     }
   ];
 
@@ -97,7 +103,7 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -125,7 +131,7 @@ describe('SaveNeighborhoodsByCityService', () => {
         'insertOne'
       );
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'

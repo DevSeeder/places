@@ -1,16 +1,20 @@
-import { ValidOutputSearchNeighborhood } from '../../../../domain/interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { SearchNeighborhoodsDB } from '../../../../domain/model/search/search-neighborhoods-db.model';
+import { Builder } from '../../../../domain/helper/builder/builder.builder';
+import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
+import { SearchNeighborhoodsDB } from '../../../../domain/model/search/neighborhoods/search-neighborhoods-db.model';
 
-export class SearchNeighborhoodsDBBuilder {
-  constructor(
-    private readonly convertedSearch: ValidOutputSearchNeighborhood
-  ) {}
+export class SearchNeighborhoodsDBBuilder extends Builder<
+  ValidOutputSearchByCity,
+  SearchNeighborhoodsDB
+> {
+  constructor(inputElement: ValidOutputSearchByCity) {
+    super(inputElement);
+  }
 
   build(): SearchNeighborhoodsDB {
     return new SearchNeighborhoodsDB(
-      this.convertedSearch.country.id,
-      this.convertedSearch.state.id,
-      this.convertedSearch.city.id
+      this.inputElement.country.id,
+      this.inputElement.state.id,
+      this.inputElement.city.id
     );
   }
 }

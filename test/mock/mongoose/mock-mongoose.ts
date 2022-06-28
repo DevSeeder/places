@@ -1,7 +1,15 @@
 export const mockModelMongoose = {
   find: () => {
     return {
-      exec: jest.fn(() => null)
+      select: jest.fn(() => {
+        return {
+          lean: jest.fn(() => {
+            return {
+              exec: jest.fn(() => null)
+            };
+          })
+        };
+      })
     };
   },
   aggregate: () => {

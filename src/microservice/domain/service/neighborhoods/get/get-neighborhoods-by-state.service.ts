@@ -1,77 +1,64 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsInput } from '../../../model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { NeighborhoodsMongoose } from '../../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { ValidOutputSearchNeighborhood } from '../../../interface/valid-output-search/valid-outpu-search-neighborhood.interface';
-import { SearchNeighborhoodsDB } from '../../../model/search/search-neighborhoods-db.model';
-import {
-  NeighborhoodsByState,
-  NeighborhooodAggregatedByCity
-} from '../../../model/neighborhoods/neighborhoods-by-state.model';
+import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
+import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
+import { NeighborhoodsByState } from '../../../model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
-import { ValidateInputParamsService } from '../../validate-input-params.service';
-import { GetCitiesByStateService } from '../../cities/get-cities-by-state.service';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
+import { AggregatedNeighborhoodsByCity } from '../../../interface/aggregated/aggregated-neighborhoods-city.interface';
+import { NeighborhoodsByStateBuilder } from '../../../../adapter/helper/builder/neighborhoods/neighborhoods-by-state.builder';
+import { Neighborhood } from '../../../schemas/neighborhood.schema';
 
 @Injectable()
 export class GetNeighborhoodsByStateService extends NeighborhoodsService {
   constructor(
     protected readonly validateService: ValidateInputParamsService,
-    protected readonly getCitiesByStateService: GetCitiesByStateService,
     mongoRepository: NeighborhoodsMongoose
   ) {
     super(mongoRepository);
   }
 
   async getNeighborhoodsByState(
-    searchParams: SearchNeighborhoodsInput
+    searchParams: SearchNeighborhoodsDTO
   ): Promise<NeighborhoodsByState> {
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByState(searchParams);
 
     return this.findNeighborhoodsByStateInDatabase(convertedSearch);
   }
+
   async findNeighborhoodsByStateInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood
+    convertedSearch: ValidOutputSearchByState
   ): Promise<NeighborhoodsByState> {
-    const arrResponse: NeighborhoodsByState = {};
-
     this.logger.log(
-      `Searching cities for state '${convertedSearch.state.stateCode}'...`
+      `Searching Neighborhoods for state '${convertedSearch.state.stateCode}'...`
     );
-    const aggregatedByCity = await this.getCitiesByStateService.groupByCity(
-      convertedSearch.state.id
-    );
-    this.logger.log(`Founded cities: ${aggregatedByCity.length}`);
-    for await (const item of aggregatedByCity) {
-      const cityId = item._id.cityId;
-      const arrNeighborhoods = await this.findByCityAndStateInDatabase(
-        convertedSearch,
-        cityId
-      );
+    const arrByState = await this.findByStateInDatabase(convertedSearch);
+    this.logger.log(`Founded Neighborhoods: ${arrByState.length}`);
 
-      this.logger.log(
-        `City "${item.city}": ${arrNeighborhoods.length} Neighborhoods`
-      );
-
-      arrResponse[item.city] = arrNeighborhoods.map((neighborhood) => {
-        const obj = new NeighborhooodAggregatedByCity();
-        obj.name = neighborhood.name;
-        obj.cityId = cityId;
-        obj.state = `${convertedSearch.state.name} - ${convertedSearch.country.iso3}`;
-        return obj;
-      });
-    }
-    return arrResponse;
+    return new NeighborhoodsByStateBuilder(arrByState).build(convertedSearch);
   }
 
-  async findByCityAndStateInDatabase(
-    convertedSearch: ValidOutputSearchNeighborhood,
-    cityId: number
-  ) {
+  async findByStateInDatabase(
+    convertedSearch: ValidOutputSearchByState
+  ): Promise<Neighborhood[]> {
     const searchDB = new SearchNeighborhoodsDB(
       convertedSearch.country.id,
-      convertedSearch.state.id,
-      cityId
+      convertedSearch.state.id
     );
-    return this.findInDatabase(searchDB);
+    return this.mongoRepository.findBySearchParams(
+      searchDB,
+      { _id: 0, name: 1, cityId: 1, state: 1, city: 1 },
+      { city: 1, name: 1 }
+    );
+  }
+
+  async groupByCity(stateId: number): Promise<AggregatedNeighborhoodsByCity[]> {
+    return this.mongoRepository.groupBy(
+      { cityId: '$cityId' },
+      { stateId },
+      { city: 'city' }
+    );
   }
 }

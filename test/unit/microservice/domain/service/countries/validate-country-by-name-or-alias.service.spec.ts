@@ -10,7 +10,7 @@ describe('ValidateCountryByNameOrAliasService', () => {
   let sut: ValidateCountryByNameOrAliasService;
 
   const mockCountriesMongooseRepository = {
-    findByNameOrAlias: () => {
+    findByNameOrAliasOrId: () => {
       return [new Country()];
     }
   };
@@ -43,7 +43,7 @@ describe('ValidateCountryByNameOrAliasService', () => {
   describe('validateCountry', () => {
     it('should call validateCountry and throws invalid data exception', async () => {
       const getCountryStub = sinon
-        .stub(mockCountriesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCountriesMongooseRepository, 'findByNameOrAliasOrId')
         .returns([]);
 
       try {
@@ -59,7 +59,7 @@ describe('ValidateCountryByNameOrAliasService', () => {
   describe('getCountryByCity', () => {
     it('should call getCountryByCity and return an array by mongodb', async () => {
       const mongoFindStub = sinon
-        .stub(mockCountriesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCountriesMongooseRepository, 'findByNameOrAliasOrId')
         .returns(mockMongoCountries());
 
       const actual = await sut.getCountryByNameOrAlias('brasil');
@@ -76,7 +76,7 @@ describe('ValidateCountryByNameOrAliasService', () => {
       country.name = 'any';
 
       const getCountryStub = sinon
-        .stub(mockCountriesMongooseRepository, 'findByNameOrAlias')
+        .stub(mockCountriesMongooseRepository, 'findByNameOrAliasOrId')
         .returns([country]);
 
       const actual = await sut.validateCountry('orleans');

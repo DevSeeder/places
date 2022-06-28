@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +14,19 @@ async function bootstrap() {
     })
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
   const configService = app.get<ConfigService>(ConfigService);
+
+  const docApi = new DocumentBuilder()
+    .setTitle('Places')
+    .setDescription('Places API')
+    .setVersion(configService.get<string>('doc.version'))
+    .build();
+
+  const document = SwaggerModule.createDocument(app, docApi);
+  fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
+  SwaggerModule.setup('api', app, document);
+
   return await app.listen(configService.get<string>('api.port'));
 }
 

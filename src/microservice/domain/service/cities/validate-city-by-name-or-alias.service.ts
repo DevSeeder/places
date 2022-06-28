@@ -15,7 +15,10 @@ export class ValidateCityByNameOrAliasService extends CitiesService {
     countryId: number,
     stateId: number
   ): Promise<City[]> {
-    return this.mongoRepository.findByNameOrAlias(name, { countryId, stateId });
+    return this.mongoRepository.findByNameOrAliasOrId(name, {
+      countryId,
+      stateId
+    });
   }
 
   async validateCity(

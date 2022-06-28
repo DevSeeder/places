@@ -1,6 +1,10 @@
 import { CheerioAPI } from 'cheerio';
 
-export interface IPuppeteerRepository<ElementPlace, SearchElement> {
+export interface IPuppeteerRepository<
+  ElementPlace,
+  SearchElement,
+  ValidOutputSearch
+> {
   callEndpoint(searchParams: SearchElement): Promise<CheerioAPI>;
 
   getDocumentHtml(url: string): Promise<CheerioAPI>;
@@ -11,6 +15,7 @@ export interface IPuppeteerRepository<ElementPlace, SearchElement> {
 
   buildElementsFromDocument(
     searchParams: SearchElement,
+    convertedSearch: ValidOutputSearch,
     $: CheerioAPI
   ): ElementPlace[];
 

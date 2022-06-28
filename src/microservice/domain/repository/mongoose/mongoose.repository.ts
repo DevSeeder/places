@@ -61,10 +61,16 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   buildRegexFilterQuery(objSearch: object = {}) {
     const objSearchRegex = {};
     Object.keys(objSearch).forEach(function (key) {
+      if (objSearch[key] == null) return;
       objSearchRegex[key] = objSearch[key];
       if (typeof objSearch[key] === 'string')
         objSearchRegex[key] = new RegExp(objSearch[key], 'i');
     });
     return objSearchRegex;
+  }
+
+  async findAll(select: object = {}): Promise<any[]> {
+    if (Object.keys(select).length === 0) select = { _id: 0 };
+    return this.model.find({}).select(select).lean().exec();
   }
 }

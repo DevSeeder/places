@@ -4,12 +4,12 @@ import * as sinon from 'sinon';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { ValidateStateByNameOrAliasService } from '../../../../../../src/microservice/domain/service/states/validate-state-by-name-or-alias.service';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
-import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { ValidateCountryByNameOrAliasService } from '../../../../../../src/microservice/domain/service/countries/validate-country-by-name-or-alias.service';
 import { ValidateCityByNameOrAliasService } from '../../../../../../src/microservice/domain/service/cities/validate-city-by-name-or-alias.service';
-import { SearchNeighborhoodsInput } from '../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 
 describe('ValidateInputParamsService', () => {
   let sut: ValidateInputParamsService;
@@ -87,7 +87,7 @@ describe('ValidateInputParamsService', () => {
         return { country, state, city };
       };
 
-      const searchParams = new SearchNeighborhoodsInput(
+      const searchParams = new SearchNeighborhoodsDTO(
         'brasil',
         'sc',
         'orleans'
@@ -116,10 +116,10 @@ describe('ValidateInputParamsService', () => {
         .returns(state);
 
       const mockConvertedSearch = () => {
-        return { country, state, city: null };
+        return { country, state };
       };
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.validateAndConvertSearchByState(searchParams);
 

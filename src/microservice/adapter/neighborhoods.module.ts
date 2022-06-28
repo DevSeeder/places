@@ -12,22 +12,12 @@ import {
 } from '../domain/schemas/neighborhood.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
-import { Country, CountrySchema } from '../domain/schemas/country.schema';
-import { ValidateCountryByNameOrAliasService } from '../domain/service/countries/validate-country-by-name-or-alias.service';
-import { CountriesMongoose } from './repository/countries/countries-mongoose.repository';
-import { State, StateSchema } from '../domain/schemas/state.schema';
-import { ValidateStateByNameOrAliasService } from '../domain/service/states/validate-state-by-name-or-alias.service';
-import { StatesMongoose } from './repository/states/states-mongoose.repository';
-import { City, CitySchema } from '../domain/schemas/city.schema';
-import { ValidateCityByNameOrAliasService } from '../domain/service/cities/validate-city-by-name-or-alias.service';
-import { CitiesMongoose } from './repository/cities/cities-mongoose.repository';
 import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
-import { ValidateInputParamsService } from '../domain/service/validate-input-params.service';
 import { SeedNeighborhoodsByStateService } from '../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
-import { GetCitiesByStateService } from '../domain/service/cities/get-cities-by-state.service';
 import { LogSeed, LogSeedSchema } from '../domain/schemas/logseed.schema';
 import { LogSeedMongoose } from './repository/logseed/logseed-mongoose.repository';
 import { LogSeedJobService } from '../domain/service/logseed/log-seed-job.service';
+import { CitiesModule } from './cities.module';
 
 @Module({
   imports: [
@@ -38,11 +28,9 @@ import { LogSeedJobService } from '../domain/service/logseed/log-seed-job.servic
     }),
     MongooseModule.forFeature([
       { name: Neighborhood.name, schema: NeighborhoodSchema },
-      { name: Country.name, schema: CountrySchema },
-      { name: State.name, schema: StateSchema },
-      { name: City.name, schema: CitySchema },
       { name: LogSeed.name, schema: LogSeedSchema }
-    ])
+    ]),
+    CitiesModule
   ],
   controllers: [NeighborhoodsController],
   providers: [
@@ -51,20 +39,12 @@ import { LogSeedJobService } from '../domain/service/logseed/log-seed-job.servic
       useClass: GuiaMaisRepository
     },
     NeighborhoodsMongoose,
-    CountriesMongoose,
-    StatesMongoose,
-    CitiesMongoose,
     LogSeedMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
     SaveNeighborhoodsByCityService,
-    ValidateCountryByNameOrAliasService,
-    ValidateStateByNameOrAliasService,
-    ValidateCityByNameOrAliasService,
-    ValidateInputParamsService,
     SeedNeighborhoodsByStateService,
-    LogSeedJobService,
-    GetCitiesByStateService
+    LogSeedJobService
   ]
 })
 export class NeighborhoodsModule {}

@@ -3,26 +3,30 @@ import { SeedNeighborhoodsByStateService } from '../../../../../../../src/micros
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { SearchNeighborhoodsInput } from '../../../../../../../src/microservice/domain/model/search/search-neighborhoods-input.model';
+import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
-import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get-cities-by-state.service';
+import { GetCitiesByStateService } from '../../../../../../../src/microservice/domain/service/cities/get/get-cities-by-state.service';
 import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { LogSeedJobService } from '../../../../../../../src/microservice/domain/service/logseed/log-seed-job.service';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
-import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate-input-params.service';
+import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { Translations } from '../../../../../../../src/microservice/domain/model/translations.model';
 import { EnumTranslations } from '../../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { NotFoundException } from '../../../../../../../src/core/error-handling/exception/not-found.exception';
+import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 
 describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;
 
   const mockGetCitiesByStateService = {
-    getCitiesByState: () => {
+    findCitiesByState: () => {
       return;
-    },
+    }
+  };
+
+  const mockGetNeighborhoodsByStateService = {
     groupByCity: () => {
       return;
     }
@@ -122,6 +126,10 @@ describe('SeedNeighborhoodsByStateService', () => {
           provide: LogSeedJobService,
           useValue: mockLogSeedService
         },
+        {
+          provide: GetNeighborhoodsByStateService,
+          useValue: mockGetNeighborhoodsByStateService
+        },
         SeedNeighborhoodsByStateService
       ]
     }).compile();
@@ -134,7 +142,7 @@ describe('SeedNeighborhoodsByStateService', () => {
   describe('seedNeighborhoodsByStateService', () => {
     it('should call seedNeighborhoodsByStateService and return "Seeded"', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -142,10 +150,10 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns(mockCities());
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.seedNeighborhoodsByState(searchParams);
 
@@ -159,7 +167,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
     it('should call seedNeighborhoodsByStateService and return "Nothing to seed"', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -167,10 +175,10 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns([]);
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.seedNeighborhoodsByState(searchParams);
 
@@ -184,7 +192,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
     it('should call seedNeighborhoodsByStateService with error and call logSeedService', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .returns([]);
 
       const validateStub = sinon
@@ -192,7 +200,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         .returns(mockConvertedSearch());
 
       const getCitiesByStateStub = sinon
-        .stub(mockGetCitiesByStateService, 'getCitiesByState')
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
         .returns(mockCities());
 
       const mockError = new NotFoundException('Neighborhoods');
@@ -206,7 +214,7 @@ describe('SeedNeighborhoodsByStateService', () => {
         'logSeedByState'
       );
 
-      const searchParams = new SearchNeighborhoodsInput('brasil', 'sc');
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       await sut.seedNeighborhoodsByState(searchParams);
 
@@ -246,7 +254,7 @@ describe('SeedNeighborhoodsByStateService', () => {
 
       await sut.seedByCity(mockConvertedSearch(), mockCity);
 
-      const spySearch = new SearchNeighborhoodsInput('brasil', 'SC', 'Orleans');
+      const spySearch = new SearchNeighborhoodsDTO('brasil', 'SC', 'Orleans');
       const spyConvertedSearch = mockConvertedSearch();
       spyConvertedSearch.city = mockCity;
 
@@ -263,7 +271,7 @@ describe('SeedNeighborhoodsByStateService', () => {
   describe('getSeededCities', () => {
     it('should call getSeededCities and return the correct values', async () => {
       const groupByCityStub = sinon
-        .stub(mockGetCitiesByStateService, 'groupByCity')
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
         .resolves(mockAggregatedCities);
 
       const actual = await sut.getSeededCities(1);
