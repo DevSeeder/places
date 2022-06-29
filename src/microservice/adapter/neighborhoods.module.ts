@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PuppeteerModule } from 'nest-puppeteer';
 import { NeighborhoodsController } from './controller/neighborhoods.controller';
-import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
 import { GetNeighborhoodsByCityService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import configuration from '../../config/configuration';
 import { NeighborhoodsMongoose } from './repository/neighborhoods/neighborhoods-mongoose.repository';
@@ -14,10 +12,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { CitiesModule } from './cities.module';
+import { SeedModule } from './seed.module';
 
 @Module({
   imports: [
-    PuppeteerModule.forFeature(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration]
@@ -25,14 +23,11 @@ import { CitiesModule } from './cities.module';
     MongooseModule.forFeature([
       { name: Neighborhood.name, schema: NeighborhoodSchema }
     ]),
-    CitiesModule
+    CitiesModule,
+    SeedModule
   ],
   controllers: [NeighborhoodsController],
   providers: [
-    {
-      provide: 'GuiaMaisRepository',
-      useClass: GuiaMaisRepository
-    },
     NeighborhoodsMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
@@ -41,7 +36,8 @@ import { CitiesModule } from './cities.module';
   exports: [
     NeighborhoodsMongoose,
     GetNeighborhoodsByCityService,
-    GetNeighborhoodsByStateService
+    GetNeighborhoodsByStateService,
+    SaveNeighborhoodsByCityService
   ]
 })
 export class NeighborhoodsModule {}

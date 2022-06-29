@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { SearchNeighborhoodsDTO } from 'src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
-import { SeedNeighborhoodsByStateService } from 'src/microservice/domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
+import { SeedNeighborhoodsByStateService } from 'src/microservice/domain/service/seed/seed-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 

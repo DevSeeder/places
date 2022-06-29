@@ -10,7 +10,7 @@ import { GetNeighborhoodsByCityService } from '../../../../../src/microservice/d
 import { SaveNeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { SearchNeighborhoodsDTO } from '../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { GetNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
-import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
+import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/seed/seed-neighborhoods-by-state.service';
 import { ValidateInputParamsService } from '../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 
 describe('NeighborhoodsController', () => {

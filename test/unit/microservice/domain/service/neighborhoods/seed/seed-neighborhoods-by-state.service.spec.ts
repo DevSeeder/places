@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SeedNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
+import { SeedNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/seed/seed-neighborhoods-by-state.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
