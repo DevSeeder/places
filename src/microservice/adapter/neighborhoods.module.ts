@@ -13,10 +13,6 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
 import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
-import { SeedNeighborhoodsByStateService } from '../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
-import { LogSeed, LogSeedSchema } from '../domain/schemas/logseed.schema';
-import { LogSeedMongoose } from './repository/logseed/logseed-mongoose.repository';
-import { LogSeedJobService } from '../domain/service/logseed/log-seed-job.service';
 import { CitiesModule } from './cities.module';
 
 @Module({
@@ -27,8 +23,7 @@ import { CitiesModule } from './cities.module';
       load: [configuration]
     }),
     MongooseModule.forFeature([
-      { name: Neighborhood.name, schema: NeighborhoodSchema },
-      { name: LogSeed.name, schema: LogSeedSchema }
+      { name: Neighborhood.name, schema: NeighborhoodSchema }
     ]),
     CitiesModule
   ],
@@ -39,12 +34,14 @@ import { CitiesModule } from './cities.module';
       useClass: GuiaMaisRepository
     },
     NeighborhoodsMongoose,
-    LogSeedMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
-    SaveNeighborhoodsByCityService,
-    SeedNeighborhoodsByStateService,
-    LogSeedJobService
+    SaveNeighborhoodsByCityService
+  ],
+  exports: [
+    NeighborhoodsMongoose,
+    GetNeighborhoodsByCityService,
+    GetNeighborhoodsByStateService
   ]
 })
 export class NeighborhoodsModule {}

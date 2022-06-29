@@ -9,6 +9,7 @@ import { CountriesModule } from './microservice/adapter/countries.module';
 import { ExtensionsModule } from './microservice/adapter/helper/extensions/exensions.module';
 import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/custom-puppeteer.module';
 import { NeighborhoodsModule } from './microservice/adapter/neighborhoods.module';
+import { SeedModule } from './microservice/adapter/seed.module';
 import { StatesModule } from './microservice/adapter/states.module';
 
 @Module({
@@ -29,7 +30,8 @@ import { StatesModule } from './microservice/adapter/states.module';
     NeighborhoodsModule,
     CitiesModule,
     StatesModule,
-    CountriesModule
+    CountriesModule,
+    SeedModule
   ],
   controllers: [],
   providers: [
