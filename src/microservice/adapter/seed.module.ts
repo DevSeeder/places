@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SeedNeighborhoodsByStateService } from '../domain/service/seed/seed-neighborhoods-by-state.service';
@@ -12,6 +12,11 @@ import { CitiesModule } from './cities.module';
 import { SeedNeighborhoodsByCityService } from '../domain/service/seed/seed-neighborhoods-by-city.service';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
+import {
+  ClientProxyFactory,
+  ClientsModule,
+  Transport
+} from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -33,7 +38,27 @@ import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-ma
     LogSeedMongoose,
     SeedNeighborhoodsByStateService,
     SeedNeighborhoodsByCityService,
-    LogSeedJobService
+    LogSeedJobService,
+    {
+      provide: 'CLIENT_AMQP_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [
+              configService.get<string>('microservices.amqp.rabbitmq.url')
+            ],
+            queue: configService.get<string>(
+              'microservices.amqp.rabbitmq.queue'
+            ),
+            queueOptions: {
+              durable: true
+            }
+          }
+        });
+      },
+      inject: [ConfigService]
+    }
   ],
   exports: [SeedNeighborhoodsByCityService]
 })

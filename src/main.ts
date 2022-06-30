@@ -23,8 +23,8 @@ async function bootstrap() {
   await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: [`amqp://user:bitnami@localhost:5672/places`],
-      queue: 'seed-places',
+      urls: [configService.get<string>('microservices.amqp.rabbitmq.url')],
+      queue: configService.get<string>('microservices.amqp.rabbitmq.queue'),
       queueOptions: {
         durable: true
       }

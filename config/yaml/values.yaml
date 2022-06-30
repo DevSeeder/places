@@ -5,6 +5,11 @@ repository:
 database:
   mongodb:
     connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'
+microservices:
+  amqp:
+    rabbitmq:
+      url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
+      queue: seed-places
 api:
   port: 3000
 doc:
