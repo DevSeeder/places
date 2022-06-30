@@ -5,7 +5,6 @@ import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,19 +18,6 @@ async function bootstrap() {
   const configService = app.get<ConfigService>(ConfigService);
 
   buildSwagger(app, configService);
-
-  await app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [configService.get<string>('microservices.amqp.rabbitmq.url')],
-      queue: configService.get<string>('microservices.amqp.rabbitmq.queue'),
-      queueOptions: {
-        durable: true
-      }
-    }
-  });
-
-  app.startAllMicroservices();
 
   return await app.listen(configService.get<string>('api.port'));
 }
