@@ -13,6 +13,7 @@ import { SeedNeighborhoodsByCityService } from '../domain/service/seed/seed-neig
 import { PuppeteerModule } from 'nest-puppeteer';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
 import { AmqplibModule } from '@ccmos/nestjs-amqplib';
+import { SenderMessageService } from '../domain/service/amqp/sender-message.service';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { AmqplibModule } from '@ccmos/nestjs-amqplib';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        url: config.get<string>('microservices.amqp.rabbitmq.url')
+        url: config.get<string>('microservices.rabbitmq.url')
       })
     })
   ],
@@ -41,7 +42,8 @@ import { AmqplibModule } from '@ccmos/nestjs-amqplib';
     LogSeedMongoose,
     SeedNeighborhoodsByStateService,
     SeedNeighborhoodsByCityService,
-    LogSeedJobService
+    LogSeedJobService,
+    SenderMessageService
   ],
   exports: [SeedNeighborhoodsByCityService]
 })

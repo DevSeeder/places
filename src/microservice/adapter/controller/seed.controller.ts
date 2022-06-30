@@ -4,14 +4,14 @@ import { SearchNeighborhoodsDTO } from '../../domain/model/search/neighborhoods/
 import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/seed-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
-import { AmqplibService } from '@ccmos/nestjs-amqplib';
+import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
 
 @ApiExcludeController()
 @Controller('seed')
 export class SeedController extends AbstractController {
   constructor(
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
-    private amqplib: AmqplibService
+    private readonly senderMessageService: SenderMessageService
   ) {
     super();
   }
@@ -31,12 +31,14 @@ export class SeedController extends AbstractController {
   @Get('/sendEvent')
   async seedEvent(): Promise<NestResponse> {
     const msg = {
-      city: 'POA'
+      city: 'ORL'
     };
-    await this.amqplib.sendToQueue({ queue: 'seed-places', payload: msg });
-    return this.buildResponse(HttpStatus.OK, {
-      success: true,
-      response: 'EVENT SENT'
-    });
+    return this.buildResponse(
+      HttpStatus.OK,
+      await this.senderMessageService.sendMessage(
+        'seed.neighborhoods.process',
+        msg
+      )
+    );
   }
 }
