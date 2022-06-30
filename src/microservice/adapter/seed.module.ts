@@ -14,6 +14,7 @@ import { PuppeteerModule } from 'nest-puppeteer';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
 import { AmqplibModule } from '@ccmos/nestjs-amqplib';
 import { SenderMessageService } from '../domain/service/amqp/sender-message.service';
+import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -43,7 +44,23 @@ import { SenderMessageService } from '../domain/service/amqp/sender-message.serv
     SeedNeighborhoodsByStateService,
     SeedNeighborhoodsByCityService,
     LogSeedJobService,
-    SenderMessageService
+    SenderMessageService,
+    {
+      provide: 'CLIENT_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('microservices.rabbitmq.url')],
+            queue: configService.get<string>('microservices.rabbitmq.queue'),
+            queueOptions: {
+              durable: true
+            }
+          }
+        });
+      },
+      inject: [ConfigService]
+    }
   ],
   exports: [SeedNeighborhoodsByCityService]
 })

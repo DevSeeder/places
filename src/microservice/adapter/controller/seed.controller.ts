@@ -5,13 +5,17 @@ import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/seed-
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
+import { ConfigHelper, EnumConfigAMQP } from '../helper/config/config.helper';
 
 @ApiExcludeController()
 @Controller('seed')
 export class SeedController extends AbstractController {
   constructor(
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
-    private readonly senderMessageService: SenderMessageService
+    private readonly senderMessageService: SenderMessageService,
+    private configService: ConfigService
   ) {
     super();
   }
@@ -35,10 +39,21 @@ export class SeedController extends AbstractController {
     };
     return this.buildResponse(
       HttpStatus.OK,
-      await this.senderMessageService.sendMessage(
-        'seed.neighborhoods.process',
+      await this.senderMessageService.emmitEvent(
+        'seed.neighborhoods.by.city.process',
         msg
       )
     );
+  }
+
+  @EventPattern(
+    ConfigHelper.getConfig(
+      'seed.neighborhoods.by.city.process',
+      EnumConfigAMQP.EVENT
+    )
+  )
+  getNotifications(@Payload() data: object, @Ctx() context: RmqContext) {
+    console.log(`Pattern: ${context.getPattern()}`);
+    console.log(`Payload: ${data}`);
   }
 }
