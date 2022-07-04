@@ -5,12 +5,14 @@ import {
   ValidOutputSearchByCity,
   ValidOutputSearchByState
 } from '../../interface/valid-output-search/valid-outpu-search.interface';
-import { EnumTranslations } from '../../enumerators/enum-translations.enumerator';
-import { City } from '../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodByCity } from '../../model/neighborhoods/neighborhood-by-city.model';
 import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from '../neighborhoods/save-neighborhoods-by-city.service';
+import { EventSeedByCityDTO } from '../../model/dto/events/event-seed-by-city-dto.model';
+import { ValidateInputParamsService } from '../validate/validate-input-params.service';
+import { City } from '../../schemas/city.schema';
+import { LogSeedJobService } from '../logseed/log-seed-job.service';
 
 @Injectable()
 export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
@@ -18,27 +20,33 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
     mongoRepository: NeighborhoodsMongoose,
     @Inject('GuiaMaisRepository')
     private readonly guiaMaisRepository: GuiaMaisRepository,
-    private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService
+    protected readonly validateService: ValidateInputParamsService,
+    private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
+    private readonly logSeedService: LogSeedJobService
   ) {
     super(mongoRepository);
   }
 
-  async seedNeighborhoodsByCity(
-    convertedSearch: ValidOutputSearchByState,
-    city: City
-  ) {
+  async seedNeighborhoodsByCity(eventPayload: EventSeedByCityDTO) {
     const searchParamsByCity = new SearchNeighborhoodsDTO(
-      convertedSearch.country.translations[EnumTranslations.BR],
-      convertedSearch.state.stateCode,
-      city.name
+      eventPayload.reference.country,
+      eventPayload.reference.stateCode,
+      eventPayload.reference.cityName
     );
 
-    this.logger.log(`Seeding city[${city.id}] ${city.name}...`);
-    await this.searchByPuppeterAndSave(searchParamsByCity, {
-      country: convertedSearch.country,
-      state: convertedSearch.state,
-      city
-    });
+    const convertedSearch =
+      await this.validateService.validateAndConvertSearchByCity(
+        searchParamsByCity
+      );
+
+    try {
+      this.logger.log(
+        `Seeding city[${eventPayload.reference.cityId}] ${eventPayload.reference.cityName}...`
+      );
+      await this.searchByPuppeterAndSave(searchParamsByCity, convertedSearch);
+    } catch (err) {
+      await this.logErrorSeedJob(convertedSearch, convertedSearch.city, err);
+    }
   }
 
   async searchByPuppeterAndSave(
@@ -57,5 +65,21 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
     );
 
     return resPuppeteer;
+  }
+
+  async logErrorSeedJob(
+    convertedSearch: ValidOutputSearchByState,
+    city: City,
+    err: Error
+  ): Promise<void> {
+    this.logger.error(`Error City[${city.id}] ${city.name}`);
+    this.logger.error(err.message);
+    console.error(err);
+    await this.logSeedService.logSeedByState(
+      convertedSearch.country,
+      convertedSearch.state,
+      city,
+      err
+    );
   }
 }

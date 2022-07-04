@@ -15,7 +15,7 @@ export class SenderMessageService extends AbstractService {
     super();
   }
 
-  async emmitEvent(configPattern: string, payload: object) {
+  async emitEvent(configPattern: string, payload: object) {
     const eventPattern = this.configService.get<string>(
       `${EnumConfigAMQP.EVENT}.${configPattern}`
     );
@@ -27,7 +27,7 @@ export class SenderMessageService extends AbstractService {
     };
   }
 
-  async sendMessage(queue: string, payload: object) {
+  async sendMessagetOQueue(queue: string, payload: object) {
     queue = this.configService.get<string>(
       `microservices.rabbitmq.queue.${queue}`
     );

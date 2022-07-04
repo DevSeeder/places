@@ -1,13 +1,15 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { SearchNeighborhoodsDTO } from '../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/seed-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { ConfigHelper, EnumConfigAMQP } from '../helper/config/config.helper';
+import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-city-dto.model';
+import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/seed-neighborhoods-by-city.service';
 
 const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
   'seed.neighborhoods.by.city.process',
@@ -19,6 +21,7 @@ const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
 export class SeedController extends AbstractController {
   constructor(
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
+    private readonly seedNeighborhoodsByCityService: SeedNeighborhoodsByCityService,
     private readonly senderMessageService: SenderMessageService,
     private configService: ConfigService
   ) {
@@ -37,14 +40,11 @@ export class SeedController extends AbstractController {
     );
   }
 
-  @Get('/sendEvent')
-  async seedEvent(): Promise<NestResponse> {
-    const msg = {
-      city: 'ORL'
-    };
+  @Post('/sendEvent')
+  async seedEvent(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.senderMessageService.emmitEvent(
+      await this.senderMessageService.emitEvent(
         'seed.neighborhoods.by.city.process',
         msg
       )
@@ -52,8 +52,7 @@ export class SeedController extends AbstractController {
   }
 
   @EventPattern(EVENT_PATTERN_SEED_BY_CITY)
-  async getNotifications(@Payload() data: object, @Ctx() context: RmqContext) {
-    console.log(`Pattern: ${context.getPattern()}`);
-    console.log(`Payload: ${data}`);
+  async seedNeighborhoodsByCity(@Payload() data: EventSeedByCityDTO) {
+    this.seedNeighborhoodsByCityService.seedNeighborhoodsByCity(data);
   }
 }

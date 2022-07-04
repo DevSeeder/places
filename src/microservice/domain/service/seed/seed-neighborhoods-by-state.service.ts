@@ -8,10 +8,10 @@ import { GetNeighborhoodsByCityService } from '../neighborhoods/get/get-neighbor
 import { ValidOutputSearchByState } from '../../interface/valid-output-search/valid-outpu-search.interface';
 import { City } from '../../schemas/city.schema';
 import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { LogSeedJobService } from '../logseed/log-seed-job.service';
 import { CustomResponse } from '../../../../core/interface/custom-response.interface';
 import { GetNeighborhoodsByStateService } from '../neighborhoods/get/get-neighborhoods-by-state.service';
-import { SeedNeighborhoodsByCityService } from './seed-neighborhoods-by-city.service';
+import { SenderMessageService } from '../amqp/sender-message.service';
+import { EventSeedByCityDTOBuilder } from '../../../adapter/helper/builder/seed/event-seed-by-city-dto.builder';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
@@ -21,8 +21,7 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
     private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
     private readonly getCitiesByStateService: GetCitiesByStateService,
-    private readonly logSeedService: LogSeedJobService,
-    private readonly seedByCityService: SeedNeighborhoodsByCityService
+    private readonly senderMessage: SenderMessageService
   ) {
     super(mongoRepository);
   }
@@ -57,33 +56,13 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     }
 
     for await (const item of cities) {
-      try {
-        this.seedByCityService.seedNeighborhoodsByCity(convertedSearch, item);
-      } catch (err) {
-        this.logger.error(`Error City... ${item.name} - ${item.id}`);
-        this.logger.error(err.message);
-        console.error(err);
-        await this.logErrorSeedJob(convertedSearch, item, err);
-      }
+      await this.emmitEventSeedByCity(convertedSearch, item);
     }
 
     return {
       success: true,
       response: 'Seeded'
     };
-  }
-
-  async logErrorSeedJob(
-    convertedSearch: ValidOutputSearchByState,
-    city: City,
-    err: Error
-  ): Promise<void> {
-    await this.logSeedService.logSeedByState(
-      convertedSearch.country,
-      convertedSearch.state,
-      city,
-      err
-    );
   }
 
   async getSeededCities(stateId: number): Promise<number[]> {
@@ -93,5 +72,16 @@ export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
     return aggregatedCities.map((item) => {
       return item._id.cityId;
     });
+  }
+
+  async emmitEventSeedByCity(
+    convertedSearch: ValidOutputSearchByState,
+    city: City
+  ) {
+    const eventDTO = new EventSeedByCityDTOBuilder(convertedSearch).build(city);
+    this.senderMessage.emitEvent(
+      'seed.neighborhoods.by.city.process',
+      eventDTO
+    );
   }
 }

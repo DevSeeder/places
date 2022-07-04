@@ -12,16 +12,14 @@ export abstract class PlacesMongooseRepository<
 
   async findByNameOrAliasOrId(ref: string, extraSearch = {}): Promise<any[]> {
     const nameRegex = new RegExp(ref, 'i');
-    return this.model
-      .find({
-        ...extraSearch,
-        $or: [
-          { alias: { $in: [nameRegex] } },
-          isNaN(parseInt(ref)) ? { name: nameRegex } : { id: ref }
-        ]
-      })
-      .lean()
-      .exec();
+    const querySearch = {
+      ...extraSearch,
+      $or: [
+        { alias: { $in: [nameRegex] } },
+        isNaN(parseInt(ref)) ? { name: nameRegex } : { id: ref }
+      ]
+    };
+    return this.model.find(querySearch).lean().exec();
   }
 
   async findBySearchParams(

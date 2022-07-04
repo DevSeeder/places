@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { LogSeedMongoose } from '../../../adapter/repository/logseed/logseed-mongoose.repository';
 import { EnumTypeLogSeed } from '../../enumerators/enum-type-logseed';
-import { City } from '../../schemas/city.schema';
-import { Country } from '../../schemas/country.schema';
 import {
-  LogSeed,
   ReferenceLogSeed,
   ReferenceNeighborhoodsByState
-} from '../../schemas/logseed.schema';
+} from '../../model/logseed/reference/reference-neighborhoods-by-state.model';
+import { City } from '../../schemas/city.schema';
+import { Country } from '../../schemas/country.schema';
+import { LogSeed } from '../../schemas/logseed.schema';
 import { State } from '../../schemas/state.schema';
 import { AbstractService } from '../abstract-service.service';
 
