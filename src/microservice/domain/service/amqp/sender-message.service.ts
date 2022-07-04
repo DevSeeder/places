@@ -2,6 +2,7 @@ import { AmqplibService } from '@ccmos/nestjs-amqplib';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { EnumConfigAMQP } from 'src/microservice/adapter/helper/config/config.helper';
 import { AbstractService } from '../abstract-service.service';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class SenderMessageService extends AbstractService {
 
   async emmitEvent(configPattern: string, payload: object) {
     const eventPattern = this.configService.get<string>(
-      `microservices.rabbitmq.event.${configPattern}`
+      `${EnumConfigAMQP.EVENT}.${configPattern}`
     );
     this.logger.log(`Emmiting event '${eventPattern}'...`);
     await this.client.emit<string>(eventPattern, payload);

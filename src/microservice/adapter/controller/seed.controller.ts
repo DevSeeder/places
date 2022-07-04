@@ -9,6 +9,11 @@ import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { ConfigHelper, EnumConfigAMQP } from '../helper/config/config.helper';
 
+const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
+  'seed.neighborhoods.by.city.process',
+  EnumConfigAMQP.EVENT
+);
+
 @ApiExcludeController()
 @Controller('seed')
 export class SeedController extends AbstractController {
@@ -46,13 +51,8 @@ export class SeedController extends AbstractController {
     );
   }
 
-  @EventPattern(
-    ConfigHelper.getConfig(
-      'seed.neighborhoods.by.city.process',
-      EnumConfigAMQP.EVENT
-    )
-  )
-  getNotifications(@Payload() data: object, @Ctx() context: RmqContext) {
+  @EventPattern(EVENT_PATTERN_SEED_BY_CITY)
+  async getNotifications(@Payload() data: object, @Ctx() context: RmqContext) {
     console.log(`Pattern: ${context.getPattern()}`);
     console.log(`Payload: ${data}`);
   }

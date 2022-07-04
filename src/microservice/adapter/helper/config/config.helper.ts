@@ -5,9 +5,9 @@ export enum EnumConfigAMQP {
 }
 
 export class ConfigHelper {
-  static async getConfig(config: string, typeConfig: string) {
+  static getConfig(config: string, typeConfig: string) {
     if (config.split('.').length < 2) return config;
-    let resConfig = await configuration();
+    let resConfig = configuration();
     resConfig = this.resolveConfig(resConfig, typeConfig);
     resConfig = this.resolveConfig(resConfig, config);
     return resConfig;
