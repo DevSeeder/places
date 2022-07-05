@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@ccmos/nestjs-amqplib": "^0.0.10",
+    "@golevelup/nestjs-rabbitmq": "^2.4.0",
     "@golevelup/ts-jest": "^0.3.3",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.1",

@@ -1,7 +1,10 @@
 import { AmqplibService } from '@ccmos/nestjs-amqplib';
-import { Inject, Injectable } from '@nestjs/common';
+import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { NestResponse } from 'src/core/http/nest-response';
+import { NestResponseBuilder } from 'src/core/http/nest-response.builder';
 import { EnumConfigAMQP } from 'src/microservice/adapter/helper/config/config.helper';
 import { AbstractService } from '../abstract-service.service';
 
@@ -42,5 +45,14 @@ export class SenderMessageService extends AbstractService {
       success: true,
       response: 'Message sent!'
     };
+  }
+
+  @RabbitSubscribe({
+    exchange: 'seed-exc',
+    routingKey: 'sub-1',
+    queue: 'seed-places-msg'
+  })
+  public async pubSubHandler(msg) {
+    console.log(`Received message: ${JSON.stringify(msg)}`);
   }
 }

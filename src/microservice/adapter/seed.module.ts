@@ -15,6 +15,7 @@ import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-ma
 import { AmqplibModule } from '@ccmos/nestjs-amqplib';
 import { SenderMessageService } from '../domain/service/amqp/sender-message.service';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
   imports: [
@@ -31,6 +32,19 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         url: config.get<string>('microservices.rabbitmq.url')
+      })
+    }),
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        exchanges: [
+          {
+            name: 'seed-exc',
+            type: 'topic'
+          }
+        ],
+        uri: config.get<string>('microservices.rabbitmq.url')
       })
     })
   ],
@@ -62,6 +76,6 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       inject: [ConfigService]
     }
   ],
-  exports: [SeedNeighborhoodsByCityService]
+  exports: [SeedNeighborhoodsByCityService, SenderMessageService]
 })
 export class SeedModule {}
