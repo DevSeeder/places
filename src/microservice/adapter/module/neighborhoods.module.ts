@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { NeighborhoodsController } from './controller/neighborhoods.controller';
-import { GetNeighborhoodsByCityService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
-import configuration from '../../config/configuration';
-import { NeighborhoodsMongoose } from './repository/neighborhoods/neighborhoods-mongoose.repository';
+import { NeighborhoodsController } from '../controller/neighborhoods.controller';
+import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
+import configuration from '../../../config/configuration';
+import { NeighborhoodsMongoose } from '../repository/neighborhoods/neighborhoods-mongoose.repository';
 import {
   Neighborhood,
   NeighborhoodSchema
-} from '../domain/schemas/neighborhood.schema';
+} from '../../domain/schemas/neighborhood.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { SaveNeighborhoodsByCityService } from '../domain/service/neighborhoods/save-neighborhoods-by-city.service';
-import { GetNeighborhoodsByStateService } from '../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
+import { SaveNeighborhoodsByCityService } from '../../domain/service/neighborhoods/save-neighborhoods-by-city.service';
+import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { CitiesModule } from './cities.module';
 import { SeedModule } from './seed.module';
 

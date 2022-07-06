@@ -3,7 +3,10 @@ import {
   EnumConfigAMQP
 } from '../../microservice/adapter/helper/config/config.helper';
 
-const QUEUE_SEED_PUBLISHES = 'seed-messages';
+const QUEUE_SEED_MESSAGES = ConfigHelper.getConfig(
+  'messages',
+  EnumConfigAMQP.QUEUE
+);
 
 /* EXPORT */
 export const routeKeySub = 'sub-1';
@@ -14,10 +17,8 @@ export const subscribeSeedByCitySucess = {
     EnumConfigAMQP.EXCHANGE
   ),
   routingKey: routeKeySub,
-  queue: QUEUE_SEED_PUBLISHES
+  queue: QUEUE_SEED_MESSAGES
 };
-
-console.log(subscribeSeedByCitySucess);
 
 export const subscribeSeedByCityError = {
   exchange: ConfigHelper.getConfig(
@@ -25,5 +26,5 @@ export const subscribeSeedByCityError = {
     EnumConfigAMQP.EXCHANGE
   ),
   routingKey: routeKeySub,
-  queue: QUEUE_SEED_PUBLISHES
+  queue: QUEUE_SEED_MESSAGES
 };

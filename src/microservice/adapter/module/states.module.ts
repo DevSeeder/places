@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configuration from '../../config/configuration';
+import configuration from '../../../config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
-import { State, StateSchema } from '../domain/schemas/state.schema';
-import { ValidateStateByNameOrAliasService } from '../domain/service/states/validate-state-by-name-or-alias.service';
-import { StatesMongoose } from './repository/states/states-mongoose.repository';
-import { GetStatesByCountryService } from '../domain/service/states/get-states-by-country.service';
-import { StatesController } from './controller/states.controller';
+import { State, StateSchema } from '../../domain/schemas/state.schema';
+import { ValidateStateByNameOrAliasService } from '../../domain/service/states/validate-state-by-name-or-alias.service';
+import { StatesMongoose } from '../repository/states/states-mongoose.repository';
+import { GetStatesByCountryService } from '../../domain/service/states/get-states-by-country.service';
+import { StatesController } from '../controller/states.controller';
 import { CountriesModule } from './countries.module';
-import { ValidateCountryByNameOrAliasService } from '../domain/service/countries/validate-country-by-name-or-alias.service';
+import { ValidateCountryByNameOrAliasService } from '../../domain/service/countries/validate-country-by-name-or-alias.service';
 
 @Module({
   imports: [

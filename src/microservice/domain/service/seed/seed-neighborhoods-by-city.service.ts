@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
-import { NeighborhoodsService } from '../neighborhoods/neighborhoods.service';
 import {
   ValidOutputSearchByCity,
   ValidOutputSearchByState
 } from '../../interface/valid-output-search/valid-outpu-search.interface';
-import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { NeighborhoodByCity } from '../../model/neighborhoods/neighborhood-by-city.model';
 import { GuiaMaisRepository } from '../../../adapter/repository/neighborhoods/puppeteer/guia-mais.repository';
 import { SaveNeighborhoodsByCityService } from '../neighborhoods/save-neighborhoods-by-city.service';
@@ -15,18 +13,22 @@ import { City } from '../../schemas/city.schema';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { subscribeSeedByCitySucess } from 'src/config/amqp/rabbitmq-subscribe.config';
+import { AbstractService } from '../abstract-service.service';
+import { SenderMessageService } from '../amqp/sender-message.service';
+import { MessageSeedNeighborhoodsByCitySuccessDTO } from '../../model/dto/messages/message-seed-neighborhoods-by-city-success-dto.model';
+import { ReferenceEventByCityBuilder } from 'src/microservice/adapter/helper/builder/dto/reference/reference-event-by-city.builder';
 
 @Injectable()
-export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
+export class SeedNeighborhoodsByCityService extends AbstractService {
   constructor(
-    mongoRepository: NeighborhoodsMongoose,
     @Inject('GuiaMaisRepository')
     private readonly guiaMaisRepository: GuiaMaisRepository,
     protected readonly validateService: ValidateInputParamsService,
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
-    private readonly logSeedService: LogSeedJobService
+    private readonly logSeedService: LogSeedJobService,
+    private readonly senderMessageService: SenderMessageService
   ) {
-    super(mongoRepository);
+    super();
   }
 
   async seedNeighborhoodsByCity(eventPayload: EventSeedByCityDTO) {
@@ -45,7 +47,12 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
       this.logger.log(
         `Seeding city[${eventPayload.reference.cityId}] ${eventPayload.reference.cityName}...`
       );
-      await this.searchByPuppeterAndSave(searchParamsByCity, convertedSearch);
+      const resPuppeteer = await this.searchByPuppeterAndSave(
+        searchParamsByCity,
+        convertedSearch
+      );
+
+      await this.publishSuccess(convertedSearch, resPuppeteer);
     } catch (err) {
       await this.logErrorSeedJob(convertedSearch, convertedSearch.city, err);
     }
@@ -69,6 +76,21 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
     return resPuppeteer;
   }
 
+  async publishSuccess(convertedSearch, resPuppeteer) {
+    const reference = new ReferenceEventByCityBuilder(convertedSearch).build(
+      convertedSearch.city
+    );
+    const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
+      resPuppeteer.length,
+      new Date(),
+      reference
+    );
+    await this.senderMessageService.publishMessage(
+      'seed.neighborhoods.by.city.success',
+      messageDTO
+    );
+  }
+
   async logErrorSeedJob(
     convertedSearch: ValidOutputSearchByState,
     city: City,
@@ -85,8 +107,8 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
     );
   }
 
-  @RabbitSubscribe(subscribeSeedByCitySucess)
-  public async pubSubHandler(msg) {
-    console.log(`Received message: ${JSON.stringify(msg)}`);
-  }
+  // @RabbitSubscribe(subscribeSeedByCitySucess)
+  // public async readSuccess(msg) {
+  //   console.log(`Received message: ${JSON.stringify(msg)}`);
+  // }
 }

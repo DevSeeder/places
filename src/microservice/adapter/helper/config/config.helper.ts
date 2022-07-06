@@ -8,10 +8,16 @@ export enum EnumConfigAMQP {
 
 export class ConfigHelper {
   static getConfig(config: string, typeConfig: string): string {
-    if (config.split('.').length < 2) return config;
+    if (config.split('.').length < 1) return config;
+
     let resConfig = configuration();
+
     resConfig = this.resolveConfig(resConfig, typeConfig);
+
+    if (typeof resConfig == 'string') return resConfig;
+
     resConfig = this.resolveConfig(resConfig, config);
+
     return typeof resConfig == 'string' ? resConfig : null;
   }
 

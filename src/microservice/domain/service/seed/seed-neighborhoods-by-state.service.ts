@@ -11,7 +11,7 @@ import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods
 import { CustomResponse } from '../../../../core/interface/custom-response.interface';
 import { GetNeighborhoodsByStateService } from '../neighborhoods/get/get-neighborhoods-by-state.service';
 import { SenderMessageService } from '../amqp/sender-message.service';
-import { EventSeedByCityDTOBuilder } from '../../../adapter/helper/builder/seed/event-seed-by-city-dto.builder';
+import { EventSeedByCityDTOBuilder } from '../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends NeighborhoodsService {

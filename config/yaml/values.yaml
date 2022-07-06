@@ -10,7 +10,7 @@ microservices:
     url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
     queue:
       events: 'seed-events'
-      publishes: 'seed-messages'
+      messages: 'seed-messages'
     exchange:
       seed:
         neighborhoods:

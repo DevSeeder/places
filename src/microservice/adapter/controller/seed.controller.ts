@@ -12,7 +12,7 @@ import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-
 import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/seed-neighborhoods-by-city.service';
 
 const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
-  'seed.neighborhoods.by.city.process',
+  'seed.neighborhoods.by.city',
   EnumConfigAMQP.EVENT
 );
 

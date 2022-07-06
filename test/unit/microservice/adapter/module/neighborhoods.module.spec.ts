@@ -1,20 +1,20 @@
 import { HttpStatus } from '@nestjs/common';
-import { NeighborhoodsModule } from '../../../../src/microservice/adapter/neighborhoods.module';
+import { NeighborhoodsModule } from '../../../../../src/microservice/adapter/module/neighborhoods.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NeighborhoodsController } from '../../../../src/microservice/adapter/controller/neighborhoods.controller';
-import { ExtensionsModule } from '../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { NeighborhoodsMongoose } from '../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { NeighborhoodsController } from '../../../../../src/microservice/adapter/controller/neighborhoods.controller';
+import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { NeighborhoodsMongoose } from '../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
 import { getModelToken } from '@nestjs/mongoose';
-import { Neighborhood } from '../../../../src/microservice/domain/schemas/neighborhood.schema';
-import { mockModelMongoose } from '../../../mock/mongoose/mock-mongoose';
-import { Country } from '../../../../src/microservice/domain/schemas/country.schema';
-import { CountriesMongoose } from '../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
-import { State } from '../../../../src/microservice/domain/schemas/state.schema';
-import { City } from '../../../../src/microservice/domain/schemas/city.schema';
-import { StatesMongoose } from '../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { CitiesMongoose } from '../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
-import { LogSeed } from '../../../../src/microservice/domain/schemas/logseed.schema';
-import { LogSeedMongoose } from '../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
+import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
+import { Country } from '../../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { State } from '../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../src/microservice/domain/schemas/city.schema';
+import { StatesMongoose } from '../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
+import { CitiesMongoose } from '../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { LogSeed } from '../../../../../src/microservice/domain/schemas/logseed.schema';
+import { LogSeedMongoose } from '../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
 
 describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
