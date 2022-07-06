@@ -44,3 +44,12 @@ All notable changes to this project will be documented in this file.
 - Swagger Openapi automation
 - Optimize Neighborhoods by State
 - Sort Collections result
+
+## [0.0.6] - 2022-07
+
+### Added
+
+- AQMP Structure
+- RabbitMQ Implementation
+- Async Seed Neighborhoods By State Job
+- Fix regex filter in mongodb query

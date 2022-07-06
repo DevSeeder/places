@@ -64,7 +64,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
       if (objSearch[key] == null) return;
       objSearchRegex[key] = objSearch[key];
       if (typeof objSearch[key] === 'string')
-        objSearchRegex[key] = new RegExp(objSearch[key], 'i');
+        objSearchRegex[key] = new RegExp(`^${objSearch[key]}$`, 'i');
     });
     return objSearchRegex;
   }

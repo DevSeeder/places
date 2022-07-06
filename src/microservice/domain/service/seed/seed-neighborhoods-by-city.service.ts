@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import {
   ValidOutputSearchByCity,
@@ -12,11 +12,13 @@ import { ValidateInputParamsService } from '../validate/validate-input-params.se
 import { City } from '../../schemas/city.schema';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { subscribeSeedByCitySucess } from 'src/config/amqp/rabbitmq-subscribe.config';
+import { subscribeSeedByCitySucess } from '../../../../config/amqp/rabbitmq-subscribe.config';
 import { AbstractService } from '../abstract-service.service';
 import { SenderMessageService } from '../amqp/sender-message.service';
 import { MessageSeedNeighborhoodsByCitySuccessDTO } from '../../model/dto/messages/message-seed-neighborhoods-by-city-success-dto.model';
-import { ReferenceEventByCityBuilder } from 'src/microservice/adapter/helper/builder/dto/reference/reference-event-by-city.builder';
+import { ReferenceEventByCityBuilder } from '../../../adapter/helper/builder/dto/reference/reference-event-by-city.builder';
+import { GetNeighborhoodsByCityService } from '../neighborhoods/get/get-neighborhoods-by-city.service';
+import { MissingSeedException } from '../../../../core/error-handling/exception/missing-seed.exception';
 
 @Injectable()
 export class SeedNeighborhoodsByCityService extends AbstractService {
@@ -26,7 +28,9 @@ export class SeedNeighborhoodsByCityService extends AbstractService {
     protected readonly validateService: ValidateInputParamsService,
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
     private readonly logSeedService: LogSeedJobService,
-    private readonly senderMessageService: SenderMessageService
+    private readonly senderMessageService: SenderMessageService,
+    @Inject(forwardRef(() => GetNeighborhoodsByCityService))
+    private readonly getNeighborhoodsService: GetNeighborhoodsByCityService
   ) {
     super();
   }
@@ -107,8 +111,36 @@ export class SeedNeighborhoodsByCityService extends AbstractService {
     );
   }
 
-  // @RabbitSubscribe(subscribeSeedByCitySucess)
-  // public async readSuccess(msg) {
-  //   console.log(`Received message: ${JSON.stringify(msg)}`);
-  // }
+  @RabbitSubscribe(subscribeSeedByCitySucess)
+  public async readSuccess(msg: MessageSeedNeighborhoodsByCitySuccessDTO) {
+    this.logger.log(
+      `Reading seed success for City[${msg.reference.cityId}] - ${msg.reference.cityName}`
+    );
+    const searchParams = new SearchNeighborhoodsDTO(
+      msg.reference.country,
+      msg.reference.stateCode,
+      msg.reference.cityName
+    );
+
+    const convertedSearch =
+      await this.validateService.validateAndConvertSearchByCity(searchParams);
+
+    const resMongo =
+      await this.getNeighborhoodsService.findNeighborhoodsByCityInDatabase(
+        convertedSearch
+      );
+
+    if (resMongo.length < msg.seededCount) {
+      await this.logErrorSeedJob(
+        convertedSearch,
+        convertedSearch.city,
+        new MissingSeedException(
+          resMongo.length,
+          msg.seededCount,
+          'neighborhood'
+        )
+      );
+    }
+    this.logger.log('Seed Job successfully done!');
+  }
 }

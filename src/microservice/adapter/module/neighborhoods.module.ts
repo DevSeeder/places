@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { NeighborhoodsController } from '../controller/neighborhoods.controller';
 import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
@@ -24,7 +24,7 @@ import { SeedModule } from './seed.module';
       { name: Neighborhood.name, schema: NeighborhoodSchema }
     ]),
     CitiesModule,
-    SeedModule
+    forwardRef(() => SeedModule)
   ],
   controllers: [NeighborhoodsController],
   providers: [

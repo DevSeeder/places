@@ -13,6 +13,7 @@ import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/seed-n
 import { PuppeteerModule } from 'nest-puppeteer';
 import { GuiaMaisRepository } from '../repository/neighborhoods/puppeteer/guia-mais.repository';
 import { AMQPModule } from './amqp.module';
+import { GetNeighborhoodsByCityService } from 'src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 
 @Module({
   imports: [
@@ -23,8 +24,8 @@ import { AMQPModule } from './amqp.module';
     PuppeteerModule.forFeature(),
     MongooseModule.forFeature([{ name: LogSeed.name, schema: LogSeedSchema }]),
     CitiesModule,
-    forwardRef(() => NeighborhoodsModule),
-    AMQPModule
+    AMQPModule,
+    forwardRef(() => NeighborhoodsModule)
   ],
   controllers: [SeedController],
   providers: [

@@ -11,7 +11,7 @@ export abstract class PlacesMongooseRepository<
   }
 
   async findByNameOrAliasOrId(ref: string, extraSearch = {}): Promise<any[]> {
-    const nameRegex = new RegExp(ref, 'i');
+    const nameRegex = new RegExp(`^${ref}$`, 'i');
     const querySearch = {
       ...extraSearch,
       $or: [
@@ -28,6 +28,7 @@ export abstract class PlacesMongooseRepository<
     sort: any = { name: 1 }
   ): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
+
     let res = this.model.find(this.buildRegexFilterQuery(searchParams));
 
     if (typeof sort === 'object' && Object.keys(sort).length > 0)
