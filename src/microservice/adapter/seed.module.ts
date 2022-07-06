@@ -12,7 +12,6 @@ import { CitiesModule } from './cities.module';
 import { SeedNeighborhoodsByCityService } from '../domain/service/seed/seed-neighborhoods-by-city.service';
 import { PuppeteerModule } from 'nest-puppeteer';
 import { GuiaMaisRepository } from './repository/neighborhoods/puppeteer/guia-mais.repository';
-import { AmqplibModule } from '@ccmos/nestjs-amqplib';
 import { SenderMessageService } from '../domain/service/amqp/sender-message.service';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
@@ -27,13 +26,6 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
     MongooseModule.forFeature([{ name: LogSeed.name, schema: LogSeedSchema }]),
     CitiesModule,
     forwardRef(() => NeighborhoodsModule),
-    AmqplibModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        url: config.get<string>('microservices.rabbitmq.url')
-      })
-    }),
     RabbitMQModule.forRootAsync(RabbitMQModule, {
       imports: [ConfigModule],
       inject: [ConfigService],

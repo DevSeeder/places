@@ -56,11 +56,11 @@ export class SeedController extends AbstractController {
     this.seedNeighborhoodsByCityService.seedNeighborhoodsByCity(data);
   }
 
-  @Post('/sendMsg')
-  async sendMsg(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
+  @Post('/pubMsg')
+  async pubMsg(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.senderMessageService.sendMessageToQueue('seed-places-msg', msg)
+      await this.senderMessageService.publishMessage('seed-exc', msg)
     );
   }
 }

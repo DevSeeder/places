@@ -1,19 +1,16 @@
-import { AmqplibService } from '@ccmos/nestjs-amqplib';
-import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { NestResponse } from 'src/core/http/nest-response';
-import { NestResponseBuilder } from 'src/core/http/nest-response.builder';
 import { EnumConfigAMQP } from 'src/microservice/adapter/helper/config/config.helper';
 import { AbstractService } from '../abstract-service.service';
 
 @Injectable()
 export class SenderMessageService extends AbstractService {
   constructor(
-    private readonly amqplib: AmqplibService,
     @Inject('CLIENT_SERVICE') private client: ClientProxy,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private readonly amqpConnection: AmqpConnection
   ) {
     super();
   }
@@ -30,16 +27,15 @@ export class SenderMessageService extends AbstractService {
     };
   }
 
-  async sendMessageToQueue(queue: string, payload: object) {
+  async publishMessage(exchange: string, payload: object) {
     // queue = this.configService.get<string>(
     //   `microservices.rabbitmq.queue.${queue}`
     // );
-    this.logger.log(`Sending message to queue: ${queue}...`);
-    // await this.amqplib.sendToQueue({ queue, payload });
+    this.logger.log(`Publishing message to exchange: ${exchange}...`);
 
-    await this.amqplib.sendToQueue({ queue, payload });
-    // await this.client.send<string>({ cmd: 'seed-by-city' }, payload);
-    this.logger.log('Message sent!');
+    await this.amqpConnection.publish(exchange, 'sub-1', payload);
+
+    this.logger.log('Message Published!');
 
     return {
       success: true,
