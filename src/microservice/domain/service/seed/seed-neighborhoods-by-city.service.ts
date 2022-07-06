@@ -13,6 +13,8 @@ import { EventSeedByCityDTO } from '../../model/dto/events/event-seed-by-city-dt
 import { ValidateInputParamsService } from '../validate/validate-input-params.service';
 import { City } from '../../schemas/city.schema';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
+import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { subscribeSeedByCitySucess } from 'src/config/amqp/rabbitmq-subscribe.config';
 
 @Injectable()
 export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
@@ -81,5 +83,10 @@ export class SeedNeighborhoodsByCityService extends NeighborhoodsService {
       city,
       err
     );
+  }
+
+  @RabbitSubscribe(subscribeSeedByCitySucess)
+  public async pubSubHandler(msg) {
+    console.log(`Received message: ${JSON.stringify(msg)}`);
   }
 }

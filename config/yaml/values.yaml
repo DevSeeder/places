@@ -8,15 +8,21 @@ database:
 microservices:
   rabbitmq:
     url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
-    queue: 'seed-places'
-    event:
+    queue:
+      events: 'seed-events'
+      publishes: 'seed-messages'
+    exchange:
       seed:
         neighborhoods:
           by:
             city:
-              process: 'seed-by-city'
-              success: 'seed-by-city'
-              error: 'seed-by-error'
+              success: 'seed-by-city-success'
+              error: 'seed-by-city-error'
+    event:
+      seed:
+        neighborhoods:
+          by:
+            city: 'seed-by-city'
 
 api:
   port: 3000

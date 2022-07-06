@@ -45,7 +45,7 @@ export class SeedController extends AbstractController {
     return this.buildResponse(
       HttpStatus.OK,
       await this.senderMessageService.emitEvent(
-        'seed.neighborhoods.by.city.process',
+        'seed.neighborhoods.by.city',
         msg
       )
     );
@@ -60,7 +60,10 @@ export class SeedController extends AbstractController {
   async pubMsg(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.senderMessageService.publishMessage('seed-exc', msg)
+      await this.senderMessageService.publishMessage(
+        'seed.neighborhoods.by.city.success',
+        msg
+      )
     );
   }
 }

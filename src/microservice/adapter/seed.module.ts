@@ -32,7 +32,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
       useFactory: async (config: ConfigService) => ({
         exchanges: [
           {
-            name: 'seed-exc',
+            name: 'seed-by-city-success',
             type: 'topic'
           }
         ],
@@ -58,7 +58,9 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('microservices.rabbitmq.url')],
-            queue: configService.get<string>('microservices.rabbitmq.queue'),
+            queue: configService.get<string>(
+              'microservices.rabbitmq.queue.events'
+            ),
             queueOptions: {
               durable: true
             }

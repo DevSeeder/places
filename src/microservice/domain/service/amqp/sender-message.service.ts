@@ -1,7 +1,8 @@
-import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { routeKeySub } from 'src/config/amqp/rabbitmq-subscribe.config';
 import { EnumConfigAMQP } from 'src/microservice/adapter/helper/config/config.helper';
 import { AbstractService } from '../abstract-service.service';
 
@@ -28,12 +29,12 @@ export class SenderMessageService extends AbstractService {
   }
 
   async publishMessage(exchange: string, payload: object) {
-    // queue = this.configService.get<string>(
-    //   `microservices.rabbitmq.queue.${queue}`
-    // );
+    exchange = this.configService.get<string>(
+      `microservices.rabbitmq.exchange.${exchange}`
+    );
     this.logger.log(`Publishing message to exchange: ${exchange}...`);
 
-    await this.amqpConnection.publish(exchange, 'sub-1', payload);
+    await this.amqpConnection.publish(exchange, routeKeySub, payload);
 
     this.logger.log('Message Published!');
 
@@ -41,14 +42,5 @@ export class SenderMessageService extends AbstractService {
       success: true,
       response: 'Message sent!'
     };
-  }
-
-  @RabbitSubscribe({
-    exchange: 'seed-exc',
-    routingKey: 'sub-1',
-    queue: 'seed-places-msg'
-  })
-  public async pubSubHandler(msg) {
-    console.log(`Received message: ${JSON.stringify(msg)}`);
   }
 }

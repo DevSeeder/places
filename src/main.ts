@@ -22,7 +22,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [configService.get<string>('microservices.rabbitmq.url')],
-      queue: configService.get<string>('microservices.rabbitmq.queue'),
+      queue: configService.get<string>('microservices.rabbitmq.queue.events'),
       queueOptions: {
         durable: true
       }
