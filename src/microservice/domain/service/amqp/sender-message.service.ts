@@ -2,8 +2,8 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { routeKeySub } from 'src/config/amqp/rabbitmq-subscribe.config';
-import { EnumConfigAMQP } from 'src/microservice/adapter/helper/config/config.helper';
+import { EnumConfigAMQP } from 'src/config/amqp/enum/enum-config-amqp.enumerator';
+import { routeKeySub } from '../../../../config/amqp/rabbitmq-subscribe.config';
 import { AbstractService } from '../abstract-service.service';
 
 @Injectable()

@@ -1,19 +1,24 @@
 import { Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { HydratedDocument, Model, ObjectId } from 'mongoose';
 import { MongoError } from 'mongodb';
 import { MongoDBException } from '../../../../core/error-handling/exception/mongodb-.exception';
+import { MongooseHelper } from 'src/microservice/adapter/helper/mongoose/mongoose.helper';
+
+type MongooseDocument = HydratedDocument<any>;
 
 export abstract class MongooseRepository<Collection, MongooseModel> {
   protected readonly logger: Logger = new Logger(this.constructor.name);
 
   constructor(protected model: Model<MongooseModel>) {}
 
-  async insertOne(item: Collection, name: string): Promise<void> {
+  async insertOne(item: Collection, name: string): Promise<ObjectId> {
     return this.create(item).then(
-      () => {
+      (savedDoc: MongooseDocument) => {
         this.logger.log(
           `${item.constructor.name} '${name}' saved successfully!`
         );
+        this.logger.log(`ID: ${savedDoc._id}`);
+        return savedDoc._id;
       },
       (err: MongoError) => {
         this.logger.error(err.message);
@@ -22,11 +27,11 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     );
   }
 
-  async create(document: Collection): Promise<void> {
+  async create(document: Collection): Promise<MongooseDocument> {
     return new Promise(async (resolve, reject) => {
-      this.model.create(document, function (err) {
+      this.model.create(document, function (err, savedDoc) {
         if (err) reject(err);
-        resolve();
+        resolve(savedDoc);
       });
     });
   }
@@ -40,37 +45,22 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
       $group: {
         _id: group,
         count: { $sum: 1 },
-        ...this.buildSelectAggregated(select)
+        ...MongooseHelper.buildSelectAggregated(select)
       }
     });
     return this.model.aggregate(aggregateParams);
   }
 
-  buildSelectAggregated(groupSelect: object = {}) {
-    const objGroup = {};
-    if (Object.keys(groupSelect).length > 0) {
-      Object.keys(groupSelect).forEach((key) => {
-        objGroup[key] = {
-          $first: `$${groupSelect[key]}`
-        };
-      });
-    }
-    return objGroup;
-  }
-
-  buildRegexFilterQuery(objSearch: object = {}) {
-    const objSearchRegex = {};
-    Object.keys(objSearch).forEach(function (key) {
-      if (objSearch[key] == null) return;
-      objSearchRegex[key] = objSearch[key];
-      if (typeof objSearch[key] === 'string')
-        objSearchRegex[key] = new RegExp(`^${objSearch[key]}$`, 'i');
-    });
-    return objSearchRegex;
-  }
-
   async findAll(select: object = {}): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.find({}).select(select).lean().exec();
+  }
+
+  async findById(
+    id: string | ObjectId,
+    select: object = {}
+  ): Promise<MongooseDocument> {
+    if (Object.keys(select).length === 0) select = { _id: 0 };
+    return this.model.findById(id).select(select).lean().exec();
   }
 }

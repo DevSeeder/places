@@ -1,29 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
-import { NeighborhoodsService } from '../neighborhoods/neighborhoods.service';
-import { ValidateInputParamsService } from '../validate/validate-input-params.service';
-import { GetCitiesByStateService } from '../cities/get/get-cities-by-state.service';
-import { SearchCitiesDB } from '../../model/search/cities/search-cities-db.model';
-import { GetNeighborhoodsByCityService } from '../neighborhoods/get/get-neighborhoods-by-city.service';
-import { ValidOutputSearchByState } from '../../interface/valid-output-search/valid-outpu-search.interface';
-import { City } from '../../schemas/city.schema';
-import { NeighborhoodsMongoose } from '../../../adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { CustomResponse } from '../../../../core/interface/custom-response.interface';
-import { GetNeighborhoodsByStateService } from '../neighborhoods/get/get-neighborhoods-by-state.service';
-import { SenderMessageService } from '../amqp/sender-message.service';
-import { EventSeedByCityDTOBuilder } from '../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
+import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/search-neighborhoods-dto.model';
+import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
+import { GetCitiesByStateService } from '../../cities/get/get-cities-by-state.service';
+import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
+import { GetNeighborhoodsByCityService } from '../../neighborhoods/get/get-neighborhoods-by-city.service';
+import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
+import { City } from '../../../schemas/city.schema';
+import { CustomResponse } from '../../../../../core/interface/custom-response.interface';
+import { GetNeighborhoodsByStateService } from '../../neighborhoods/get/get-neighborhoods-by-state.service';
+import { SenderMessageService } from '../../amqp/sender-message.service';
+import { EventSeedByCityDTOBuilder } from '../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
+import { SeedNeighborhoodsService } from './abstract/seed-neighborhoods.service';
 
 @Injectable()
-export class SeedNeighborhoodsByStateService extends NeighborhoodsService {
+export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
   constructor(
-    mongoRepository: NeighborhoodsMongoose,
-    private readonly validateService: ValidateInputParamsService,
+    protected readonly validateService: ValidateInputParamsService,
     private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
     private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
     private readonly getCitiesByStateService: GetCitiesByStateService,
     private readonly senderMessage: SenderMessageService
   ) {
-    super(mongoRepository);
+    super(validateService);
   }
 
   async seedNeighborhoodsByState(

@@ -47,7 +47,7 @@ export class SaveNeighborhoodsByCityService extends NeighborhoodsService {
     item.city = convertedSearch.city.name.capitalize();
     item.alias = [item.name];
     this.logger.log(`Saving neighborhood '${item.name}'...`);
-    await this.mongoRepository.insertOne(item, item.name);
+    const retorno = await this.mongoRepository.insertOne(item, item.name);
   }
 
   async findNeighborhoodInDatabase(

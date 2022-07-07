@@ -1,8 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { NeighborhoodsController } from '../controller/neighborhoods.controller';
 import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
-import configuration from '../../../config/configuration';
 import { NeighborhoodsMongoose } from '../repository/neighborhoods/neighborhoods-mongoose.repository';
 import {
   Neighborhood,
@@ -16,10 +14,6 @@ import { SeedModule } from './seed.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [configuration]
-    }),
     MongooseModule.forFeature([
       { name: Neighborhood.name, schema: NeighborhoodSchema }
     ]),

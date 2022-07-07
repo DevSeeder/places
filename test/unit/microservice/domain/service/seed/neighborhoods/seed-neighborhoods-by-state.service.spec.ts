@@ -16,7 +16,7 @@ import { Translations } from '../../../../../../src/microservice/domain/model/tr
 import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { NotFoundException } from '../../../../../../src/core/error-handling/exception/not-found.exception';
 import { GetNeighborhoodsByStateService } from '../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
-import { SeedNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/seed/seed-neighborhoods-by-city.service';
+import { SeedNeighborhoodsByCityService } from '../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 
 describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;

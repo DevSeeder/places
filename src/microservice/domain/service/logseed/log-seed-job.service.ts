@@ -9,12 +9,12 @@ import { City } from '../../schemas/city.schema';
 import { Country } from '../../schemas/country.schema';
 import { LogSeed } from '../../schemas/logseed.schema';
 import { State } from '../../schemas/state.schema';
-import { AbstractService } from '../abstract-service.service';
+import { LogSeedService } from './log-seed.service';
 
 @Injectable()
-export class LogSeedJobService extends AbstractService {
+export class LogSeedJobService extends LogSeedService {
   constructor(protected readonly mongoRepository: LogSeedMongoose) {
-    super();
+    super(mongoRepository);
   }
 
   private async createLogSeed(
@@ -31,7 +31,7 @@ export class LogSeedJobService extends AbstractService {
     logSeed.success = false;
     logSeed.processed = false;
     logSeed.error = error;
-    await this.mongoRepository.insertOne(logSeed, 'Log Seed Job');
+    return this.mongoRepository.insertOne(logSeed, 'Log Seed Job');
   }
 
   async logSeedByState(
@@ -48,7 +48,7 @@ export class LogSeedJobService extends AbstractService {
       state.name,
       city.name
     );
-    await this.createLogSeed(
+    return this.createLogSeed(
       EnumTypeLogSeed.NeighborhoodsByState,
       reference,
       error

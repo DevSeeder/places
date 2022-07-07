@@ -6,7 +6,7 @@ import { ValidOutputSearchByCity } from '../../../interface/valid-output-search/
 import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/search-neighborhoods-db.model';
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
-import { SeedNeighborhoodsByCityService } from '../../seed/seed-neighborhoods-by-city.service';
+import { SeedNeighborhoodsByCityService } from '../../seed/neighborhoods/seed-neighborhoods-by-city.service';
 
 @Injectable()
 export class GetNeighborhoodsByCityService extends NeighborhoodsService {

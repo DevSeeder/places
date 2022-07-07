@@ -1,15 +1,16 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { SearchNeighborhoodsDTO } from '../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
-import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/seed-neighborhoods-by-state.service';
+import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/neighborhoods/seed-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ConfigService } from '@nestjs/config';
-import { ConfigHelper, EnumConfigAMQP } from '../helper/config/config.helper';
+import { ConfigHelper } from '../helper/config/config.helper';
 import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-city-dto.model';
-import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/seed-neighborhoods-by-city.service';
+import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
+import { EnumConfigAMQP } from '../../../config/amqp/enum/enum-config-amqp.enumerator';
+import { GetLogSeedByIdService } from 'src/microservice/domain/service/logseed/get-log-seed-by-id.service';
 
 const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
   'seed.neighborhoods.by.city',
@@ -23,7 +24,7 @@ export class SeedController extends AbstractController {
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
     private readonly seedNeighborhoodsByCityService: SeedNeighborhoodsByCityService,
     private readonly senderMessageService: SenderMessageService,
-    private configService: ConfigService
+    private readonly getIdService: GetLogSeedByIdService
   ) {
     super();
   }

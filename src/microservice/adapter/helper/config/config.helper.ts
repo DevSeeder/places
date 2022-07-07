@@ -1,11 +1,5 @@
 import configuration from '../../../../config/configuration';
 
-export enum EnumConfigAMQP {
-  QUEUE = 'microservices.rabbitmq.queue',
-  EVENT = 'microservices.rabbitmq.event',
-  EXCHANGE = 'microservices.rabbitmq.exchange'
-}
-
 export class ConfigHelper {
   static getConfig(config: string, typeConfig: string): string {
     if (config.split('.').length < 1) return config;

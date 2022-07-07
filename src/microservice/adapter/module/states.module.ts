@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import configuration from '../../../config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { State, StateSchema } from '../../domain/schemas/state.schema';
 import { ValidateStateByNameOrAliasService } from '../../domain/service/states/validate-state-by-name-or-alias.service';
@@ -12,10 +10,6 @@ import { ValidateCountryByNameOrAliasService } from '../../domain/service/countr
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [configuration]
-    }),
     MongooseModule.forFeature([{ name: State.name, schema: StateSchema }]),
     CountriesModule
   ],

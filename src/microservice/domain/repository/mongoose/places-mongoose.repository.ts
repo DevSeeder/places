@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { MongooseHelper } from 'src/microservice/adapter/helper/mongoose/mongoose.helper';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
 
@@ -29,7 +30,9 @@ export abstract class PlacesMongooseRepository<
   ): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
 
-    let res = this.model.find(this.buildRegexFilterQuery(searchParams));
+    let res = this.model.find(
+      MongooseHelper.buildRegexFilterQuery(searchParams)
+    );
 
     if (typeof sort === 'object' && Object.keys(sort).length > 0)
       res = res.sort(sort);

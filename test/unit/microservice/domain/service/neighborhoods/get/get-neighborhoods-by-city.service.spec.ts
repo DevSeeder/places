@@ -14,7 +14,7 @@ import { ValidateInputParamsService } from '../../../../../../../src/microservic
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
-import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/seed-neighborhoods-by-city.service';
+import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;

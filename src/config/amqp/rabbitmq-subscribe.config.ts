@@ -1,7 +1,9 @@
+import { ConfigHelper } from '../../microservice/adapter/helper/config/config.helper';
+import { EnumConfigAMQP } from './enum/enum-config-amqp.enumerator';
 import {
-  ConfigHelper,
-  EnumConfigAMQP
-} from '../../microservice/adapter/helper/config/config.helper';
+  seedByCityError,
+  seedByCitySuccess
+} from './rabbitmq-exchanges.config';
 
 const QUEUE_SEED_MESSAGES = ConfigHelper.getConfig(
   'messages',
@@ -12,19 +14,13 @@ const QUEUE_SEED_MESSAGES = ConfigHelper.getConfig(
 export const routeKeySub = 'sub-1';
 
 export const subscribeSeedByCitySucess = {
-  exchange: ConfigHelper.getConfig(
-    'seed.neighborhoods.by.city.success',
-    EnumConfigAMQP.EXCHANGE
-  ),
+  exchange: seedByCitySuccess,
   routingKey: routeKeySub,
   queue: QUEUE_SEED_MESSAGES
 };
 
 export const subscribeSeedByCityError = {
-  exchange: ConfigHelper.getConfig(
-    'seed.neighborhoods.by.city.error',
-    EnumConfigAMQP.EXCHANGE
-  ),
+  exchange: seedByCityError,
   routingKey: routeKeySub,
   queue: QUEUE_SEED_MESSAGES
 };
