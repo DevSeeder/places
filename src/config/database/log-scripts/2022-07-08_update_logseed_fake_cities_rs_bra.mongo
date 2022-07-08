@@ -1,5 +1,5 @@
 db.logSeed.updateMany(
-  { 'reference.cityName': 'Pinheiros' },
+  { 'reference.stateId': 2001 },
   {
     $set: {
       success: true,

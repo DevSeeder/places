@@ -1,5 +1,5 @@
 db.cities.deleteMany({
   id: {
-    $in: [13871]
+    $in: [13871, 14660]
   }
 });
