@@ -1,0 +1,9 @@
+db.cities.updateOne(
+  { id: 14660 },
+  {
+    $set: {
+      name: 'Sapucaia do Sul',
+      alias: ['Sapucaia', 'Sapucaia do Sul']
+    }
+  }
+);

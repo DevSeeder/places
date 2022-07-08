@@ -5,17 +5,8 @@ import { SeedNeighborhoodsByStateService } from '../../domain/service/seed/neigh
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
-import { EventPattern, Payload } from '@nestjs/microservices';
-import { ConfigHelper } from '../helper/config/config.helper';
 import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-city-dto.model';
 import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
-import { EnumConfigAMQP } from '../../../config/amqp/enum/enum-config-amqp.enumerator';
-import { GetLogSeedByIdService } from 'src/microservice/domain/service/logseed/get-log-seed-by-id.service';
-
-const EVENT_PATTERN_SEED_BY_CITY = ConfigHelper.getConfig(
-  'seed.neighborhoods.by.city',
-  EnumConfigAMQP.EVENT
-);
 
 @ApiExcludeController()
 @Controller('seed')
@@ -23,8 +14,7 @@ export class SeedController extends AbstractController {
   constructor(
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
     private readonly seedNeighborhoodsByCityService: SeedNeighborhoodsByCityService,
-    private readonly senderMessageService: SenderMessageService,
-    private readonly getIdService: GetLogSeedByIdService
+    private readonly senderMessageService: SenderMessageService
   ) {
     super();
   }
@@ -41,28 +31,12 @@ export class SeedController extends AbstractController {
     );
   }
 
-  @Post('/sendEvent')
-  async seedEvent(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
-    return this.buildResponse(
-      HttpStatus.OK,
-      await this.senderMessageService.emitEvent(
-        'seed.neighborhoods.by.city',
-        msg
-      )
-    );
-  }
-
-  @EventPattern(EVENT_PATTERN_SEED_BY_CITY)
-  async seedNeighborhoodsByCity(@Payload() data: EventSeedByCityDTO) {
-    this.seedNeighborhoodsByCityService.seedNeighborhoodsByCity(data);
-  }
-
   @Post('/pubMsg')
   async pubMsg(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
       await this.senderMessageService.publishMessage(
-        'seed.neighborhoods.by.city.success',
+        'seed.neighborhoods.by.city.process',
         msg
       )
     );

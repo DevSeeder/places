@@ -1,31 +1,16 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy } from '@nestjs/microservices';
-import { EnumConfigAMQP } from 'src/config/amqp/enum/enum-config-amqp.enumerator';
 import { routeKeySub } from '../../../../config/amqp/rabbitmq-subscribe.config';
 import { AbstractService } from '../abstract-service.service';
 
 @Injectable()
 export class SenderMessageService extends AbstractService {
   constructor(
-    @Inject('CLIENT_SERVICE') private client: ClientProxy,
     private configService: ConfigService,
     private readonly amqpConnection: AmqpConnection
   ) {
     super();
-  }
-
-  async emitEvent(configPattern: string, payload: object) {
-    const eventPattern = this.configService.get<string>(
-      `${EnumConfigAMQP.EVENT}.${configPattern}`
-    );
-    this.logger.log(`Emmiting event '${eventPattern}'...`);
-    await this.client.emit<string>(eventPattern, payload);
-    return {
-      success: true,
-      response: 'Event emmited!'
-    };
   }
 
   async publishMessage(exchange: string, payload: object) {

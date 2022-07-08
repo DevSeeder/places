@@ -43,7 +43,9 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
       );
 
       await this.publishService.publishSuccess(convertedSearch, resPuppeteer);
-    } catch (err) {}
+    } catch (err) {
+      await this.publishService.publishError(convertedSearch, err);
+    }
   }
 
   async searchByPuppeterAndSave(

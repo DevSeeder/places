@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
-import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { arrExchanges } from '../../../config/amqp/rabbitmq-exchanges.config';
 
@@ -12,32 +11,22 @@ import { arrExchanges } from '../../../config/amqp/rabbitmq-exchanges.config';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         exchanges: arrExchanges,
-        uri: config.get<string>('microservices.rabbitmq.url')
+        uri: config.get<string>('microservices.rabbitmq.url'),
+        noAck: true,
+        channels: {
+          'channel-1': {
+            prefetchCount: 1,
+            default: true
+          },
+          'channel-2': {
+            prefetchCount: 1
+          }
+        }
       })
     })
   ],
   controllers: [],
-  providers: [
-    SenderMessageService,
-    {
-      provide: 'CLIENT_SERVICE',
-      useFactory: (configService: ConfigService) => {
-        return ClientProxyFactory.create({
-          transport: Transport.RMQ,
-          options: {
-            urls: [configService.get<string>('microservices.rabbitmq.url')],
-            queue: configService.get<string>(
-              'microservices.rabbitmq.queue.events'
-            ),
-            queueOptions: {
-              durable: true
-            }
-          }
-        });
-      },
-      inject: [ConfigService]
-    }
-  ],
+  providers: [SenderMessageService],
   exports: [RabbitMQModule, SenderMessageService]
 })
 export class AMQPModule {}

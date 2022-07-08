@@ -1,0 +1,11 @@
+db.logSeed.updateOne(
+  { 'reference.cityName': 'Sapucaia' },
+  {
+    $set: {
+      success: true,
+      processed: true,
+      processedDate: ISODate('2022-07-08T13:25:49.895Z'),
+      resolution: 'UpdateNameOrAlias'
+    }
+  }
+);

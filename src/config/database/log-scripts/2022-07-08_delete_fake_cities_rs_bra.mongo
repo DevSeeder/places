@@ -1,0 +1,5 @@
+db.cities.deleteMany({
+  id: {
+    $in: [13871]
+  }
+});

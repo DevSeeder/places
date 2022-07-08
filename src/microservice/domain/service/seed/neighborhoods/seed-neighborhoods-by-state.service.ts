@@ -3,23 +3,18 @@ import { SearchNeighborhoodsDTO } from '../../../model/search/neighborhoods/sear
 import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
 import { GetCitiesByStateService } from '../../cities/get/get-cities-by-state.service';
 import { SearchCitiesDB } from '../../../model/search/cities/search-cities-db.model';
-import { GetNeighborhoodsByCityService } from '../../neighborhoods/get/get-neighborhoods-by-city.service';
-import { ValidOutputSearchByState } from '../../../interface/valid-output-search/valid-outpu-search.interface';
-import { City } from '../../../schemas/city.schema';
 import { CustomResponse } from '../../../../../core/interface/custom-response.interface';
 import { GetNeighborhoodsByStateService } from '../../neighborhoods/get/get-neighborhoods-by-state.service';
-import { SenderMessageService } from '../../amqp/sender-message.service';
-import { EventSeedByCityDTOBuilder } from '../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
 import { SeedNeighborhoodsService } from './abstract/seed-neighborhoods.service';
+import { PublishSeedNeighborhoodsByCityService } from './publish/publish-seed-neighborhoods-by-city.service';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
   constructor(
     protected readonly validateService: ValidateInputParamsService,
-    private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
     private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
     private readonly getCitiesByStateService: GetCitiesByStateService,
-    private readonly senderMessage: SenderMessageService
+    private readonly publishService: PublishSeedNeighborhoodsByCityService
   ) {
     super(validateService);
   }
@@ -54,12 +49,12 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     }
 
     for await (const item of cities) {
-      await this.emmitEventSeedByCity(convertedSearch, item);
+      await this.publishService.publishToSeed(convertedSearch, item);
     }
 
     return {
       success: true,
-      response: 'Seeded'
+      response: 'Seed Requested!'
     };
   }
 
@@ -70,16 +65,5 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     return aggregatedCities.map((item) => {
       return item._id.cityId;
     });
-  }
-
-  async emmitEventSeedByCity(
-    convertedSearch: ValidOutputSearchByState,
-    city: City
-  ) {
-    const eventDTO = new EventSeedByCityDTOBuilder(convertedSearch).build(city);
-    this.senderMessage.emitEvent(
-      'seed.neighborhoods.by.city.process',
-      eventDTO
-    );
   }
 }

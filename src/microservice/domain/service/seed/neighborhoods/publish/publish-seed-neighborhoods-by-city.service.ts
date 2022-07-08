@@ -14,6 +14,7 @@ import { ReferenceEventByCityBuilder } from '../../../../../adapter/helper/build
 import { LogSeedJobService } from '../../../logseed/log-seed-job.service';
 import { JobSeedNeighborhoodsService } from '../abstract/job-seed-neighborhoods.service';
 import { City } from '../../../../schemas/city.schema';
+import { EventSeedByCityDTOBuilder } from '../../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
 
 @Injectable()
 export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsService {
@@ -23,6 +24,14 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     private readonly senderMessageService: SenderMessageService
   ) {
     super(validateService, logSeedService);
+  }
+
+  async publishToSeed(convertedSearch: ValidOutputSearchByState, city: City) {
+    const eventDTO = new EventSeedByCityDTOBuilder(convertedSearch).build(city);
+    await this.senderMessageService.publishMessage(
+      'seed.neighborhoods.by.city.process',
+      eventDTO
+    );
   }
 
   async publishSuccess(
@@ -43,20 +52,19 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     );
   }
 
-  async publishError(
-    convertedSearch: ValidOutputSearchByState,
-    city: City,
-    err: Error
-  ) {
+  async publishError(convertedSearch: ValidOutputSearchByCity, err: Error) {
+    this.logger.error(
+      `Error Seeding City[${convertedSearch.city.id}] - ${convertedSearch.city.name}: ${err.message}`
+    );
     const idLog = await this.logSeedService.logSeedByState(
       convertedSearch.country,
       convertedSearch.state,
-      city,
+      convertedSearch.city,
       err
     );
 
     const reference = new ReferenceEventByCityBuilder(convertedSearch).build(
-      city
+      convertedSearch.city
     );
 
     const messageDTO = new MessageSeedNeighborhoodsByCityErrorDTO(
@@ -66,7 +74,7 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     );
 
     await this.senderMessageService.publishMessage(
-      'seed.neighborhoods.by.city.success',
+      'seed.neighborhoods.by.city.error',
       messageDTO
     );
   }
