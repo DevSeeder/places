@@ -87,7 +87,7 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
   });
 
   describe('readSuccess', () => {
-    it('should call readSuccess and call publishMessage with the correct params', async () => {
+    it('should call readSuccess and not call logErrorSeedJob', async () => {
       const validateStub = sinon
         .stub(mockValidateService, 'validateAndConvertSearchByCity')
         .returns(mockConvertedSearchOrleans());
@@ -118,6 +118,39 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
       validateStub.restore();
       getNeighborhoodsStub.restore();
       logErrorSeedJobSpy.restore();
+    });
+
+    it('should call readSuccess and call logErrorSeedJob', async () => {
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .returns(mockConvertedSearchOrleans());
+
+      const getNeighborhoodsStub = sinon
+        .stub(
+          mockGetNeighborhoodsByCityService,
+          'findNeighborhoodsByCityInDatabase'
+        )
+        .returns(mockNeighborhoodsByCity);
+
+      const logErrorSeedJobStub = sinon.stub(sut, 'logErrorSeedJob');
+
+      const referenceMock = new ReferenceEventByCityBuilder(
+        mockConvertedSearchOrleans()
+      ).build(mockConvertedSearchOrleans().city);
+
+      const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
+        3,
+        new Date(),
+        referenceMock
+      );
+
+      await sut.readSuccess(messageDTO);
+
+      sinon.assert.calledOnce(logErrorSeedJobStub);
+
+      validateStub.restore();
+      getNeighborhoodsStub.restore();
+      logErrorSeedJobStub.restore();
     });
   });
 });
