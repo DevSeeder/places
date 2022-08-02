@@ -149,28 +149,4 @@ describe('NeighborhoodsController', () => {
       getServiceStub.restore();
     });
   });
-
-  // describe('seedNeighborhoodsByState', () => {
-  //   it('should call seedNeighborhoodsByState and return a response', async () => {
-  //     const mockResponseSeed = {
-  //       success: true,
-  //       response: 'Seeded'
-  //     };
-
-  //     const seedServiceStub = sinon
-  //       .stub(mockSeedNeighborhoodsByStateService, 'seedNeighborhoodsByState')
-  //       .returns(mockResponseSeed);
-
-  //     const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
-
-  //     const actual = await neighborhoodsController.seedNeighborhoodsByState(
-  //       searchParams
-  //     );
-
-  //     expect(actual.body.success).to.be.equal(true);
-  //     expect(actual.body.response).to.be.equal('Seeded');
-
-  //     seedServiceStub.restore();
-  //   });
-  // });
 });

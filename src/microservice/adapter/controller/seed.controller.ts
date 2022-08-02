@@ -6,14 +6,12 @@ import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
 import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-city-dto.model';
-import { SeedNeighborhoodsByCityService } from '../../domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 
 @ApiExcludeController()
 @Controller('seed')
 export class SeedController extends AbstractController {
   constructor(
     private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService,
-    private readonly seedNeighborhoodsByCityService: SeedNeighborhoodsByCityService,
     private readonly senderMessageService: SenderMessageService
   ) {
     super();
@@ -31,6 +29,7 @@ export class SeedController extends AbstractController {
     );
   }
 
+  /* istanbul ignore next */
   @Post('/pubMsg')
   async pubMsg(@Body() msg: EventSeedByCityDTO): Promise<NestResponse> {
     return this.buildResponse(

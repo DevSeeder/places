@@ -76,6 +76,19 @@ describe('NeighborhoodsMongoose', () => {
     })
   };
 
+  const mockFindByIdNeighborhoods = {
+    select: jest.fn(() => {
+      return {
+        lean: jest.fn(() => {
+          return {
+            exec: jest.fn(() => mockNeighborhoods())
+          };
+        }),
+        exec: jest.fn(() => mockNeighborhoods())
+      };
+    })
+  };
+
   beforeEach(async () => {
     app = await Test.createTestingModule({
       imports: [ExtensionsModule],
@@ -105,6 +118,34 @@ describe('NeighborhoodsMongoose', () => {
         .returns(mockFindNeighborhoods);
 
       const actual = await sut.findBySearchParams(mockSearchParams);
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
+  });
+
+  describe('findById', () => {
+    it('should call findById and return an array with default select', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'findById')
+        .returns(mockFindByIdNeighborhoods);
+
+      const actual = await sut.findById('id');
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
+
+    it('should call findById and return an array with select param', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'findById')
+        .returns(mockFindByIdNeighborhoods);
+
+      const actual = await sut.findById('id', {
+        any: 'any'
+      });
 
       expect(actual).to.be.an('array').that.is.not.empty;
 

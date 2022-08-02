@@ -127,6 +127,12 @@ describe('SeedNeighborhoodsByCityService', () => {
         .stub(sut, 'searchByPuppeterAndSave')
         .returns(null);
 
+      const publishSpy = sinon.stub(mockPublishService, 'publishSuccess');
+
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .returns(mockConvertedSearch());
+
       const mockCity = new City();
       mockCity.name = 'Orleans';
       mockCity.id = 1;
@@ -139,19 +145,56 @@ describe('SeedNeighborhoodsByCityService', () => {
         new EventSeedByCityDTO(new Date(), mockEP)
       );
 
-      // const spySearch = new SearchNeighborhoodsDTO('brasil', 'SC', 'Orleans');
       const spyConvertedSearch = mockConvertedSearch();
       spyConvertedSearch.city = mockCity;
 
-      // sinon.assert.calledOnceWithExactly(
-      //   searchByPuppeterAndSaveStub,
-      //   spySearch,
-      //   spyConvertedSearch
-      // );
-
-      sinon.assert.calledOnce(searchByPuppeterAndSaveStub);
+      sinon.assert.calledOnceWithExactly(
+        publishSpy,
+        mockConvertedSearch(),
+        null
+      );
 
       searchByPuppeterAndSaveStub.restore();
+      publishSpy.restore();
+      validateStub.restore();
+    });
+
+    it('should call seedNeighborhoodsByCity with error and call publishError with the correct params', async () => {
+      const mockErr = new Error('any');
+      const searchByPuppeterAndSaveStub = sinon
+        .stub(sut, 'searchByPuppeterAndSave')
+        .throws(mockErr);
+
+      const publishSpy = sinon.stub(mockPublishService, 'publishError');
+
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .returns(mockConvertedSearch());
+
+      const mockCity = new City();
+      mockCity.name = 'Orleans';
+      mockCity.id = 1;
+
+      const mockEP = new ReferenceEventByCityBuilder(
+        mockConvertedSearch()
+      ).build(mockCity);
+
+      await sut.seedNeighborhoodsByCity(
+        new EventSeedByCityDTO(new Date(), mockEP)
+      );
+
+      const spyConvertedSearch = mockConvertedSearch();
+      spyConvertedSearch.city = mockCity;
+
+      sinon.assert.calledOnceWithExactly(
+        publishSpy,
+        mockConvertedSearch(),
+        mockErr
+      );
+
+      searchByPuppeterAndSaveStub.restore();
+      publishSpy.restore();
+      validateStub.restore();
     });
   });
 
