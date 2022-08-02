@@ -2,8 +2,6 @@ import configuration from '../../../../config/configuration';
 
 export class ConfigHelper {
   static getConfig(config: string, typeConfig: string): string {
-    if (config.split('.').length < 1) return config;
-
     let resConfig = configuration();
 
     resConfig = this.resolveConfig(resConfig, typeConfig);

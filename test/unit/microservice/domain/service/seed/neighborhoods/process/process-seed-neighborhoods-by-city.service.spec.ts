@@ -153,4 +153,35 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
       logErrorSeedJobStub.restore();
     });
   });
+
+  describe('logErrorSeedJob', () => {
+    it('should call logErrorSeedJob and call logSeedByState', async () => {
+      const logSeedByStateStub = sinon.stub(
+        mockLogSeedJobService,
+        'logSeedByState'
+      );
+
+      const mockCity = new City();
+      mockCity.name = 'Orleans';
+      mockCity.id = 1;
+
+      const mockErr = new Error('any');
+
+      await sut.logErrorSeedJob(
+        mockConvertedSearchOrleans(),
+        mockCity,
+        mockErr
+      );
+
+      sinon.assert.calledOnceWithExactly(
+        logSeedByStateStub,
+        mockConvertedSearchOrleans().country,
+        mockConvertedSearchOrleans().state,
+        mockCity,
+        mockErr
+      );
+
+      logSeedByStateStub.restore();
+    });
+  });
 });
