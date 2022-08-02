@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { HydratedDocument, Model, ObjectId } from 'mongoose';
 import { MongoError } from 'mongodb';
 import { MongoDBException } from '../../../../core/error-handling/exception/mongodb-.exception';
-import { MongooseHelper } from 'src/microservice/adapter/helper/mongoose/mongoose.helper';
+import { MongooseHelper } from '../../../adapter/helper/mongoose/mongoose.helper';
 
 type MongooseDocument = HydratedDocument<any>;
 

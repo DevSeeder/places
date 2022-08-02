@@ -1,4 +1,4 @@
-import { ConfigHelper } from 'src/microservice/adapter/helper/config/config.helper';
+import { ConfigHelper } from '../../microservice/adapter/helper/config/config.helper';
 import { EnumConfigAMQP } from './enum/enum-config-amqp.enumerator';
 
 export const seedByCityProcess = ConfigHelper.getConfig(

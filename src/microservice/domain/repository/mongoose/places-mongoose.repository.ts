@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { MongooseHelper } from 'src/microservice/adapter/helper/mongoose/mongoose.helper';
+import { MongooseHelper } from '../../../adapter/helper/mongoose/mongoose.helper';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
 

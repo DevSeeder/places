@@ -112,39 +112,39 @@ describe('NeighborhoodsMongoose', () => {
     });
   });
 
-  describe('buildRegexFilterQuery', () => {
-    it('should call buildRegexFilterQuery and return regex filter', async () => {
-      const mockParams = {
-        countryId: 1,
-        stateId: 2,
-        cityId: 3,
-        name: 'any'
-      };
+  // describe('buildRegexFilterQuery', () => {
+  //   it('should call buildRegexFilterQuery and return regex filter', async () => {
+  //     const mockParams = {
+  //       countryId: 1,
+  //       stateId: 2,
+  //       cityId: 3,
+  //       name: 'any'
+  //     };
 
-      const mockRegex = {
-        countryId: 1,
-        stateId: 2,
-        cityId: 3,
-        name: new RegExp('any', 'i')
-      };
+  //     const mockRegex = {
+  //       countryId: 1,
+  //       stateId: 2,
+  //       cityId: 3,
+  //       name: new RegExp('any', 'i')
+  //     };
 
-      const actual = await sut.buildRegexFilterQuery(mockParams);
+  //     const actual = await sut.buildRegexFilterQuery(mockParams);
 
-      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockRegex));
-    });
+  //     expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockRegex));
+  //   });
 
-    it('should call buildRegexFilterQuery and return regex filter with empty obj', async () => {
-      const actual = await sut.buildRegexFilterQuery();
-      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
-    });
+  //   it('should call buildRegexFilterQuery and return regex filter with empty obj', async () => {
+  //     const actual = await sut.buildRegexFilterQuery();
+  //     expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
+  //   });
 
-    it('should call buildRegexFilterQuery with null param and return regex filter with empty obj', async () => {
-      const actual = await sut.buildRegexFilterQuery({
-        name: null
-      });
-      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
-    });
-  });
+  //   it('should call buildRegexFilterQuery with null param and return regex filter with empty obj', async () => {
+  //     const actual = await sut.buildRegexFilterQuery({
+  //       name: null
+  //     });
+  //     expect(JSON.stringify(actual)).to.be.equal(JSON.stringify({}));
+  //   });
+  // });
 
   describe('insertOne', () => {
     it('should call insertOne and call model.create with the correct params', async () => {
@@ -186,12 +186,12 @@ describe('NeighborhoodsMongoose', () => {
     });
   });
 
-  describe('buildSelectAggregated', () => {
-    it('should call buildSelectAggregated with default params', async () => {
-      const actual = sut.buildSelectAggregated();
-      expect(JSON.stringify(actual)).to.be.equal('{}');
-    });
-  });
+  // describe('buildSelectAggregated', () => {
+  //   it('should call buildSelectAggregated with default params', async () => {
+  //     const actual = sut.buildSelectAggregated();
+  //     expect(JSON.stringify(actual)).to.be.equal('{}');
+  //   });
+  // });
 
   describe('groupBy', () => {
     const mockAggregatedParams = [
