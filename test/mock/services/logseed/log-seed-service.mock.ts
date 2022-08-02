@@ -3,3 +3,9 @@ export const mockLogSeedJobService = {
     return;
   }
 };
+
+export const mockGetLogSeedByIdService = {
+  getLogSeedById: () => {
+    return [];
+  }
+};
