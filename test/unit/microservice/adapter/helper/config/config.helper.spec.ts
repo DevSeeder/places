@@ -5,7 +5,7 @@ import { ConfigHelper } from '../../../../../../src/microservice/adapter/helper/
 describe('ConfigHelper', () => {
   describe('getConfig', () => {
     it('should call getConfig and return places', async () => {
-      const actual = ConfigHelper.getConfig('name', 'doc');
+      const actual = ConfigHelper.getConfig('', 'doc.name');
       expect(actual).to.be.equal('places');
     });
 
