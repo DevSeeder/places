@@ -45,7 +45,7 @@ All notable changes to this project will be documented in this file.
 - Optimize Neighborhoods by State
 - Sort Collections result
 
-## [0.0.6] - 2022-07
+## [0.0.6] - 2022-08-03
 
 ### Added
 
@@ -53,3 +53,4 @@ All notable changes to this project will be documented in this file.
 - RabbitMQ Implementation
 - Async Seed Neighborhoods By State Job
 - Fix regex filter in mongodb query
+- Secrets and docker container process in GitHub Actions

@@ -24,5 +24,5 @@ microservices:
 api:
   port: 3000
 doc:
-  version: 0.0.5
+  version: 0.0.6
   name: 'places'
