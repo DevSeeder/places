@@ -16,6 +16,8 @@ jobs:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Install
         run: npm install
+      - name: Generate env file
+        run: echo "${{secrets.ENV_PROD }}" > .env
       - name: Unit test
         run: npm run test:cov
       - name: SonarCloud Scan
