@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import { AppModule } from '../../src/app.module';
 import { NestFactory } from '@nestjs/core';
 import '../../src/microservice/adapter/helper/extensions/exensions.module';
+import { ConfigHelper } from '../../src/microservice/adapter/helper/config/config.helper';
+import configuration from '../../src/config/configuration';
 
 jest.setTimeout(400000);
 
@@ -11,6 +13,8 @@ describe('App (e2e) ', () => {
   let app: INestApplication;
 
   beforeEach(async function () {
+    console.log(await configuration());
+    console.log(await ConfigHelper.getConfig('url', 'microservices.rabbitmq'));
     app = await NestFactory.create(AppModule);
     app.useGlobalPipes(
       new ValidationPipe({
