@@ -2,14 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { expect } from 'chai';
 import { FiltersModule } from '../../../../../src/core/error-handling/filters.module';
-import { HttpStatus, INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication, Module } from '@nestjs/common';
 import { CustomErrorExceptionFilter } from '../../../../../src/core/error-handling/filter/custom-error-exception.filter';
 import { EmptyPropException } from '../../../../../src/core/error-handling/exception/empty-prop.exception';
 import { createMock } from '@golevelup/ts-jest';
 import { ExecutionContext } from '@nestjs/common';
 import * as sinon from 'sinon';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../../../../../src/app.module';
 import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import {
   mockModelMongoose,
@@ -19,13 +18,24 @@ import { getModelToken } from '@nestjs/mongoose';
 import { State } from '../../../../../src/microservice/domain/schemas/state.schema';
 import { Country } from '../../../../../src/microservice/domain/schemas/country.schema';
 import { City } from '../../../../../src/microservice/domain/schemas/city.schema';
+import {
+  AmqpConnection,
+  AmqpConnectionManager
+} from '@golevelup/nestjs-rabbitmq';
+import {
+  mockAmqpConnection,
+  mockAmqpConnectionManager
+} from '../../../../mock/amqp/aqmp-conneciton.mock';
 
-jest.setTimeout(25000);
+jest.setTimeout(20000);
 
 describe('CustomErrorExceptionFilter', () => {
   let sut: CustomErrorExceptionFilter;
   let app: TestingModule;
   let server: INestApplication;
+
+  @Module({})
+  class GenericMockedModule {}
 
   beforeAll(async () => {
     jest.mock('mongoose', mockMongooseConnection);
@@ -45,11 +55,15 @@ describe('CustomErrorExceptionFilter', () => {
       .useValue(mockModelMongoose)
       .overrideProvider(getModelToken(City.name))
       .useValue(mockModelMongoose)
+      .overrideProvider(AmqpConnectionManager)
+      .useValue(mockAmqpConnectionManager)
+      .overrideProvider(AmqpConnection)
+      .useValue(mockAmqpConnection)
       .compile();
 
     sut = app.get<CustomErrorExceptionFilter>(CustomErrorExceptionFilter);
 
-    server = await NestFactory.create(AppModule);
+    server = await NestFactory.create(GenericMockedModule);
     await server.init();
   });
 

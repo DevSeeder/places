@@ -4,6 +4,12 @@ export const mockAmqpConnection = {
   },
   createSubscriber() {
     return;
+  },
+  setupSubscriberChannel() {
+    return;
+  },
+  init() {
+    return;
   }
 };
 
