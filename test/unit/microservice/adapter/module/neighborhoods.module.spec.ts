@@ -15,6 +15,14 @@ import { StatesMongoose } from '../../../../../src/microservice/adapter/reposito
 import { CitiesMongoose } from '../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { LogSeed } from '../../../../../src/microservice/domain/schemas/logseed.schema';
 import { LogSeedMongoose } from '../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
+import {
+  AmqpConnection,
+  AmqpConnectionManager
+} from '@golevelup/nestjs-rabbitmq';
+import {
+  mockAmqpConnection,
+  mockAmqpConnectionManager
+} from '../../../../mock/amqp/aqmp-conneciton.mock';
 
 describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
@@ -74,8 +82,11 @@ describe('NeighborhoodsModule', () => {
       .useValue(mockModelMongoose)
       .overrideProvider(getModelToken(LogSeed.name))
       .useValue(mockModelMongoose)
+      .overrideProvider(AmqpConnectionManager)
+      .useValue(mockAmqpConnectionManager)
+      .overrideProvider(AmqpConnection)
+      .useValue(mockAmqpConnection)
       .compile();
-
     sut = app.get<NeighborhoodsController>(NeighborhoodsController);
   });
 
