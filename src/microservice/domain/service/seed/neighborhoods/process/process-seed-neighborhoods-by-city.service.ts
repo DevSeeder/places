@@ -66,17 +66,4 @@ export class ProcessSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     }
     this.logger.log('Seed Job successfully done!');
   }
-
-  // @RabbitSubscribe(subscribeSeedByCityError)
-  // public async readError(msg: MessageSeedNeighborhoodsByCityErrorDTO) {
-  //   this.logger.log(
-  //     `Reading seed error for City[${msg.reference.cityId}] - ${msg.reference.cityName}`
-  //   );
-
-  //   const logSeed = await this.getLogSeedByIdService.getLogSeedById(
-  //     msg.idLogSeed
-  //   );
-
-  //   this.logger.log('Seed Job successfully done!');
-  // }
 }

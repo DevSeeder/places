@@ -11,8 +11,7 @@ export default () => {
   const configYaml = yaml.load(
     readFileSync(join(__dirname, YAML_CONFIG_FILENAME), 'utf8')
   ) as Record<string, any>;
-  const configEnv = resolveEnvVars(configYaml);
-  return configEnv;
+  return resolveEnvVars(configYaml);
 };
 
 function resolveEnvVars(obj: object) {
@@ -47,7 +46,7 @@ function getVarsFromEnvFile(value): string {
 
 function replaceEnvVar(value, matches): string {
   matches.forEach((element) => {
-    value = value.replace('${' + element + '}', process.env[element]);
+    value = value.replace(`\${${element}}`, process.env[element]);
   });
   return value;
 }

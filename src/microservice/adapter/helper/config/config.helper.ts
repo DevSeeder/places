@@ -15,8 +15,8 @@ export class ConfigHelper {
 
   private static resolveConfig(resConfig: object, configKeys: string) {
     const treeConfig = configKeys.split('.');
-    for (let i = 0; i < treeConfig.length; i++) {
-      resConfig = resConfig[treeConfig[i]];
+    for (const nodeCfg of treeConfig) {
+      resConfig = resConfig[nodeCfg];
     }
     return resConfig;
   }

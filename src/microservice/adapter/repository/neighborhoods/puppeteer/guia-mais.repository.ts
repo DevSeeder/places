@@ -42,7 +42,6 @@ export class GuiaMaisRepository
         neighborhood.city = `${searchParams.city.capitalize()} - ${searchParams.state.toUpperCase()}`;
         neighborhood.stateId = convertedSearch.state.id;
         neighborhood.countryId = convertedSearch.country.id;
-        neighborhood.city;
 
         arrNeighborhoods.push(neighborhood);
       });

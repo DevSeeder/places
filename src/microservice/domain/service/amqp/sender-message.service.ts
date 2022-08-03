@@ -7,7 +7,7 @@ import { AbstractService } from '../abstract-service.service';
 @Injectable()
 export class SenderMessageService extends AbstractService {
   constructor(
-    private configService: ConfigService,
+    private readonly configService: ConfigService,
     private readonly amqpConnection: AmqpConnection
   ) {
     super();
@@ -19,7 +19,7 @@ export class SenderMessageService extends AbstractService {
     );
     this.logger.log(`Publishing message to exchange: ${exchange}...`);
 
-    await this.amqpConnection.publish(exchange, routeKeySub, payload);
+    this.amqpConnection.publish(exchange, routeKeySub, payload);
 
     this.logger.log('Message Published!');
 

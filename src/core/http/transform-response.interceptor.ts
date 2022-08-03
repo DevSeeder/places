@@ -30,7 +30,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
       map(
         /* istanbul ignore next */
         (responseController: NestResponse) => {
-          if (typeof responseController == 'undefined') return;
+          if (typeof responseController == 'undefined') return null;
           return this.interceptResponse(responseController, context);
         }
       )
