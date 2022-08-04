@@ -20,11 +20,11 @@ jobs:
       - name: start RabbitMQ
         uses: getong/rabbitmq-action@v1.2
         with:
-          rabbitmq version: 'bitnami/rabbitmq'
+          rabbitmq version: '3.8.2-management-alpine'
           host port: 5672
           rabbitmq user: '${{ secrets.RABBITMQ_USER }}'
-          rabbitmq password: '${{ secrets.RABBITMQ_PASSWORD }}'
-          rabbitmq vhost: '${{ secrets.RABBITMQ_VHOST }}'
+          rabbitmq password: 'noBahC3e'
+          rabbitmq vhost: 'vhost_name'
       - name: e2e test
         run: npm run test:e2e
         env:
