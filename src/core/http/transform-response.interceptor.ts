@@ -1,3 +1,4 @@
+import { isRabbitContext } from '@golevelup/nestjs-rabbitmq';
 import {
   NestInterceptor,
   Injectable,
@@ -23,11 +24,13 @@ export class TransformResponseInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler
   ): Observable<any> | Promise<Observable<any>> {
+    if (isRabbitContext(context)) return next.handle();
     return next.handle().pipe(
       /* istanbul ignore next */
       map(
         /* istanbul ignore next */
         (responseController: NestResponse) => {
+          if (typeof responseController == 'undefined') return null;
           return this.interceptResponse(responseController, context);
         }
       )

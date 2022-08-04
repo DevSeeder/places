@@ -4,7 +4,7 @@ import { Place } from '../interface/place.interface';
 
 export type StateDocument = State & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class State implements Place {
   @Prop({ required: true })
   id: number;

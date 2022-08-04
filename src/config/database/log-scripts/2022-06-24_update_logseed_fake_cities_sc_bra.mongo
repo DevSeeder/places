@@ -1,0 +1,11 @@
+db.logSeed.updateMany(
+  {},
+  {
+    $set: {
+      success: true,
+      processed: true,
+      processedDate: ISODate('2022-06-24T23:37:49.895Z'),
+      resolution: 'IsNotACity'
+    }
+  }
+);

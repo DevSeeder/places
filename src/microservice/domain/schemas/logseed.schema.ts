@@ -1,25 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EnumTypeLogSeed } from '../enumerators/enum-type-logseed';
-
-export abstract class ReferenceLogSeed {}
-
-export class ReferenceNeighborhoodsByState extends ReferenceLogSeed {
-  constructor(
-    public readonly countryId: number,
-    public readonly stateId: number,
-    public readonly cityId: number,
-    public readonly countryName: string,
-    public readonly stateName: string,
-    public readonly cityName: string
-  ) {
-    super();
-  }
-}
+import { ReferenceLogSeed } from '../model/logseed/reference/reference-neighborhoods-by-state.model';
 
 export type LogSeedDocument = LogSeed & Document;
 
-@Schema({ collection: 'logSeed' })
+@Schema({ collection: 'logSeed', timestamps: true })
 export class LogSeed {
   @Prop({ required: true, type: String })
   type: EnumTypeLogSeed;

@@ -4,9 +4,7 @@ import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { SearchNeighborhoodsDTO } from '../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
-import { SeedNeighborhoodsByStateService } from '../../domain/service/neighborhoods/seed/seed-neighborhoods-by-state.service';
 import {
-  ApiExcludeEndpoint,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -20,8 +18,7 @@ import { NeighborhoodsByState } from '../../domain/model/neighborhoods/neighborh
 export class NeighborhoodsController extends AbstractController {
   constructor(
     private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
-    private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
-    private readonly seedNeighborhoodsByStateService: SeedNeighborhoodsByStateService
+    private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService
   ) {
     super();
   }
@@ -88,19 +85,6 @@ export class NeighborhoodsController extends AbstractController {
     return this.buildResponse(
       HttpStatus.OK,
       await this.getNeighborhoodsByStateService.getNeighborhoodsByState(params)
-    );
-  }
-
-  @ApiExcludeEndpoint()
-  @Get('/seed/state/:country/:state')
-  async seedNeighborhoodsByState(
-    @Param() params: SearchNeighborhoodsDTO
-  ): Promise<NestResponse> {
-    return this.buildResponse(
-      HttpStatus.OK,
-      await this.seedNeighborhoodsByStateService.seedNeighborhoodsByState(
-        params
-      )
     );
   }
 }

@@ -4,8 +4,25 @@ repository:
       url: 'https://www.guiamais.com.br/bairros'
 database:
   mongodb:
-    connection: 'mongodb+srv://dev-seeder-root:hpYpxyjrKExNQviu@devseeder.v6xtv.mongodb.net/places?retryWrites=true&w=majority&ssl=true&wtimeoutMS=0'
+    connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'
+microservices:
+  rabbitmq:
+    url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
+    queue:
+      connection: 'places-queue'
+      messages: 'seed-messages'
+      success: 'seed-success'
+      error: 'seed-error'
+    exchange:
+      seed:
+        neighborhoods:
+          by:
+            city:
+              process: 'seed-neighborhoods-by-city-process'
+              success: 'seed-neighborhoods-by-city-success'
+              error: 'seed-neighborhoods-by-city-error'
 api:
   port: 3000
 doc:
-  version: 0.0.5
+  version: 0.0.6
+  name: 'places'

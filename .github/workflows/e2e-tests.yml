@@ -15,8 +15,15 @@ jobs:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: install
         run: npm install
+      - name: Generate env file
+        run: echo "${{secrets.ENV_PROD }}" > .env
+      - name: Start RabbitMQ
+        uses: namoshek/rabbitmq-github-action@v1
+        with:
+          version: '3.8.9'
+          ports: '5672:5672 15671:15672'
+          container-name: 'mqtt'
       - name: e2e test
         run: npm run test:e2e
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-
