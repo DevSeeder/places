@@ -5,12 +5,17 @@ import { AppModule } from '../../src/app.module';
 import { NestFactory } from '@nestjs/core';
 import '../../src/microservice/adapter/helper/extensions/exensions.module';
 
-jest.setTimeout(400000);
+jest.setTimeout(76000);
 
 describe('App (e2e) ', () => {
   let app: INestApplication;
 
+  beforeAll((done) => {
+    done();
+  });
+
   afterAll((done) => {
+    app.close();
     done();
   });
 
