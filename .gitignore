@@ -43,4 +43,4 @@ node_modules
 
 # Env
 .env
-
+.env.github.actions
