@@ -9,14 +9,6 @@ jobs:
   e2eTests:
     name: e2e-Tests
     runs-on: ubuntu-latest
-    services:
-      rabbitmq:
-        image: rabbitmq:3.8
-        env:
-          RABBITMQ_DEFAULT_USER: 'guest'
-          RABBITMQ_DEFAULT_PASS: 'guest'
-        ports:
-          - 5672
     steps:
       - uses: actions/checkout@v2
         with:
@@ -25,9 +17,13 @@ jobs:
         run: npm install
       - name: Generate env file
         run: echo "${{secrets.ENV_PROD }}" > .env
+      - name: Start RabbitMQ
+        uses: namoshek/rabbitmq-github-action@v1
+        with:
+          version: '3.8.9'
+          ports: '5672:5672 15671:15672'
+          container-name: 'mqtt'
       - name: e2e test
         run: npm run test:e2e
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          RABBITMQ_HOST: 127.0.0.1
-          RABBITMQ_PORT: ${{ job.services.rabbitmq.ports['5672'] }}
