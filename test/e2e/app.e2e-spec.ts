@@ -10,6 +10,10 @@ jest.setTimeout(400000);
 describe('App (e2e) ', () => {
   let app: INestApplication;
 
+  afterAll((done) => {
+    done();
+  });
+
   beforeEach(async function () {
     app = await NestFactory.create(AppModule);
     app.useGlobalPipes(
