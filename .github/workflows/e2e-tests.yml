@@ -9,8 +9,7 @@ jobs:
   e2eTests:
     name: e2e-Tests
     runs-on: ubuntu-latest
-
-  services:
+    services:
       rabbitmq:
         image: bitnami/rabbitmq:latest
         env:
@@ -18,7 +17,6 @@ jobs:
           RABBITMQ_DEFAULT_PASS: '${{ secrets.RABBITMQ_PASSWORD }}'
         ports:
           - 5672
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -33,4 +31,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           RABBITMQ_HOST: 127.0.0.1
           RABBITMQ_PORT: ${{ job.services.rabbitmq.ports['5672'] }}
-
