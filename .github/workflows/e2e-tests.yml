@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     services:
       rabbitmq:
-        image: bitnami/rabbitmq:latest
+        image: rabbitmq:3.8
         env:
-          RABBITMQ_DEFAULT_USER: '${{ secrets.RABBITMQ_USER }}'
-          RABBITMQ_DEFAULT_PASS: '${{ secrets.RABBITMQ_PASSWORD }}'
+          RABBITMQ_DEFAULT_USER: 'guest'
+          RABBITMQ_DEFAULT_PASS: 'guest'
         ports:
           - 5672
     steps:
