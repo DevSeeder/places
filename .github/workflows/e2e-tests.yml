@@ -9,6 +9,16 @@ jobs:
   e2eTests:
     name: e2e-Tests
     runs-on: ubuntu-latest
+
+  services:
+      rabbitmq:
+        image: bitnami/rabbitmq:latest
+        env:
+          RABBITMQ_DEFAULT_USER: '${{ secrets.RABBITMQ_USER }}'
+          RABBITMQ_DEFAULT_PASS: '${{ secrets.RABBITMQ_PASSWORD }}'
+        ports:
+          - 5672
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -16,17 +26,11 @@ jobs:
       - name: install
         run: npm install
       - name: Generate env file
-        run: echo "${{secrets.ENV_PROD }}" >> .env
-      - name: start RabbitMQ
-        uses: getong/rabbitmq-action@v1.2
-        with:
-          rabbitmq version: '3.8.2-management-alpine'
-          host port: 5672
-          rabbitmq user: '${{ secrets.RABBITMQ_USER }}'
-          rabbitmq password: 'noBahC3e'
-          rabbitmq vhost: 'vhost_name'
+        run: echo "${{secrets.ENV_PROD }}" > .env
       - name: e2e test
         run: npm run test:e2e
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          RABBITMQ_HOST: 127.0.0.1
+          RABBITMQ_PORT: ${{ job.services.rabbitmq.ports['5672'] }}
 
