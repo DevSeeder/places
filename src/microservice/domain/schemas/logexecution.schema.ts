@@ -5,7 +5,7 @@ import { Reference } from '../model/references/reference.model';
 
 export type LogExecutionDocument = LogExecution & Document;
 
-@Schema({ collection: 'logexecution', timestamps: true })
+@Schema({ collection: 'logExecutions', timestamps: true })
 export class LogExecution {
   @Prop({ required: true, type: String })
   type: EnumTypeLogExecution;

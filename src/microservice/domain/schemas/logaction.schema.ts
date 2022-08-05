@@ -6,7 +6,7 @@ import { MongooseDocumentID } from '../repository/mongoose/mongoose.repository';
 
 export type LogActionDocument = LogAction & Document;
 
-@Schema({ collection: 'logactions', timestamps: true })
+@Schema({ collection: 'logActions', timestamps: true })
 export class LogAction {
   @Prop({ required: true, type: String })
   type: EnumTypeAction;
