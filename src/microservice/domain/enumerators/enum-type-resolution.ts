@@ -1,3 +1,4 @@
 export enum EnumTypeResolution {
-  IsNotACity = 'IsNotACity'
+  IsNotACity = 'IsNotACity',
+  WrongCityName = 'WrongCityName'
 }

@@ -3,6 +3,7 @@ import { HydratedDocument, Model, ObjectId } from 'mongoose';
 import { MongoError } from 'mongodb';
 import { MongoDBException } from '../../../../core/error-handling/exception/mongodb-.exception';
 import { MongooseHelper } from '../../../adapter/helper/mongoose/mongoose.helper';
+import { getModelToken } from '@nestjs/mongoose';
 
 type MongooseDocument = HydratedDocument<any>;
 
@@ -67,15 +68,22 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async updateOneById(id: MongooseDocumentID, data: any): Promise<void> {
+    const res = await this.updateOne({ _id: id }, data);
+    this.logger.log(
+      `${getModelToken(this.model.name)} ${id} - Succesfully updated!.`
+    );
+    return res;
+  }
+
+  async updateOne(query: any, data: any): Promise<void> {
     this.model.findOneAndUpdate(
-      { _id: id },
+      query,
       { $set: data },
       { upsert: false },
       function (err: MongoError) {
         if (err) throw new MongoDBException(err.message, err.code);
       }
     );
-    this.logger.log(`${id} - Succesfully updated!.`);
   }
 
   async deleteOneById(id: string | number): Promise<void> {

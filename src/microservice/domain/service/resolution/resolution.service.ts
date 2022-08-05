@@ -9,7 +9,10 @@ import { AbstractService } from '../abstract-service.service';
 import { LogExecutionService } from '../logexecutions/log-execution.service';
 import { GetLogSeedByIdService } from '../logseed/get-log-seed-by-id.service';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
-import { ProcessResolutionIsNotACityService } from './process/process-resolution-is-not-a-city.service';
+import { ProcessResolutionWrongCityNameService } from './process/city/process-resolution-wrong-city-name.service';
+import { ProcessResolutionIsNotACityService } from './process/city/process-resolution-is-not-a-city.service';
+import { ProcessResolution } from '../../interface/resolution/process-resolution-interface';
+import { Reference } from '../../model/references/reference.model';
 
 @Injectable()
 export class ResolutionService extends AbstractService {
@@ -17,7 +20,8 @@ export class ResolutionService extends AbstractService {
     protected readonly logExecutionService: LogExecutionService,
     protected readonly logSeedService: LogSeedJobService,
     protected readonly getLogSeedService: GetLogSeedByIdService,
-    protected readonly processIsNotACityService: ProcessResolutionIsNotACityService
+    protected readonly processIsNotACityService: ProcessResolutionIsNotACityService,
+    protected readonly processWrongCityNameService: ProcessResolutionWrongCityNameService
   ) {
     super();
   }
@@ -61,17 +65,25 @@ export class ResolutionService extends AbstractService {
   ): Promise<void> {
     this.logger.log('Processing resolution...');
 
-    if (resolution.type == EnumTypeResolution.IsNotACity) {
-      await this.processIsNotACityService.process(
-        logSeed,
-        resolution,
-        idLogExecution
-      );
-    } else {
-      this.logger.warn(
-        `No resolution process implemented for ${resolution.type}`
-      );
+    let processService: ProcessResolution<Reference> = null;
+
+    switch (resolution.type) {
+      case EnumTypeResolution.IsNotACity:
+        processService = this.processIsNotACityService;
+        break;
+      case EnumTypeResolution.WrongCityName:
+        processService = this.processWrongCityNameService;
+        break;
+      default:
+        this.logger.warn(
+          `No resolution process implemented for ${resolution.type}`
+        );
+        break;
     }
+
+    if (processService)
+      processService.process(logSeed, resolution, idLogExecution);
+
     this.logger.log(`Resolution Finished...`);
   }
 }

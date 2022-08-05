@@ -1,3 +1,4 @@
 export enum EnumTypeAction {
-  DeleteCity = 'DeleteCity'
+  DeleteCity = 'DeleteCity',
+  UpdateNameCity = 'UpdateNameCity'
 }

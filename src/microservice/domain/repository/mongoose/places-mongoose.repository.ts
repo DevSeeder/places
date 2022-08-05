@@ -39,4 +39,8 @@ export abstract class PlacesMongooseRepository<
 
     return res.select(select).lean().exec();
   }
+
+  async updateById(id: number, data: any): Promise<void> {
+    return this.updateOne({ id }, data);
+  }
 }
