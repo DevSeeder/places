@@ -18,11 +18,12 @@ export class LogActionService extends AbstractService {
     reference: Reference,
     idLogExecution: MongooseDocumentID
   ) {
+    this.logger.log(`Logging Action '${type}'...`);
     const log = new LogAction();
     log.datetime = DateHelper.getDateNow();
     log.idLogExecution = idLogExecution;
     log.type = type;
     log.reference = reference;
-    return this.mongoRepository.insertOne(log, 'log execution');
+    return this.mongoRepository.insertOne(log, 'log action');
   }
 }

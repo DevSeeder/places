@@ -59,6 +59,7 @@ export class LogSeedJobService extends LogSeedService {
     idLogSeed: string,
     resolution: EnumTypeResolution
   ): Promise<void> {
+    this.logger.log('Updating logSeed by Resolution...');
     const data = {
       success: true,
       processed: true,

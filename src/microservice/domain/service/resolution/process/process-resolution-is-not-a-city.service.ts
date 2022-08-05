@@ -10,6 +10,7 @@ import { LogSeed } from '../../../schemas/logseed.schema';
 import { DeleteCityByIdService } from '../../cities/delete-city-by-id.service';
 import { LogActionService } from '../../logactions/log-action.service';
 import { AbstractProcessResolution } from './abstract-process-resolution.service';
+import { Reference } from 'src/microservice/domain/model/references/reference.model';
 
 @Injectable()
 export class ProcessResolutionIsNotACityService
@@ -28,7 +29,9 @@ export class ProcessResolutionIsNotACityService
     resolution: ReferenceResolution,
     idLogExecution?: MongooseDocumentID
   ) {
-    if (!(logSeed.reference instanceof ReferenceNeighborhoodsByState)) {
+    const reference = this.getReference(logSeed.reference);
+
+    if (!(reference instanceof ReferenceNeighborhoodsByState)) {
       throw new InvalidLogSeedResolutionException(
         EnumTypeResolution.IsNotACity,
         resolution.idLogSeed
@@ -41,6 +44,20 @@ export class ProcessResolutionIsNotACityService
       idLogExecution
     );
 
-    await this.deleteCityService.deleteCityById(logSeed.reference.cityId);
+    this.logger.log(`Deleting City ${reference.cityName}...`);
+
+    await this.deleteCityService.deleteCityById(reference.cityId);
+  }
+
+  getReference(reference: Reference): ReferenceNeighborhoodsByState {
+    const refObj = new ReferenceNeighborhoodsByState(
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    );
+    return Object.assign(refObj, JSON.parse(JSON.stringify(reference)));
   }
 }

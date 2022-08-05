@@ -73,9 +73,9 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
       { upsert: false },
       function (err: MongoError) {
         if (err) throw new MongoDBException(err.message, err.code);
-        this.logger.log(`${id} - Succesfully updated!.`);
       }
     );
+    this.logger.log(`${id} - Succesfully updated!.`);
   }
 
   async deleteOneById(id: string | number): Promise<void> {

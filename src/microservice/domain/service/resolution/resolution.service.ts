@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { NotFoundException } from '../../../../core/error-handling/exception/not-found.exception';
 import { EnumTypeLogExecution } from '../../enumerators/enum-type-logexecution';
 import { EnumTypeResolution } from '../../enumerators/enum-type-resolution';
 import { ReferenceResolution } from '../../model/references/reference-resolution.model';
@@ -30,13 +31,27 @@ export class ResolutionService extends AbstractService {
       resolution
     );
 
+    this.logger.log(`Searching logSeed by id '${resolution.idLogSeed}'`);
+
     const logSeed = await this.getLogSeedService.getLogSeedById(
       resolution.idLogSeed
     );
 
+    if (!logSeed) throw new NotFoundException('LogSeed');
+
     await this.processResolution(logSeed, resolution, idLogExecution);
 
+    await this.logSeedService.logProcessResolution(
+      resolution.idLogSeed,
+      resolution.type
+    );
+
     await this.logExecutionService.finishLogExecution(idLogExecution);
+
+    return {
+      success: true,
+      response: 'Resolution Processed!'
+    };
   }
 
   async processResolution(
@@ -45,11 +60,16 @@ export class ResolutionService extends AbstractService {
     idLogExecution: MongooseDocumentID
   ): Promise<void> {
     this.logger.log('Processing resolution...');
+
     if (resolution.type == EnumTypeResolution.IsNotACity) {
       await this.processIsNotACityService.process(
         logSeed,
         resolution,
         idLogExecution
+      );
+    } else {
+      this.logger.warn(
+        `No resolution process implemented for ${resolution.type}`
       );
     }
     this.logger.log(`Resolution Finished...`);
