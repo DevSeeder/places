@@ -6,6 +6,8 @@ import { MongooseHelper } from '../../../adapter/helper/mongoose/mongoose.helper
 
 type MongooseDocument = HydratedDocument<any>;
 
+export type MongooseDocumentID = string | ObjectId;
+
 export abstract class MongooseRepository<Collection, MongooseModel> {
   protected readonly logger: Logger = new Logger(this.constructor.name);
 
@@ -57,14 +59,14 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async findById(
-    id: string | ObjectId,
+    id: MongooseDocumentID,
     select: object = {}
   ): Promise<MongooseDocument> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.findById(id).select(select).lean().exec();
   }
 
-  async updateOneById(id: string | ObjectId, data: any): Promise<void> {
+  async updateOneById(id: MongooseDocumentID, data: any): Promise<void> {
     this.model.findOneAndUpdate(
       { _id: id },
       { $set: data },
@@ -77,6 +79,6 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async deleteOneById(id: string | number): Promise<void> {
-    await this.model.deleteOne({ _id: id });
+    await this.model.deleteOne({ id });
   }
 }

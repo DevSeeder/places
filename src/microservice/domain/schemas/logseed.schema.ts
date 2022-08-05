@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EnumTypeLogSeed } from '../enumerators/enum-type-logseed';
 import { EnumTypeResolution } from '../enumerators/enum-type-resolution';
-import { Reference } from '../model/references/reference-neighborhoods-by-state.model';
+import { Reference } from '../model/references/reference.model';
 
 export type LogSeedDocument = LogSeed & Document;
 
