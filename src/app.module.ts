@@ -11,6 +11,7 @@ import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/cus
 import { NeighborhoodsModule } from './microservice/adapter/module/neighborhoods.module';
 import { SeedModule } from './microservice/adapter/module/seed.module';
 import { StatesModule } from './microservice/adapter/module/states.module';
+import { ResolutionsModule } from './microservice/adapter/module/resolution.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { StatesModule } from './microservice/adapter/module/states.module';
     CitiesModule,
     StatesModule,
     CountriesModule,
-    SeedModule
+    SeedModule,
+    ResolutionsModule
   ],
   controllers: [],
   providers: [

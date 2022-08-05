@@ -5,7 +5,7 @@ import { ReferenceResolution } from '../../model/references/reference-resolution
 import { MongooseDocumentID } from '../../repository/mongoose/mongoose.repository';
 import { LogSeed } from '../../schemas/logseed.schema';
 import { AbstractService } from '../abstract-service.service';
-import { LogExecutionService } from '../logexecution/log-execution.service';
+import { LogExecutionService } from '../logexecutions/log-execution.service';
 import { GetLogSeedByIdService } from '../logseed/get-log-seed-by-id.service';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
 import { ProcessResolutionIsNotACityService } from './process/process-resolution-is-not-a-city.service';

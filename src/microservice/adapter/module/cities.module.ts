@@ -8,6 +8,7 @@ import { GetCitiesByStateService } from '../../domain/service/cities/get/get-cit
 import { CitiesController } from '../controller/cities.controller';
 import { GetCitiesByCountryService } from '../../domain/service/cities/get/get-cities-by-country.service';
 import { StatesModule } from './states.module';
+import { DeleteCityByIdService } from '../../domain/service/cities/delete-city-by-id.service';
 
 @Module({
   imports: [
@@ -20,8 +21,14 @@ import { StatesModule } from './states.module';
     ValidateCityByNameOrAliasService,
     ValidateInputParamsService,
     GetCitiesByStateService,
-    GetCitiesByCountryService
+    GetCitiesByCountryService,
+    DeleteCityByIdService
   ],
-  exports: [CitiesMongoose, ValidateInputParamsService, GetCitiesByStateService]
+  exports: [
+    CitiesMongoose,
+    ValidateInputParamsService,
+    GetCitiesByStateService,
+    DeleteCityByIdService
+  ]
 })
 export class CitiesModule {}

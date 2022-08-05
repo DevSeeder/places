@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { DateHelper } from '../../../adapter/helper/date.helper';
-import { LogExecutionMongoose } from '../../../adapter/repository/logexecution/logexecution-mongoose.repository';
+import { LogExecutionMongoose } from '../../../adapter/repository/logexecutions/logexecution-mongoose.repository';
 import { EnumTypeLogExecution } from '../../enumerators/enum-type-logexecution';
 import { Reference } from '../../model/references/reference.model';
 import { LogExecution } from '../../schemas/logexecution.schema';
