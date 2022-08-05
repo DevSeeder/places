@@ -15,6 +15,7 @@ import { LogSeedJobService } from '../../../logseed/log-seed-job.service';
 import { JobSeedNeighborhoodsService } from '../abstract/job-seed-neighborhoods.service';
 import { City } from '../../../../schemas/city.schema';
 import { EventSeedByCityDTOBuilder } from '../../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
+import { DateHelper } from '../../../../../adapter/helper/date.helper';
 
 @Injectable()
 export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsService {
@@ -43,7 +44,7 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     );
     const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
       resPuppeteer.length,
-      new Date(),
+      DateHelper.getDateNow(),
       reference
     );
     await this.senderMessageService.publishMessage(
@@ -69,7 +70,7 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
 
     const messageDTO = new MessageSeedNeighborhoodsByCityErrorDTO(
       idLog,
-      new Date(),
+      DateHelper.getDateNow(),
       reference
     );
 

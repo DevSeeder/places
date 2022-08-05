@@ -2,6 +2,7 @@ import { Builder } from '../../../../../domain/helper/builder/builder.builder';
 import { ValidOutputSearchByState } from '../../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 import { EventSeedByCityDTO } from '../../../../../domain/model/dto/events/event-seed-by-city-dto.model';
 import { City } from '../../../../../domain/schemas/city.schema';
+import { DateHelper } from '../../../date.helper';
 import { ReferenceEventByCityBuilder } from '../reference/reference-event-by-city.builder';
 
 export class EventSeedByCityDTOBuilder extends Builder<
@@ -12,6 +13,6 @@ export class EventSeedByCityDTOBuilder extends Builder<
     const reference = new ReferenceEventByCityBuilder(this.inputElement).build(
       buildParams
     );
-    return new EventSeedByCityDTO(new Date(), reference);
+    return new EventSeedByCityDTO(DateHelper.getDateNow(), reference);
   }
 }

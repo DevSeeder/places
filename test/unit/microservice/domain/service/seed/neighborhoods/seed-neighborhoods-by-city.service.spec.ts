@@ -18,6 +18,7 @@ import { ValidateInputParamsService } from '../../../../../../../src/microservic
 import { mockValidateService } from '../../../../../../mock/services/validate/validate-service.mock';
 import { PublishSeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/publish/publish-seed-neighborhoods-by-city.service';
 import { mockPublishService } from '../../../../../../mock/services/seed/publish/publish-seed-service.mock';
+import { DateHelper } from '../../../../../../../src/microservice/adapter/helper/date.helper';
 
 describe('SeedNeighborhoodsByCityService', () => {
   let sut: SeedNeighborhoodsByCityService;
@@ -142,7 +143,7 @@ describe('SeedNeighborhoodsByCityService', () => {
       ).build(mockCity);
 
       await sut.seedNeighborhoodsByCity(
-        new EventSeedByCityDTO(new Date(), mockEP)
+        new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP)
       );
 
       const spyConvertedSearch = mockConvertedSearch();
@@ -180,7 +181,7 @@ describe('SeedNeighborhoodsByCityService', () => {
       ).build(mockCity);
 
       await sut.seedNeighborhoodsByCity(
-        new EventSeedByCityDTO(new Date(), mockEP)
+        new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP)
       );
 
       const spyConvertedSearch = mockConvertedSearch();

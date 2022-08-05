@@ -22,6 +22,7 @@ import { mockSeedNeighborhoodsByCityService } from '../../../../../../../mock/se
 import { EventSeedByCityDTOBuilder } from '../../../../../../../../src/microservice/adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
 import { ReferenceEventByCityBuilder } from '../../../../../../../../src/microservice/adapter/helper/builder/dto/reference/reference-event-by-city.builder';
 import { MessageSeedNeighborhoodsByCitySuccessDTO } from '../../../../../../../../src/microservice/domain/model/dto/messages/message-seed-neighborhoods-by-city-dto.model';
+import { DateHelper } from '../../../../../../../../src/microservice/adapter/helper/date.helper';
 describe('ProcessSeedNeighborhoodsByCityService', () => {
   let sut: ProcessSeedNeighborhoodsByCityService;
 
@@ -107,7 +108,7 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
 
       const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
         2,
-        new Date(),
+        DateHelper.getDateNow(),
         referenceMock
       );
 
@@ -140,7 +141,7 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
 
       const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
         3,
-        new Date(),
+        DateHelper.getDateNow(),
         referenceMock
       );
 

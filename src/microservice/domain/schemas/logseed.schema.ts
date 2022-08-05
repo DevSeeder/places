@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EnumTypeLogSeed } from '../enumerators/enum-type-logseed';
-import { ReferenceLogSeed } from '../model/logseed/reference/reference-neighborhoods-by-state.model';
+import { EnumTypeResolution } from '../enumerators/enum-type-resolution';
+import { Reference } from '../model/references/reference-neighborhoods-by-state.model';
 
 export type LogSeedDocument = LogSeed & Document;
 
@@ -26,13 +27,13 @@ export class LogSeed {
   processedDate: Date;
 
   @Prop({ required: true, type: Object })
-  reference: ReferenceLogSeed;
+  reference: Reference;
 
   @Prop({ required: true, type: Object })
   error: Error;
 
   @Prop({ required: false, type: String })
-  resolution: string;
+  resolution: EnumTypeResolution;
 }
 
 export const LogSeedSchema = SchemaFactory.createForClass(LogSeed);

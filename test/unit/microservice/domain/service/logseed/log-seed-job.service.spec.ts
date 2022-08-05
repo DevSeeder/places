@@ -10,7 +10,7 @@ import { Translations } from '../../../../../../src/microservice/domain/model/tr
 import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/logseed/reference/reference-neighborhoods-by-state.model';
+import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/references/reference-neighborhoods-by-state.model';
 
 describe('LogSeedJobService', () => {
   let sut: LogSeedJobService;

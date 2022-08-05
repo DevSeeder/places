@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { DateHelper } from '../../../adapter/helper/date.helper';
 import { LogSeedMongoose } from '../../../adapter/repository/logseed/logseed-mongoose.repository';
 import { EnumTypeLogSeed } from '../../enumerators/enum-type-logseed';
-import {
-  ReferenceLogSeed,
-  ReferenceNeighborhoodsByState
-} from '../../model/logseed/reference/reference-neighborhoods-by-state.model';
+import { EnumTypeResolution } from '../../enumerators/enum-type-resolution';
+import { ReferenceNeighborhoodsByState } from '../../model/references/reference-neighborhoods-by-state.model';
+import { Reference } from '../../model/references/reference.model';
 import { City } from '../../schemas/city.schema';
 import { Country } from '../../schemas/country.schema';
 import { LogSeed } from '../../schemas/logseed.schema';
@@ -19,14 +19,14 @@ export class LogSeedJobService extends LogSeedService {
 
   private async createLogSeed(
     type: EnumTypeLogSeed,
-    reference: ReferenceLogSeed,
+    reference: Reference,
     error: Error
   ) {
     this.logger.log('Logging seed error....');
     const logSeed = new LogSeed();
     logSeed.type = type;
     logSeed.reference = reference;
-    logSeed.datetime = new Date();
+    logSeed.datetime = DateHelper.getDateNow();
     logSeed.ip = 'localhost';
     logSeed.success = false;
     logSeed.processed = false;
@@ -53,5 +53,18 @@ export class LogSeedJobService extends LogSeedService {
       reference,
       error
     );
+  }
+
+  async logProcessResolution(
+    idLogSeed: string,
+    resolution: EnumTypeResolution
+  ): Promise<void> {
+    const data = {
+      success: true,
+      processed: true,
+      processedDate: DateHelper.getDateNow(),
+      resolution: resolution
+    };
+    return this.mongoRepository.updateOneById(idLogSeed, data);
   }
 }

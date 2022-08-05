@@ -63,4 +63,20 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.findById(id).select(select).lean().exec();
   }
+
+  async updateOneById(id: string | ObjectId, data: any): Promise<void> {
+    this.model.findOneAndUpdate(
+      { _id: id },
+      { $set: data },
+      { upsert: false },
+      function (err: MongoError) {
+        if (err) throw new MongoDBException(err.message, err.code);
+        this.logger.log(`${id} - Succesfully updated!.`);
+      }
+    );
+  }
+
+  async deleteOneById(id: string | number): Promise<void> {
+    await this.model.deleteOne({ _id: id });
+  }
 }
