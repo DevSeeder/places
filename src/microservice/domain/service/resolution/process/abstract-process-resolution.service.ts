@@ -17,12 +17,13 @@ export abstract class AbstractProcessResolution extends AbstractService {
 
   async process(
     logSeed: LogSeed,
-    _resolution: ReferenceResolution,
+    resolution: ReferenceResolution,
     idLogExecution?: MongooseDocumentID
   ) {
     await this.logActionService.saveLogAction(
       this.actionType,
       logSeed.reference,
+      resolution.dataResolution,
       idLogExecution
     );
   }

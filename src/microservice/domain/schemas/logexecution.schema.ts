@@ -21,6 +21,9 @@ export class LogExecution {
 
   @Prop({ required: true, type: Object })
   reference: Reference;
+
+  @Prop({ required: false, type: String })
+  error: string;
 }
 
 export const LogExecutionSchema = SchemaFactory.createForClass(LogExecution);

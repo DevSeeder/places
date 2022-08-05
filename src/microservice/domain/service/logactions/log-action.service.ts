@@ -16,6 +16,7 @@ export class LogActionService extends AbstractService {
   async saveLogAction(
     type: EnumTypeAction,
     reference: Reference,
+    dataAction: any,
     idLogExecution: MongooseDocumentID
   ) {
     this.logger.log(`Logging Action '${type}'...`);
@@ -24,6 +25,7 @@ export class LogActionService extends AbstractService {
     log.idLogExecution = idLogExecution;
     log.type = type;
     log.reference = reference;
+    log.dataAction = dataAction;
     return this.mongoRepository.insertOne(log, 'log action');
   }
 }

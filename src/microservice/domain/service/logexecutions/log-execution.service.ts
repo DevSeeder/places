@@ -22,9 +22,10 @@ export class LogExecutionService extends AbstractService {
     return this.mongoRepository.insertOne(log, 'log execution');
   }
 
-  async finishLogExecution(id: string | ObjectId) {
+  async finishLogExecution(id: string | ObjectId, error = '') {
     return this.mongoRepository.updateOneById(id, {
-      processedDate: DateHelper.getDateNow()
+      processedDate: DateHelper.getDateNow(),
+      error
     });
   }
 }

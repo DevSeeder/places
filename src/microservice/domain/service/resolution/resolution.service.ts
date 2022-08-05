@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { NotFoundException } from '../../../../core/error-handling/exception/not-found.exception';
 import { EnumTypeLogExecution } from '../../enumerators/enum-type-logexecution';
 import { EnumTypeResolution } from '../../enumerators/enum-type-resolution';
@@ -13,6 +13,7 @@ import { ProcessResolutionWrongCityNameService } from './process/city/process-re
 import { ProcessResolutionIsNotACityService } from './process/city/process-resolution-is-not-a-city.service';
 import { ProcessResolution } from '../../interface/resolution/process-resolution-interface';
 import { Reference } from '../../model/references/reference.model';
+import { ResolutionException } from 'src/core/error-handling/exception/resolution.exception';
 
 @Injectable()
 export class ResolutionService extends AbstractService {
@@ -35,6 +36,29 @@ export class ResolutionService extends AbstractService {
       resolution
     );
 
+    try {
+      await this.startResolution(resolution, idLogExecution);
+    } catch (err) {
+      await this.logExecutionService.finishLogExecution(
+        idLogExecution,
+        err.message
+      );
+      this.logger.error(err.message);
+      throw err;
+    }
+
+    await this.logExecutionService.finishLogExecution(idLogExecution);
+
+    return {
+      success: true,
+      response: 'Resolution Processed!'
+    };
+  }
+
+  async startResolution(
+    resolution: ReferenceResolution,
+    idLogExecution: MongooseDocumentID
+  ): Promise<void> {
     this.logger.log(`Searching logSeed by id '${resolution.idLogSeed}'`);
 
     const logSeed = await this.getLogSeedService.getLogSeedById(
@@ -43,19 +67,19 @@ export class ResolutionService extends AbstractService {
 
     if (!logSeed) throw new NotFoundException('LogSeed');
 
+    if (logSeed.processed) {
+      throw new ResolutionException(
+        'LogSeed Already Processed!',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     await this.processResolution(logSeed, resolution, idLogExecution);
 
     await this.logSeedService.logProcessResolution(
       resolution.idLogSeed,
       resolution.type
     );
-
-    await this.logExecutionService.finishLogExecution(idLogExecution);
-
-    return {
-      success: true,
-      response: 'Resolution Processed!'
-    };
   }
 
   async processResolution(

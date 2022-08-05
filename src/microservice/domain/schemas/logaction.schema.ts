@@ -19,6 +19,9 @@ export class LogAction {
 
   @Prop({ required: true, type: Object })
   reference: Reference;
+
+  @Prop({ required: false, type: Object })
+  dataAction: any;
 }
 
 export const LogActionSchema = SchemaFactory.createForClass(LogAction);
