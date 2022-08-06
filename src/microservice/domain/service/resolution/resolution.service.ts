@@ -1,7 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { NotFoundException } from '../../../../core/error-handling/exception/not-found.exception';
 import { EnumTypeLogExecution } from '../../enumerators/enum-type-logexecution';
-import { EnumTypeResolution } from '../../enumerators/enum-type-resolution';
 import { ReferenceResolution } from '../../model/references/reference-resolution.model';
 import { MongooseDocumentID } from '../../repository/mongoose/mongoose.repository';
 import { LogSeed } from '../../schemas/logseed.schema';
@@ -11,9 +10,8 @@ import { GetLogSeedByIdService } from '../logseed/get-log-seed-by-id.service';
 import { LogSeedJobService } from '../logseed/log-seed-job.service';
 import { ProcessResolutionWrongCityNameService } from './process/city/process-resolution-wrong-city-name.service';
 import { ProcessResolutionIsNotACityService } from './process/city/process-resolution-is-not-a-city.service';
-import { ProcessResolution } from '../../interface/resolution/process-resolution-interface';
-import { Reference } from '../../model/references/reference.model';
-import { ResolutionException } from 'src/core/error-handling/exception/resolution.exception';
+import { ResolutionException } from '../../../../core/error-handling/exception/resolution.exception';
+import { ProcessResolutionUniqueNeighborhoodService } from './process/city/process-resolution-unique-neighborhood.service';
 
 @Injectable()
 export class ResolutionService extends AbstractService {
@@ -22,7 +20,8 @@ export class ResolutionService extends AbstractService {
     protected readonly logSeedService: LogSeedJobService,
     protected readonly getLogSeedService: GetLogSeedByIdService,
     protected readonly processIsNotACityService: ProcessResolutionIsNotACityService,
-    protected readonly processWrongCityNameService: ProcessResolutionWrongCityNameService
+    protected readonly processWrongCityNameService: ProcessResolutionWrongCityNameService,
+    protected readonly processUniqueNeighborhoodService: ProcessResolutionUniqueNeighborhoodService
   ) {
     super();
   }
@@ -89,24 +88,15 @@ export class ResolutionService extends AbstractService {
   ): Promise<void> {
     this.logger.log('Processing resolution...');
 
-    let processService: ProcessResolution<Reference> = null;
+    const processService = `process${resolution.type}Service`;
 
-    switch (resolution.type) {
-      case EnumTypeResolution.IsNotACity:
-        processService = this.processIsNotACityService;
-        break;
-      case EnumTypeResolution.WrongCityName:
-        processService = this.processWrongCityNameService;
-        break;
-      default:
-        this.logger.warn(
-          `No resolution process implemented for ${resolution.type}`
-        );
-        break;
+    if (this.hasOwnProperty(processService))
+      await this[processService].process(logSeed, resolution, idLogExecution);
+    else {
+      this.logger.warn(
+        `No resolution process implemented for ${resolution.type}`
+      );
     }
-
-    if (processService)
-      processService.process(logSeed, resolution, idLogExecution);
 
     this.logger.log(`Resolution Finished...`);
   }
