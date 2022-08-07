@@ -5,7 +5,9 @@ export interface IPuppeteerRepository<
   SearchElement,
   ValidOutputSearch
 > {
-  callEndpoint(searchParams: SearchElement): Promise<CheerioAPI>;
+  callEndpoint(
+    searchParams: SearchElement | ValidOutputSearch
+  ): Promise<CheerioAPI>;
 
   getDocumentHtml(url: string): Promise<CheerioAPI>;
 
@@ -17,7 +19,7 @@ export interface IPuppeteerRepository<
     searchParams: SearchElement,
     convertedSearch: ValidOutputSearch,
     $: CheerioAPI
-  ): ElementPlace[];
+  ): Promise<ElementPlace[]>;
 
   validateInput(searchParams: SearchElement): void;
 

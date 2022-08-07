@@ -52,7 +52,7 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
     searchParams: SearchNeighborhoodsDTO,
     convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
-    const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
+    const resPuppeteer = await this.guiaMaisRepository.getElements(
       searchParams,
       convertedSearch
     );
