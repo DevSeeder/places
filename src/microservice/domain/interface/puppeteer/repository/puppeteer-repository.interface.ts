@@ -6,7 +6,8 @@ export interface IPuppeteerRepository<
   ValidOutputSearch
 > {
   callEndpoint(
-    searchParams: SearchElement | ValidOutputSearch
+    searchParams: SearchElement,
+    convertedSearch?: ValidOutputSearch
   ): Promise<CheerioAPI>;
 
   getDocumentHtml(url: string): Promise<CheerioAPI>;

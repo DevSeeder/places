@@ -12,6 +12,7 @@ import { NeighborhoodsModule } from './microservice/adapter/module/neighborhoods
 import { SeedNeighborhoodsModule } from './microservice/adapter/module/seed/seed-neighborhoods.module';
 import { StatesModule } from './microservice/adapter/module/states.module';
 import { ResolutionsModule } from './microservice/adapter/module/resolution.module';
+import { SeedRegionsModule } from './microservice/adapter/module/seed/seed-regions.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { ResolutionsModule } from './microservice/adapter/module/resolution.modu
     StatesModule,
     CountriesModule,
     SeedNeighborhoodsModule,
-    ResolutionsModule
+    ResolutionsModule,
+    SeedRegionsModule
   ],
   controllers: [],
   providers: [

@@ -26,7 +26,7 @@ export abstract class PuppeteerPlacesRepository<
   ): Promise<ElementPlace[]> {
     this.validateInput(searchParams);
 
-    const $ = await this.callEndpoint(searchParams);
+    const $ = await this.callEndpoint(searchParams, convertedSearch);
     const elements = this.buildElementsFromDocument(
       searchParams,
       convertedSearch,
@@ -49,6 +49,7 @@ export abstract class PuppeteerPlacesRepository<
   );
 
   abstract callEndpoint(
-    _searchParams: SearchElement | ValidOutputSearch
+    _searchParams: SearchElement,
+    _convertedSearch?: ValidOutputSearch
   ): Promise<CheerioAPI>;
 }

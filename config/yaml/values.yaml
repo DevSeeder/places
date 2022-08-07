@@ -2,6 +2,9 @@ repository:
   neighborhoods:
     guia-mais:
       url: 'https://www.guiamais.com.br/bairros'
+  regions:
+    citypopulation:
+      url: 'https://www.citypopulation.de'
 database:
   mongodb:
     connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'

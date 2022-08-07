@@ -29,13 +29,13 @@ export class CityPopulationRepository
     searchParams: SearchRegionsDTO,
     convertedSearch: Country
   ) {
-    const $ = await this.callEndpoint(convertedSearch);
+    const $ = await this.callEndpoint(searchParams, convertedSearch);
     return this.buildElementsFromDocument(searchParams, convertedSearch, $);
   }
 
   async buildElementsFromDocument(
-    _searchParams: SearchRegionsDTO,
-    _convertedSearch: Country,
+    searchParams: SearchRegionsDTO,
+    convertedSearch: Country,
     $: CheerioAPI
   ): Promise<RegionsByCountry[]> {
     const arr = [];
@@ -47,7 +47,11 @@ export class CityPopulationRepository
 
       const region = new RegionsByCountry();
       region.name = element.text();
-      region.states = await this.goToRegionAndGetStates(element.prop('href'));
+
+      const urlRegion = this.getBaseUrl(searchParams, convertedSearch);
+      region.states = await this.goToRegionAndGetStates(
+        `${urlRegion}/${element.prop('href')}`
+      );
 
       arr.push(region);
     }
@@ -55,9 +59,20 @@ export class CityPopulationRepository
     return arr;
   }
 
-  async callEndpoint(country: Country): Promise<CheerioAPI> {
-    const url = `${this.url}/en/${country}`;
-    return this.getDocumentHtml(url);
+  async callEndpoint(
+    _searchParams: SearchRegionsDTO,
+    convertedSearch: Country
+  ): Promise<CheerioAPI> {
+    return this.getDocumentHtml(
+      this.getBaseUrl(_searchParams, convertedSearch)
+    );
+  }
+
+  private getBaseUrl(
+    _searchParams: SearchRegionsDTO,
+    convertedSearch: Country
+  ): string {
+    return `${this.url}/en/${convertedSearch.name.toLocaleLowerCase()}`;
   }
 
   async goToRegionAndGetStates(url: string): Promise<Array<string>> {
