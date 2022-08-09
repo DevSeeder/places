@@ -1,14 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AbstractService } from '../../abstract-service.service';
 import { CityPopulationRepository } from '../../../../adapter/repository/regions/puppeteer/citypopulation.repository';
-import { Country } from '../../../../domain/schemas/country.schema';
+import { Country } from '../../../schemas/country.schema';
 import { ValidateCountryByNameOrAliasService } from '../../countries/validate-country-by-name-or-alias.service';
-import { RegionsByCountry } from '../../../../domain/model/regions/regions-by-country.model';
+import { RegionsByCountry } from '../../../model/regions/regions-by-country.model';
 import { UpdateStatesByRegionService } from '../../states/update-states-by-region.service';
-import { SearchRegionsDTO } from '../../../../domain/model/search/regions/search-regions-dto.model';
+import { SearchRegionsDTO } from '../../../model/search/regions/search-regions-dto.model';
+import { SeederService } from '../../../interface/service/seeder-service.interface';
 
 @Injectable()
-export class SeedRegionsByCountryService extends AbstractService {
+export class SeedRegionsByCountryService
+  extends AbstractService
+  implements SeederService<SearchRegionsDTO, Country, RegionsByCountry>
+{
   constructor(
     protected readonly validateCountryService: ValidateCountryByNameOrAliasService,
     @Inject('CityPopulation')

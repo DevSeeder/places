@@ -1,13 +1,3 @@
-export interface GetSeederService<
-  SearchElements,
-  ValidOutput,
-  ElementDB,
-  ResponseDB
-> {
+export interface GetSeederService<SearchElements, ValidOutput> {
   validateAndConvertInput(searchParams: SearchElements): Promise<ValidOutput>;
-  searchInDatabase(convertedSearch: ValidOutput): Promise<ResponseDB[]>;
-  searchByPuppeterAndSave(
-    searchParams: SearchElements,
-    convertedSearch: ValidOutput
-  ): Promise<ElementDB[]>;
 }

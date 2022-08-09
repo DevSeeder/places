@@ -1,15 +1,15 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { RegionsByCountryService } from '../../domain/service/regions/regions-by-country.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SearchRegionsDTO } from '../../domain/model/search/regions/search-regions-dto.model';
-import { GetRegionsByCountryService } from '../../domain/service/regions/get-regions-by-country.service';
 
 @ApiExcludeController()
 @Controller('regions')
 export class RegionsController extends AbstractController {
   constructor(
-    private readonly getRegionsByCountryService: GetRegionsByCountryService
+    private readonly getRegionsByCountryService: RegionsByCountryService
   ) {
     super();
   }
@@ -20,7 +20,7 @@ export class RegionsController extends AbstractController {
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.getRegionsByCountryService.getRegionsByCountry(params)
+      await this.getRegionsByCountryService.getFindAndSeedElements(params)
     );
   }
 }

@@ -11,6 +11,7 @@ import { SaveNeighborhoodsByCityService } from '../../domain/service/neighborhoo
 import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { CitiesModule } from './cities.module';
 import { SeedNeighborhoodsModule } from './seed/seed-neighborhoods.module';
+import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/neighborhoods-by-city.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SeedNeighborhoodsModule } from './seed/seed-neighborhoods.module';
     NeighborhoodsMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
+    NeighborhoodsByCityService,
     SaveNeighborhoodsByCityService
   ],
   exports: [
