@@ -48,10 +48,9 @@ export class ProcessSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     const convertedSearch =
       await this.validateService.validateAndConvertSearchByCity(searchParams);
 
-    const resMongo =
-      await this.getNeighborhoodsService.findNeighborhoodsByCityInDatabase(
-        convertedSearch
-      );
+    const resMongo = await this.getNeighborhoodsService.searchInDatabase(
+      convertedSearch
+    );
 
     if (resMongo.length < msg.seededCount) {
       await this.logErrorSeedJob(

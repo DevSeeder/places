@@ -7,9 +7,19 @@ import { SearchNeighborhoodsDB } from '../../../model/search/neighborhoods/searc
 import { NeighborhoodsService } from '../neighborhoods.service';
 import { ValidateInputParamsService } from '../../validate/validate-input-params.service';
 import { SeedNeighborhoodsByCityService } from '../../seed/neighborhoods/seed-neighborhoods-by-city.service';
+import { GetSeederService } from 'src/microservice/domain/interface/service/get-seeder-service.interface';
 
 @Injectable()
-export class GetNeighborhoodsByCityService extends NeighborhoodsService {
+export class GetNeighborhoodsByCityService
+  extends NeighborhoodsService
+  implements
+    GetSeederService<
+      SearchNeighborhoodsDTO,
+      ValidOutputSearchByCity,
+      NeighborhoodByCity,
+      NeighborhoodByCity
+    >
+{
   constructor(
     protected readonly validateService: ValidateInputParamsService,
     protected readonly seedNeighborhoodsByCity: SeedNeighborhoodsByCityService,
@@ -21,20 +31,16 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
   async getNeighborhoodsByCity(
     searchParams: SearchNeighborhoodsDTO
   ): Promise<NeighborhoodByCity[]> {
-    const convertedSearch =
-      await this.validateService.validateAndConvertSearchByCity(searchParams);
+    const convertedSearch = await this.validateAndConvertInput(searchParams);
 
-    const resMongo = await this.findNeighborhoodsByCityInDatabase(
-      convertedSearch
-    );
+    const resMongo = await this.searchInDatabase(convertedSearch);
 
     if (resMongo.length === 0) {
       this.logger.log('Searching by puppeteer...');
-      const resPuppeteer =
-        await this.seedNeighborhoodsByCity.searchByPuppeterAndSave(
-          searchParams,
-          convertedSearch
-        );
+      const resPuppeteer = await this.searchByPuppeterAndSave(
+        searchParams,
+        convertedSearch
+      );
 
       this.logger.log('Returning Puppeteer response...');
       return resPuppeteer;
@@ -45,7 +51,15 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
     return resMongo;
   }
 
-  async findNeighborhoodsByCityInDatabase(
+  async validateAndConvertInput(
+    searchParams: SearchNeighborhoodsDTO
+  ): Promise<ValidOutputSearchByCity> {
+    return await this.validateService.validateAndConvertSearchByCity(
+      searchParams
+    );
+  }
+
+  async searchInDatabase(
     convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
     const searchDB = new SearchNeighborhoodsDB(
@@ -54,5 +68,15 @@ export class GetNeighborhoodsByCityService extends NeighborhoodsService {
       convertedSearch.city.id
     );
     return this.findInDatabase(searchDB);
+  }
+
+  async searchByPuppeterAndSave(
+    searchParams: SearchNeighborhoodsDTO,
+    convertedSearch: ValidOutputSearchByCity
+  ) {
+    return this.seedNeighborhoodsByCity.searchByPuppeterAndSave(
+      searchParams,
+      convertedSearch
+    );
   }
 }

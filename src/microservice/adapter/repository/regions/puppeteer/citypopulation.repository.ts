@@ -84,6 +84,14 @@ export class CityPopulationRepository
       .each(function () {
         arr.push($(this).text());
       });
+
+    $('.rstatus:contains(Province)')
+      .parent()
+      .find('.rname')
+      .each(function () {
+        arr.push($(this).text());
+      });
+
     return arr;
   }
 }
