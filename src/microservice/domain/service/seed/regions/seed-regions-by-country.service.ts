@@ -15,7 +15,7 @@ export class SeedRegionsByCountryService
 {
   constructor(
     protected readonly validateCountryService: ValidateCountryByNameOrAliasService,
-    @Inject('CityPopulation')
+    @Inject('CityPopulationRepository')
     private readonly cityPopulationRepository: CityPopulationRepository,
     private readonly updateStatesByRegionService: UpdateStatesByRegionService
   ) {

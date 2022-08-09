@@ -7,7 +7,7 @@ import { LogSeed } from '../../../../schemas/logseed.schema';
 import { DeleteCityByIdService } from '../../../cities/delete-city-by-id.service';
 import { LogActionService } from '../../../logactions/log-action.service';
 import { ProcessResolutionCity } from './process-resolution-city.service';
-import { EnumTypeAction } from 'src/microservice/domain/enumerators/enum-type-action';
+import { EnumTypeAction } from '../../../../enumerators/enum-type-action';
 
 @Injectable()
 export class ProcessResolutionIsNotACityService

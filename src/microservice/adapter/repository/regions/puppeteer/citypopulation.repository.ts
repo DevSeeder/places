@@ -7,7 +7,7 @@ import { IPuppeteerRepository } from '../../../../domain/interface/puppeteer/rep
 import { SearchRegionsDTO } from '../../../../domain/model/search/regions/search-regions-dto.model';
 import { RegionsByCountry } from '../../../../domain/model/regions/regions-by-country.model';
 import { Country } from '../../../../domain/schemas/country.schema';
-import { PuppeteerPlacesRepository } from 'src/microservice/domain/repository/puppeteer/neighborhood/puppeteer-places.repository';
+import { PuppeteerPlacesRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-places.repository';
 
 @Injectable()
 export class CityPopulationRepository

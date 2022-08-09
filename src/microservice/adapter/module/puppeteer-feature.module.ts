@@ -13,10 +13,10 @@ import { ConfigurationModule } from './configuration.module';
       useClass: GuiaMaisRepository
     },
     {
-      provide: 'CityPopulation',
+      provide: 'CityPopulationRepository',
       useClass: CityPopulationRepository
     }
   ],
-  exports: ['GuiaMaisRepository', 'CityPopulation']
+  exports: ['GuiaMaisRepository', 'CityPopulationRepository']
 })
 export class PuppeteerFeatureModule {}

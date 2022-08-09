@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodByCity } from '../../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
@@ -15,9 +14,12 @@ import { Country } from '../../../../../../../src/microservice/domain/schemas/co
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
+import { NeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/neighborhoods-by-city.service';
+import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
+import { mockGetNeighborhoodsByCityService } from '../../../../../../mock/services/neighborhoods/get-neighborhoods-service.mock';
 
-describe('GetNeighborhoodsByCityService', () => {
-  let sut: GetNeighborhoodsByCityService;
+describe('NeighborhoodsByCityService', () => {
+  let sut: NeighborhoodsByCityService;
 
   const mockNeighborhoodsMongooseRepository = {
     findBySearchParams: () => {
@@ -113,15 +115,19 @@ describe('GetNeighborhoodsByCityService', () => {
           provide: SeedNeighborhoodsByCityService,
           useValue: mockSeedByCityService
         },
-        GetNeighborhoodsByCityService
+        {
+          provide: GetNeighborhoodsByCityService,
+          useValue: mockGetNeighborhoodsByCityService
+        },
+        NeighborhoodsByCityService
       ]
     }).compile();
 
-    sut = app.get<GetNeighborhoodsByCityService>(GetNeighborhoodsByCityService);
+    sut = app.get<NeighborhoodsByCityService>(NeighborhoodsByCityService);
   });
 
-  describe('GetNeighborhoodsByCityService', () => {
-    it('should call getNeighborhoodsByCity and return an array by puppeteer', async () => {
+  describe('NeighborhoodsByCityService', () => {
+    it('should call getFindAndSeedElements and return an array by puppeteer', async () => {
       const seedStub = sinon
         .stub(mockSeedByCityService, 'searchByPuppeterAndSave')
         .returns(mockNeighborhoods);
@@ -136,7 +142,7 @@ describe('GetNeighborhoodsByCityService', () => {
         'orleans'
       );
 
-      const actual = await sut.getNeighborhoodsByCity(searchParams);
+      const actual = await sut.getFindAndSeedElements(searchParams);
 
       expect(actual).to.be.an('array');
       expect(actual.length).to.be.equal(2);
@@ -145,9 +151,9 @@ describe('GetNeighborhoodsByCityService', () => {
       validateStub.restore();
     });
 
-    it('should call getNeighborhoodsByCity and return an array by mongodb', async () => {
+    it('should call getFindAndSeedElements and return an array by mongodb', async () => {
       const mongoFindStub = sinon
-        .stub(sut, 'findInDatabase')
+        .stub(mockGetNeighborhoodsByCityService, 'searchInDatabase')
         .returns(mockMongoNeighborhoods());
 
       const validateStub = sinon
@@ -160,7 +166,7 @@ describe('GetNeighborhoodsByCityService', () => {
         'Orleans'
       );
 
-      const actual = await sut.getNeighborhoodsByCity(searchParams);
+      const actual = await sut.getFindAndSeedElements(searchParams);
 
       expect(JSON.stringify(actual)).to.be.equal(
         JSON.stringify(mockMongoNeighborhoods())

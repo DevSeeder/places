@@ -36,7 +36,7 @@ describe('SeedNeighborhoodsByCityService', () => {
   };
 
   const mockGuiaMaisRepository = {
-    getNeighborhoodsByCity: () => {
+    getElements: () => {
       return;
     }
   };
@@ -202,7 +202,7 @@ describe('SeedNeighborhoodsByCityService', () => {
   describe('searchByPuppeterAndSave', () => {
     it('should call searchByPuppeterAndSave and call saveNeighborhoodsByCity with the correct params', async () => {
       const guiaMaisStub = sinon
-        .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
+        .stub(mockGuiaMaisRepository, 'getElements')
         .returns(mockNeighborhoods);
 
       const saveStub = sinon.stub(

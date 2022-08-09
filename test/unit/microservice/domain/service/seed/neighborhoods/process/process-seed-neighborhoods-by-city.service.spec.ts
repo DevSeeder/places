@@ -94,10 +94,7 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
         .returns(mockConvertedSearchOrleans());
 
       const getNeighborhoodsStub = sinon
-        .stub(
-          mockGetNeighborhoodsByCityService,
-          'findNeighborhoodsByCityInDatabase'
-        )
+        .stub(mockGetNeighborhoodsByCityService, 'searchInDatabase')
         .returns(mockNeighborhoodsByCity);
 
       const logErrorSeedJobSpy = sinon.spy(sut, 'logErrorSeedJob');
@@ -127,10 +124,7 @@ describe('ProcessSeedNeighborhoodsByCityService', () => {
         .returns(mockConvertedSearchOrleans());
 
       const getNeighborhoodsStub = sinon
-        .stub(
-          mockGetNeighborhoodsByCityService,
-          'findNeighborhoodsByCityInDatabase'
-        )
+        .stub(mockGetNeighborhoodsByCityService, 'searchInDatabase')
         .returns(mockNeighborhoodsByCity);
 
       const logErrorSeedJobStub = sinon.stub(sut, 'logErrorSeedJob');

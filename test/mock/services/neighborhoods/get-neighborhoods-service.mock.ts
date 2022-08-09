@@ -1,8 +1,5 @@
 export const mockGetNeighborhoodsByCityService = {
-  getNeighborhoodsByCity: () => {
-    return;
-  },
-  findNeighborhoodsByCityInDatabase: () => {
-    return;
+  searchInDatabase: () => {
+    return [];
   }
 };

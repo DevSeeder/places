@@ -28,8 +28,8 @@ describe('NeighborhoodsModule', () => {
   let sut: NeighborhoodsController;
   let app: TestingModule;
 
-  const mockGuiaMaisRepository = {
-    getNeighborhoodsByCity() {
+  const mockPuppRepository = {
+    getElements() {
       return;
     }
   };
@@ -61,7 +61,9 @@ describe('NeighborhoodsModule', () => {
       providers: []
     })
       .overrideProvider('GuiaMaisRepository')
-      .useValue(mockGuiaMaisRepository)
+      .useValue(mockPuppRepository)
+      .overrideProvider('CityPopulationRepository')
+      .useValue(mockPuppRepository)
       .overrideProvider(NeighborhoodsMongoose)
       .useValue(mockNeighborhoodsMongooseRepository)
       .overrideProvider(CountriesMongoose)

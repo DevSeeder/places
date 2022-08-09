@@ -9,7 +9,7 @@ import { CitiesController } from '../controller/cities.controller';
 import { GetCitiesByCountryService } from '../../domain/service/cities/get/get-cities-by-country.service';
 import { StatesModule } from './states.module';
 import { DeleteCityByIdService } from '../../domain/service/cities/delete-city-by-id.service';
-import { UpdateCityByIdService } from 'src/microservice/domain/service/cities/update-city-by-id.service';
+import { UpdateCityByIdService } from '../../domain/service/cities/update-city-by-id.service';
 
 @Module({
   imports: [
