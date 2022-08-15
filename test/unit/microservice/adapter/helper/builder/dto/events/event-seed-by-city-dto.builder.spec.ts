@@ -4,7 +4,7 @@ import { Country } from '../../../../../../../../src/microservice/domain/schemas
 import { State } from '../../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../../src/microservice/domain/schemas/city.schema';
 import { EventSeedByCityDTOBuilder } from '../../../../../../../../src/microservice/adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
-import { ReferenceEventByCity } from '../../../../../../../../src/microservice/domain/model/references/reference-event-by-city.model';
+import { ReferenceEventByCity } from '../../../../../../../../src/microservice/domain/model/references/event/reference-event-by-city.model';
 import { EnumTranslations } from '../../../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { Translations } from '../../../../../../../../src/microservice/domain/model/translations.model';
 

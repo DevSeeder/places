@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ObjectId } from 'mongoose';
-import { ReferenceEventByCity } from '../../../../../../src/microservice/domain/model/references/reference-event-by-city.model';
+import { ReferenceEventByCity } from '../../../../../../src/microservice/domain/model/references/event/reference-event-by-city.model';
 import {
   MessageSeedNeighborhoodsByCityErrorDTO,
   MessageSeedNeighborhoodsByCitySuccessDTO

@@ -12,6 +12,7 @@ import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoo
 import { CitiesModule } from './cities.module';
 import { SeedNeighborhoodsModule } from './seed/seed-neighborhoods.module';
 import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/neighborhoods-by-city.service';
+import { GetNeighborhoodsByCountryService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-country.service';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/n
     NeighborhoodsMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
+    GetNeighborhoodsByCountryService,
     NeighborhoodsByCityService,
     SaveNeighborhoodsByCityService
   ],
@@ -33,6 +35,7 @@ import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/n
     NeighborhoodsMongoose,
     GetNeighborhoodsByCityService,
     GetNeighborhoodsByStateService,
+    GetNeighborhoodsByCountryService,
     SaveNeighborhoodsByCityService
   ]
 })

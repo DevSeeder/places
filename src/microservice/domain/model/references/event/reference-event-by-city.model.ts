@@ -1,4 +1,4 @@
-import { Reference } from './reference.model';
+import { Reference } from '../reference.model';
 
 export class ReferenceEventByCity extends Reference {
   country: string;

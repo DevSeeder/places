@@ -18,7 +18,7 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
     private readonly publishService: PublishSeedNeighborhoodsByCityService
   ) {
-    super(validateService);
+    super();
   }
 
   async seedNeighborhoodsByCity(eventPayload: EventSeedByCityDTO) {

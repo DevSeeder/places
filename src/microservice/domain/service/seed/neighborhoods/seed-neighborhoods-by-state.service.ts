@@ -16,7 +16,7 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     private readonly getCitiesByStateService: GetCitiesByStateService,
     private readonly publishService: PublishSeedNeighborhoodsByCityService
   ) {
-    super(validateService);
+    super();
   }
 
   async seedNeighborhoodsByState(

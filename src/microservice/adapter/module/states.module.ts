@@ -26,7 +26,8 @@ import { UpdateStatesByRegionService } from '../../domain/service/states/update-
     StatesMongoose,
     ValidateCountryByNameOrAliasService,
     ValidateStateByNameOrAliasService,
-    UpdateStatesByRegionService
+    UpdateStatesByRegionService,
+    GetStatesByCountryService
   ]
 })
 export class StatesModule {}

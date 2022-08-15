@@ -16,9 +16,13 @@ import { JobSeedNeighborhoodsService } from '../abstract/job-seed-neighborhoods.
 import { City } from '../../../../schemas/city.schema';
 import { EventSeedByCityDTOBuilder } from '../../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
 import { DateHelper } from '../../../../../adapter/helper/date.helper';
+import { PublishSeedService } from '../../../../../domain/interface/service/publish-seed-service.interface';
 
 @Injectable()
-export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsService {
+export class PublishSeedNeighborhoodsByCityService
+  extends JobSeedNeighborhoodsService
+  implements PublishSeedService<ValidOutputSearchByState>
+{
   constructor(
     protected readonly validateService: ValidateInputParamsService,
     protected readonly logSeedService: LogSeedJobService,

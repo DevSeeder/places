@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { SearchNeighborhoodsDTO } from '../../../../model/search/neighborhoods/search-neighborhoods-dto.model';
 import { ValidateInputParamsService } from '../../../validate/validate-input-params.service';
-import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import {
   subscribeSeedByCityProcess,
   subscribeSeedByCitySuccess
@@ -11,7 +11,6 @@ import { GetNeighborhoodsByCityService } from '../../../neighborhoods/get/get-ne
 import { MissingSeedException } from '../../../../../../core/error-handling/exception/missing-seed.exception';
 import { JobSeedNeighborhoodsService } from '../abstract/job-seed-neighborhoods.service';
 import { LogSeedJobService } from '../../../logseed/log-seed-job.service';
-import { GetLogSeedByIdService } from '../../../logseed/get-log-seed-by-id.service';
 import { EventSeedByCityDTO } from '../../../../model/dto/events/event-seed-by-city-dto.model';
 import { SeedNeighborhoodsByCityService } from '../seed-neighborhoods-by-city.service';
 
@@ -20,9 +19,7 @@ export class ProcessSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
   constructor(
     protected readonly validateService: ValidateInputParamsService,
     protected readonly logSeedService: LogSeedJobService,
-    private readonly amqpConnection: AmqpConnection,
     @Inject(forwardRef(() => GetNeighborhoodsByCityService))
-    private readonly getLogSeedByIdService: GetLogSeedByIdService,
     private readonly getNeighborhoodsService: GetNeighborhoodsByCityService,
     private readonly seedNeighborhoodsByCityService: SeedNeighborhoodsByCityService
   ) {

@@ -24,6 +24,15 @@ microservices:
               process: 'seed-neighborhoods-by-city-process'
               success: 'seed-neighborhoods-by-city-success'
               error: 'seed-neighborhoods-by-city-error'
+            state:
+              process: 'seed-neighborhoods-by-state-process'
+    channel:
+      prefetch-count: 1
+      seed:
+        neighborhoods:
+          by:
+            city: 'channel-seed-neighborhoods-by-city'
+            state: 'channel-seed-neighborhoods-by-state'
 api:
   port: 3000
 doc:
