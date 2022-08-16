@@ -12,7 +12,8 @@ export abstract class NeighborhoodsService extends AbstractService {
   async findInDatabase(
     searchParamsDB: SearchNeighborhoodsDB
   ): Promise<NeighborhoodByCity[]> {
-    this.logger.log('Searching Neighborhood in database...');
+    const msgName = searchParamsDB.name ? ` ${searchParamsDB.name}` : 's';
+    this.logger.log(`Searching Neighborhood${msgName} in database...`);
     const res = await this.mongoRepository.findBySearchParams(searchParamsDB);
     return new NeighborhoodsPuppeteerBuilder(res).build();
   }

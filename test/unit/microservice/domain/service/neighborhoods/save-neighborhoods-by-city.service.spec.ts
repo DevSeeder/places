@@ -168,4 +168,21 @@ describe('SaveNeighborhoodsByCityService', () => {
       findInDatabaseStub.restore();
     });
   });
+
+  describe('findInDatabase', () => {
+    it('should call findInDatabase and call findBySearchParams', async () => {
+      const findStub = sinon
+        .stub(mockNeighborhoodMongooseRepository, 'findBySearchParams')
+        .returns([]);
+
+      const searchParams = new SearchNeighborhoodsDB(1, 2, 3);
+      searchParams.name = 'Alto Paraná';
+
+      await sut.findInDatabase(searchParams);
+
+      sinon.assert.calledOnce(findStub);
+
+      findStub.restore();
+    });
+  });
 });

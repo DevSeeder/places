@@ -4,7 +4,7 @@ import { Place } from '../interface/place.interface';
 
 export type CityDocument = City & Document;
 
-@Schema({ collection: 'cities' })
+@Schema({ collection: 'cities', timestamps: true })
 export class City implements Place {
   @Prop({ required: true })
   id: number;

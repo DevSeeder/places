@@ -5,7 +5,7 @@ import { Translations } from '../model/translations.model';
 
 export type CountryDocument = Country & Document;
 
-@Schema({ collection: 'countries' })
+@Schema({ collection: 'countries', timestamps: true })
 export class Country implements Place {
   @Prop({ required: true })
   id: number;

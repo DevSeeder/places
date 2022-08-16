@@ -52,7 +52,8 @@ export class GuiaMaisRepository
   async callEndpoint(
     searchParams: SearchNeighborhoodsDTO
   ): Promise<CheerioAPI> {
-    const url = `${this.url}/${searchParams.city}-${searchParams.state}`;
+    const city = searchParams.city.trim().replaceAll(' ', '-');
+    const url = `${this.url}/${city}-${searchParams.state}`;
     return this.getDocumentHtml(url);
   }
 }

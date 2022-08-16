@@ -12,6 +12,19 @@ export const mockModelMongoose = {
       })
     };
   },
+  findById: () => {
+    return {
+      select: jest.fn(() => {
+        return {
+          lean: jest.fn(() => {
+            return {
+              exec: jest.fn(() => null)
+            };
+          })
+        };
+      })
+    };
+  },
   aggregate: () => {
     return {
       exec: jest.fn(() => null)

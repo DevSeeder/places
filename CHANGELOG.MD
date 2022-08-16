@@ -31,7 +31,7 @@ All notable changes to this project will be documented in this file.
 
 - Route Neighborhoods By State
 - Route Seed Neighborhoods By State
-- logSeed Collection
+- LogSeed Collection
 
 ## [0.0.5] - 2022-06-27
 
@@ -42,5 +42,15 @@ All notable changes to this project will be documented in this file.
 - Route States By Country
 - Route Countries
 - Swagger Openapi automation
-- Optmize Neighborhoods by State
+- Optimize Neighborhoods by State
 - Sort Collections result
+
+## [0.0.6] - 2022-08-03
+
+### Added
+
+- AQMP Structure
+- RabbitMQ Implementation
+- Async Seed Neighborhoods By State Job
+- Fix regex filter in mongodb query
+- Secrets and docker container process in GitHub Actions

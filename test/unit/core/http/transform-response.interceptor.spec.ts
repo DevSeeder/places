@@ -5,10 +5,10 @@ import {
   ExecutionContext,
   HttpStatus,
   INestApplication,
+  Module,
   ValidationPipe
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../../../../src/app.module';
 import { createMock } from '@golevelup/ts-jest';
 import { NestResponse } from '../../../../src/core/http/nest-response';
 import { NestResponseBuilder } from '../../../../src/core/http/nest-response.builder';
@@ -27,12 +27,15 @@ describe('TransformResponseInterceptor ', () => {
     handle: jest.fn(() => of([mockNestResponse()]))
   };
 
+  @Module({})
+  class GenericMockedModule {}
+
   beforeAll(async () => {
     jest.mock('mongoose', mockMongooseConnection);
   });
 
   beforeEach(async function () {
-    app = await NestFactory.create(AppModule);
+    app = await NestFactory.create(GenericMockedModule);
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true

@@ -1,0 +1,11 @@
+db.logSeed.updateMany(
+  { 'reference.stateId': 2001 },
+  {
+    $set: {
+      success: true,
+      processed: true,
+      processedDate: ISODate('2022-07-08T13:15:49.895Z'),
+      resolution: 'IsNotACity'
+    }
+  }
+);

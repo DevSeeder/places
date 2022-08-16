@@ -3,7 +3,6 @@ import * as sinon from 'sinon';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { LogSeedJobService } from '../../../../../../src/microservice/domain/service/logseed/log-seed-job.service';
 import { LogSeedMongoose } from '../../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
-import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/schemas/logseed.schema';
 import { NotFoundException } from '../../../../../../src/core/error-handling/exception/not-found.exception';
 import { EnumTypeLogSeed } from '../../../../../../src/microservice/domain/enumerators/enum-type-logseed';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
@@ -11,6 +10,7 @@ import { Translations } from '../../../../../../src/microservice/domain/model/tr
 import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
+import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/logseed/reference/reference-neighborhoods-by-state.model';
 
 describe('LogSeedJobService', () => {
   let sut: LogSeedJobService;
