@@ -20,12 +20,9 @@ export class SeedNeighborhoodsByCountryService extends SeedNeighborhoodsService 
   async seedNeighborhoodsByCountry(country: string): Promise<CustomResponse> {
     const convertedSearch = await this.validateService.validateCountry(country);
 
-    const arrSeededStates = await this.getSeededStates(convertedSearch.id);
-
     this.logger.log(`Getting states for Country '${country}'...`);
     const states = await this.getStatesByCountryService.findStatesByCountry(
-      convertedSearch.id,
-      arrSeededStates
+      convertedSearch.id
     );
 
     if (states.length === 0) {
@@ -44,14 +41,5 @@ export class SeedNeighborhoodsByCountryService extends SeedNeighborhoodsService 
       success: true,
       response: 'Seed Requested!'
     };
-  }
-
-  async getSeededStates(countryId: number): Promise<number[]> {
-    this.logger.log('Getting seeded states...');
-    const aggregatedStates =
-      await this.getNeighborhoodsByCountryService.groupByCountry(countryId);
-    return aggregatedStates.map((item) => {
-      return item._id.stateId;
-    });
   }
 }

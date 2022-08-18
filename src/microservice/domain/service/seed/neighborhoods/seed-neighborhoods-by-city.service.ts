@@ -28,10 +28,17 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
       eventPayload.reference.cityName
     );
 
-    const convertedSearch =
-      await this.validateService.validateAndConvertSearchByCity(
-        searchParamsByCity
-      );
+    let convertedSearch: ValidOutputSearchByCity;
+
+    try {
+      convertedSearch =
+        await this.validateService.validateAndConvertSearchByCity(
+          searchParamsByCity
+        );
+    } catch (err) {
+      await this.publishService.publishRefenceError(eventPayload, err);
+      return;
+    }
 
     try {
       this.logger.log(

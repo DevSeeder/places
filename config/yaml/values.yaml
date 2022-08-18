@@ -12,10 +12,16 @@ microservices:
   rabbitmq:
     url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
     queue:
-      connection: 'places-queue'
-      messages: 'seed-messages'
-      success: 'seed-success'
-      error: 'seed-error'
+      connection: 'places-connection'
+      seed:
+        neighborhoods:
+          by:
+            city:
+              process: 'seed-neighborhoods-by-city-process'
+              success: 'seed-neighborhoods-by-city-success'
+              error: 'seed-neighborhoods-by-city-error'
+            state:
+              process: 'seed-neighborhoods-by-state-process'
     exchange:
       seed:
         neighborhoods:

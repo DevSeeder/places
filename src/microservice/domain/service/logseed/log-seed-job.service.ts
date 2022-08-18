@@ -35,9 +35,9 @@ export class LogSeedJobService extends LogSeedService {
   }
 
   async logSeedByState(
-    country: Country,
-    state: State,
-    city: City,
+    country: Partial<Country>,
+    state: Partial<State>,
+    city: Partial<City>,
     error: Error
   ) {
     const reference = new ReferenceNeighborhoodsByState(

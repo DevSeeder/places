@@ -28,6 +28,9 @@ export class ProcessSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
 
   @RabbitSubscribe(subscribeSeedByCityProcess)
   async readToSeed(msg: EventSeedByCityDTO) {
+    this.logger.log(
+      `Reading seed process for City[${msg.reference.cityId}] - ${msg.reference.cityName}`
+    );
     await this.seedNeighborhoodsByCityService.seedNeighborhoodsByCity(msg);
   }
 

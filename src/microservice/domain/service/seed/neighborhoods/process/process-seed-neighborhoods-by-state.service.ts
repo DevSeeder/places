@@ -20,6 +20,9 @@ export class ProcessSeedNeighborhoodsByStateService extends JobSeedNeighborhoods
 
   @RabbitSubscribe(subscribeSeedByStateProcess)
   async readToSeed(msg: EventSeedByStateDTO) {
+    this.logger.log(
+      `Reading seed process for State[${msg.reference.stateId}] - ${msg.reference.stateName}`
+    );
     const searchParams = new SearchNeighborhoodsDTO(
       msg.reference.country,
       msg.reference.stateCode

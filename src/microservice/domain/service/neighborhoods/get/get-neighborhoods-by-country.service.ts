@@ -17,7 +17,7 @@ export class GetNeighborhoodsByCountryService extends NeighborhoodsService {
     countryId: number
   ): Promise<AggregatedNeighborhoodsByState[]> {
     return this.mongoRepository.groupBy(
-      { state: '$stateId' },
+      { stateId: '$stateId' },
       { countryId },
       { state: 'state' }
     );
