@@ -89,4 +89,21 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   async deleteOneById(id: string | number): Promise<void> {
     await this.model.deleteOne({ id });
   }
+
+  async find(
+    searchParams: any,
+    select: any = {},
+    sort: any = {}
+  ): Promise<any[]> {
+    if (Object.keys(select).length === 0) select = { _id: 0 };
+
+    let res = this.model.find(
+      MongooseHelper.buildRegexFilterQuery(searchParams)
+    );
+
+    if (typeof sort === 'object' && Object.keys(sort).length > 0)
+      res = res.sort(sort);
+
+    return res.select(select).lean().exec();
+  }
 }
