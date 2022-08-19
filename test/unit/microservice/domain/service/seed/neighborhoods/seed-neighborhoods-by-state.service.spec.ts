@@ -18,6 +18,8 @@ import { NotFoundException } from '../../../../../../../src/core/error-handling/
 import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 import { PublishSeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/publish/publish-seed-neighborhoods-by-city.service';
+import { mockGetLogSeedByCityService } from '../../../../../../mock/services/logseed/log-seed-service.mock';
+import { GetLogSeedByCityService } from '../../../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
 
 describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;
@@ -150,6 +152,10 @@ describe('SeedNeighborhoodsByStateService', () => {
         {
           provide: PublishSeedNeighborhoodsByCityService,
           useValue: mockPublishService
+        },
+        {
+          provide: GetLogSeedByCityService,
+          useValue: mockGetLogSeedByCityService
         },
         SeedNeighborhoodsByStateService
       ]

@@ -6,3 +6,9 @@ export const mockSeedNeighborhoodsByCityService = {
     return;
   }
 };
+
+export const mockSeedNeighborhoodsByCountryService = {
+  seedNeighborhoodsByCountry: () => {
+    return;
+  }
+};

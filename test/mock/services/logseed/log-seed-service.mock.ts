@@ -9,3 +9,9 @@ export const mockGetLogSeedByIdService = {
     return [];
   }
 };
+
+export const mockGetLogSeedByCityService = {
+  getLogSeedByCity: () => {
+    return [];
+  }
+};

@@ -9,6 +9,10 @@ import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice
 import { SeedController } from '../../../../../src/microservice/adapter/controller/seed.controller';
 import { SenderMessageService } from '../../../../../src/microservice/domain/service/amqp/sender-message.service';
 import { mockSenderMessageService } from '../../../../mock/services/amqp/sender-message-service.mock';
+import { SeedNeighborhoodsByCountryService } from '../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-country.service';
+import { mockSeedNeighborhoodsByCountryService } from '../../../../mock/services/seed/seed-neighborhoods-service.mock';
+import { GetLogSeedByCityService } from '../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
+import { mockGetLogSeedByCityService } from '../../../../mock/services/logseed/log-seed-service.mock';
 
 describe('SeedController', () => {
   let sut: SeedController;
@@ -37,6 +41,14 @@ describe('SeedController', () => {
         {
           provide: SenderMessageService,
           useFactory: () => mockSenderMessageService
+        },
+        {
+          provide: SeedNeighborhoodsByCountryService,
+          useFactory: () => mockSeedNeighborhoodsByCountryService
+        },
+        {
+          provide: GetLogSeedByCityService,
+          useFactory: () => mockGetLogSeedByCityService
         }
       ]
     }).compile();
