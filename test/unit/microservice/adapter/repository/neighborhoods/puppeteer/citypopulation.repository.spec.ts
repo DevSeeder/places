@@ -106,6 +106,30 @@ describe('CityPopulationRepository', () => {
     });
   });
 
+  describe('getRegionsByCountry', () => {
+    it('should call getRegionsByCountry and return an array', async () => {
+      const mockSearchParams = new SearchRegionsDTO('brazil');
+      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
+      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
+      const goToStatesStub = sinon
+        .stub(sut, 'goToRegionAndGetStates')
+        .returns(['any']);
+
+      const actual = await sut.getRegionsByCountry(
+        mockSearchParams,
+        mockCountry
+      );
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+      expect(actual[0].name).to.be.equal('Central-West');
+      expect(actual[0].states[0]).to.be.equal('any');
+
+      getDataHtmlStub.restore();
+      goToUrlStub.restore();
+      goToStatesStub.restore();
+    });
+  });
+
   describe('callEndpoint', () => {
     it('should call callEndpoint and call getDocumentHtml with the correct params', async () => {
       const mockSearchParams = new SearchRegionsDTO('brazil');

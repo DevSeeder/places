@@ -1,6 +1,9 @@
 export const mockLogSeedJobService = {
   logSeedByState: () => {
     return;
+  },
+  logProcessResolution: () => {
+    return;
   }
 };
 
