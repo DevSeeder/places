@@ -171,12 +171,11 @@ describe('GetNeighborhoodsByCityService', () => {
   });
 
   describe('findInDatabase', () => {
-    it('should call findInDatabase with name param and return an array', async () => {
+    it('should call findInDatabase and return an array', async () => {
       const mongoFindStub = sinon
         .stub(mockNeighborhoodsMongooseRepository, 'findBySearchParams')
         .returns(mockArrNeighborhoods);
       const search = new SearchNeighborhoodsDB(1, 1, 1);
-      search.name = 'any';
       const actual = await sut.findInDatabase(search);
 
       expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockResponse));
