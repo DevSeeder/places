@@ -4,6 +4,7 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
+[url-prod]: https://places.devseeder.com
 
   <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
@@ -14,6 +15,7 @@
   <li>NodeJS</li>
   <li>Puppeteer</li>
   <li>MongoDB</li>
+  <li>RabbitMQ</li>
 </ul>
 
 ## Description
@@ -23,6 +25,7 @@ API to get Places by Local Names.
 - Neighborhoods
 - Cities
 - States
+- Regions
 - Countries
 
 ## Installation
@@ -96,4 +99,4 @@ http://localhost:3000/countries/
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/)
 
-At the moment, it's working only for Brazilians places.
+At the moment, it's working only for Brazilians Neighborhoods.
