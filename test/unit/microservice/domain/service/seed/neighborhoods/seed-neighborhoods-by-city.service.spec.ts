@@ -197,6 +197,40 @@ describe('SeedNeighborhoodsByCityService', () => {
       publishSpy.restore();
       validateStub.restore();
     });
+
+    it('should call seedNeighborhoodsByCity with ref error and call publishReferenceError with the correct params', async () => {
+      const mockErr = new Error('any');
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .throws(mockErr);
+
+      const searchByPuppeterAndSaveStub = sinon
+        .stub(sut, 'searchByPuppeterAndSave')
+        .returns(null);
+
+      const publishSpy = sinon.spy(mockPublishService, 'publishRefenceError');
+
+      const mockCity = new City();
+      mockCity.name = 'Orleans';
+      mockCity.id = 1;
+
+      const mockEP = new ReferenceEventByCityBuilder(
+        mockConvertedSearch()
+      ).build(mockCity);
+
+      const payload = new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP);
+
+      await sut.seedNeighborhoodsByCity(payload);
+
+      const spyConvertedSearch = mockConvertedSearch();
+      spyConvertedSearch.city = mockCity;
+
+      sinon.assert.calledOnceWithExactly(publishSpy, payload, mockErr);
+
+      searchByPuppeterAndSaveStub.restore();
+      publishSpy.restore();
+      validateStub.restore();
+    });
   });
 
   describe('searchByPuppeterAndSave', () => {

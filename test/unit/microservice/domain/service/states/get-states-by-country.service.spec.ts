@@ -84,4 +84,19 @@ describe('GetStatesByCountryService', () => {
       getCitiesStub.restore();
     });
   });
+
+  describe('findStatesByCountry', () => {
+    it('should call findStatesByCountry with arrIgnore and return an array', async () => {
+      const arrStates = mockStates();
+      const getCitiesStub = sinon
+        .stub(mockCitiesMongooseRepository, 'findBySearchParams')
+        .returns(arrStates);
+
+      const actual = await sut.findStatesByCountry(1, [3, 2]);
+
+      expect(actual).to.be.equal(arrStates);
+
+      getCitiesStub.restore();
+    });
+  });
 });

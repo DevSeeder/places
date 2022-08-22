@@ -39,6 +39,24 @@ export const mockModelMongoose = {
         resolve({});
       })
   ),
+  deleteOne: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  findOneAndUpdate: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  updateById: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
   findByIdAndUpdate: () => {
     return { exec: jest.fn(() => null) };
   }

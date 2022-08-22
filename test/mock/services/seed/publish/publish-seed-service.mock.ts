@@ -7,5 +7,8 @@ export const mockPublishService = {
   },
   publishError: () => {
     return;
+  },
+  publishRefenceError: () => {
+    return;
   }
 };

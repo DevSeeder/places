@@ -1,23 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as sinon from 'sinon';
+import { expect } from 'chai';
 import '../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
-import { LogSeedJobService } from '../../../../../../src/microservice/domain/service/logseed/log-seed-job.service';
 import { LogSeedMongoose } from '../../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
-import { NotFoundException } from '../../../../../../src/core/error-handling/exception/not-found.exception';
-import { EnumTypeLogSeed } from '../../../../../../src/microservice/domain/enumerators/enum-type-logseed';
 import { Country } from '../../../../../../src/microservice/domain/schemas/country.schema';
+import { LogSeed } from '../../../../../../src/microservice/domain/schemas/logseed.schema';
 import { Translations } from '../../../../../../src/microservice/domain/model/translations.model';
 import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
 import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/references/reference-neighborhoods-by-state.model';
-import { EnumTypeResolution } from '../../../../../../src/microservice/domain/enumerators/enum-type-resolution';
+import { EnumTypeLogSeed } from '../../../../../../src/microservice/domain/enumerators/enum-type-logseed';
+import { DateHelper } from '../../../../../../src/microservice/adapter/helper/date.helper';
+import { GetLogSeedByCityService } from '../../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
 
-describe('LogSeedJobService', () => {
-  let sut: LogSeedJobService;
+describe('GetLogSeedByCityService', () => {
+  let sut: GetLogSeedByCityService;
 
   const mockMongooseRepository = {
-    updateOneById: () => {
+    find: () => {
       return;
     }
   };
@@ -31,11 +32,11 @@ describe('LogSeedJobService', () => {
           provide: LogSeedMongoose,
           useValue: mockMongooseRepository
         },
-        LogSeedJobService
+        GetLogSeedByCityService
       ]
     }).compile();
 
-    sut = app.get<LogSeedJobService>(LogSeedJobService);
+    sut = app.get<GetLogSeedByCityService>(GetLogSeedByCityService);
   });
 
   const country = new Country();
@@ -59,41 +60,26 @@ describe('LogSeedJobService', () => {
     'Santa Catarina',
     'Orleans'
   );
-  const mockError = new NotFoundException('Neighborhoods');
 
-  describe('logSeedByState', () => {
-    it('should call createLogSeed and call insertOne correctly', async () => {
-      const insertOneStub = sinon.stub(mockMongooseRepository, 'insertOne');
-      const createLogSeedSpy = sinon.spy(sut, 'createLogSeed');
+  const mockLogSeed = (): LogSeed => {
+    const logSeed = new LogSeed();
+    logSeed.datetime = DateHelper.getDateNow();
+    logSeed.reference = reference;
+    logSeed.type = EnumTypeLogSeed.NeighborhoodsByState;
+    return logSeed;
+  };
 
-      await sut.logSeedByState(country, state, city, mockError);
+  describe('getLogSeedByCity', () => {
+    it('should call getLogSeedByCity and return an array', async () => {
+      const getLogSeedStub = sinon
+        .stub(mockMongooseRepository, 'find')
+        .returns([mockLogSeed()]);
 
-      sinon.assert.calledOnceWithExactly(
-        createLogSeedSpy,
-        EnumTypeLogSeed.NeighborhoodsByState,
-        reference,
-        mockError
-      );
+      const actual = await sut.getLogSeedByCity(1, 'any');
 
-      sinon.assert.calledOnce(insertOneStub);
+      expect(actual[0].reference).to.be.equal(mockLogSeed().reference);
 
-      insertOneStub.restore();
-      createLogSeedSpy.restore();
-    });
-  });
-
-  describe('logProcessResolution', () => {
-    it('should call logProcessResolution and call updateOneById correctly', async () => {
-      const updateOneByIdSpy = sinon.spy(
-        mockMongooseRepository,
-        'updateOneById'
-      );
-
-      await sut.logProcessResolution(null, EnumTypeResolution.IsNotACity);
-
-      sinon.assert.calledOnce(updateOneByIdSpy);
-
-      updateOneByIdSpy.restore();
+      getLogSeedStub.restore();
     });
   });
 });

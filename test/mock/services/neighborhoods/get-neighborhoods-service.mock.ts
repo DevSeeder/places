@@ -3,3 +3,9 @@ export const mockGetNeighborhoodsByCityService = {
     return [];
   }
 };
+
+export const mockGetNeighborhoodsByCountryService = {
+  groupByCountry: () => {
+    return [];
+  }
+};

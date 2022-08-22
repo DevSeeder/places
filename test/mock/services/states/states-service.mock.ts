@@ -3,3 +3,9 @@ export const mockUpdateStateService = {
     return;
   }
 };
+
+export const mockgetStatesByCountryService = {
+  findStatesByCountry: () => {
+    return;
+  }
+};
