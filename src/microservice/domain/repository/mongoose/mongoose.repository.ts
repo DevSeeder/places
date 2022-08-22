@@ -54,6 +54,28 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return this.model.aggregate(aggregateParams);
   }
 
+  async aggregate(
+    group: any,
+    match = {},
+    select = {},
+    unwind = ''
+  ): Promise<any[]> {
+    const aggregateParams = [];
+
+    if (Object.keys(match).length > 0) aggregateParams.push({ $match: match });
+
+    if (unwind.length > 0) aggregateParams.push({ $unwind: `\$${unwind}` });
+
+    aggregateParams.push({
+      $group: {
+        ...group,
+        count: { $sum: 1 },
+        ...select
+      }
+    });
+    return this.model.aggregate(aggregateParams);
+  }
+
   async findAll(select: object = {}): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.find({}).select(select).lean().exec();

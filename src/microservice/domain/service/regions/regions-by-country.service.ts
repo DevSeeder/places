@@ -14,7 +14,7 @@ export class RegionsByCountryService
     SearchRegionsDTO,
     Country,
     RegionsByCountry,
-    string
+    RegionsByCountry
   >
   implements GetSeederService<SearchRegionsDTO, Country>
 {
