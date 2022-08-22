@@ -29,8 +29,6 @@ export class NeighborhoodsByCityService
   async validateAndConvertInput(
     searchParams: SearchNeighborhoodsDTO
   ): Promise<ValidOutputSearchByCity> {
-    return await this.validateService.validateAndConvertSearchByCity(
-      searchParams
-    );
+    return this.validateService.validateAndConvertSearchByCity(searchParams);
   }
 }

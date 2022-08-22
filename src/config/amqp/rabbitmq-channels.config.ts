@@ -28,7 +28,7 @@ function mountChannels(arr) {
   arr.forEach((item) => {
     channels[item] = {
       prefetchCount,
-      default: item == DEFAULT_CHANNEL
+      default: item === DEFAULT_CHANNEL
     };
   });
   return channels;

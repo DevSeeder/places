@@ -87,7 +87,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async deleteOneById(id: string | number): Promise<void> {
-    await this.model.deleteOne({ id });
+    this.model.deleteOne({ id });
   }
 
   async find(

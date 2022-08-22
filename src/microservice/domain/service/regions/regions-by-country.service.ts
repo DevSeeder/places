@@ -29,6 +29,6 @@ export class RegionsByCountryService
   async validateAndConvertInput(
     searchParams: SearchRegionsDTO
   ): Promise<Country> {
-    return await this.validateService.validateCountry(searchParams.country);
+    return this.validateService.validateCountry(searchParams.country);
   }
 }
