@@ -14,7 +14,7 @@ export class RegionsController extends AbstractController {
     super();
   }
 
-  @Get('/:country')
+  @Get('country/:country')
   async getRegionsByCountry(
     @Param() params: SearchRegionsDTO
   ): Promise<NestResponse> {
