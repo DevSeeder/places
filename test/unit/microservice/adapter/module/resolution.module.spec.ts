@@ -1,0 +1,107 @@
+import { HttpStatus } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper/extensions/exensions.module';
+import { NeighborhoodsMongoose } from '../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
+import { getModelToken } from '@nestjs/mongoose';
+import { Neighborhood } from '../../../../../src/microservice/domain/schemas/neighborhood.schema';
+import { mockModelMongoose } from '../../../../mock/mongoose/mock-mongoose';
+import { Country } from '../../../../../src/microservice/domain/schemas/country.schema';
+import { CountriesMongoose } from '../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
+import { State } from '../../../../../src/microservice/domain/schemas/state.schema';
+import { City } from '../../../../../src/microservice/domain/schemas/city.schema';
+import { StatesMongoose } from '../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
+import { CitiesMongoose } from '../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
+import { LogSeed } from '../../../../../src/microservice/domain/schemas/logseed.schema';
+import { LogSeedMongoose } from '../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
+import {
+  AmqpConnection,
+  AmqpConnectionManager
+} from '@golevelup/nestjs-rabbitmq';
+import {
+  mockAmqpConnection,
+  mockAmqpConnectionManager
+} from '../../../../mock/amqp/aqmp-conneciton.mock';
+import { ResolutionController } from '../../../../../src/microservice/adapter/controller/resolutions.controller';
+import { ResolutionsModule } from '../../../../../src/microservice/adapter/module/resolution.module';
+import { LogExecution } from '../../../../../src/microservice/domain/schemas/logexecution.schema';
+import { LogAction } from '../../../../../src/microservice/domain/schemas/logaction.schema';
+
+describe('ResolutionModule', () => {
+  let sut: ResolutionController;
+  let app: TestingModule;
+
+  const mockPuppRepository = {
+    getElements() {
+      return;
+    }
+  };
+
+  const mockNeighborhoodsMongooseRepository = {
+    findBySearchParams: () => {
+      return [];
+    },
+    insert: () => {
+      return;
+    }
+  };
+
+  const mockPlacesMongooseRepository = {
+    findByNameOrAlias: () => {
+      return [];
+    }
+  };
+
+  const mockLogSeedMongooseRepository = {
+    insertOne: () => {
+      return;
+    }
+  };
+
+  beforeEach(async function () {
+    app = await Test.createTestingModule({
+      imports: [ResolutionsModule, ExtensionsModule],
+      providers: []
+    })
+      .overrideProvider('GuiaMaisRepository')
+      .useValue(mockPuppRepository)
+      .overrideProvider('CityPopulationRepository')
+      .useValue(mockPuppRepository)
+      .overrideProvider(NeighborhoodsMongoose)
+      .useValue(mockNeighborhoodsMongooseRepository)
+      .overrideProvider(CountriesMongoose)
+      .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(StatesMongoose)
+      .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(CitiesMongoose)
+      .useValue(mockPlacesMongooseRepository)
+      .overrideProvider(LogSeedMongoose)
+      .useValue(mockLogSeedMongooseRepository)
+      .overrideProvider(getModelToken(Neighborhood.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(Country.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(State.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(City.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(LogSeed.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(LogExecution.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(getModelToken(LogAction.name))
+      .useValue(mockModelMongoose)
+      .overrideProvider(AmqpConnectionManager)
+      .useValue(mockAmqpConnectionManager)
+      .overrideProvider(AmqpConnection)
+      .useValue(mockAmqpConnection)
+      .compile();
+    sut = app.get<ResolutionController>(ResolutionController);
+  });
+
+  describe('res', function () {
+    it('should call buildResponse for status 200', async function () {
+      const actual = await sut.buildResponse(HttpStatus.OK, {});
+      expect(actual.status).toBe(HttpStatus.OK);
+    });
+  });
+});

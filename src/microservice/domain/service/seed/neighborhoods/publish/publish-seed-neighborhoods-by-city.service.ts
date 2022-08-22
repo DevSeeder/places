@@ -15,9 +15,17 @@ import { LogSeedJobService } from '../../../logseed/log-seed-job.service';
 import { JobSeedNeighborhoodsService } from '../abstract/job-seed-neighborhoods.service';
 import { City } from '../../../../schemas/city.schema';
 import { EventSeedByCityDTOBuilder } from '../../../../../adapter/helper/builder/dto/events/event-seed-by-city-dto.builder';
+import { DateHelper } from '../../../../../adapter/helper/date.helper';
+import { PublishSeedService } from '../../../../../domain/interface/service/publish-seed-service.interface';
+import { EventSeedByCityDTO } from '../../../../../domain/model/dto/events/event-seed-by-city-dto.model';
+import { ObjectId } from 'mongoose';
+import { ReferenceEventByCity } from '../../../../../domain/model/references/event/reference-event-by-city.model';
 
 @Injectable()
-export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsService {
+export class PublishSeedNeighborhoodsByCityService
+  extends JobSeedNeighborhoodsService
+  implements PublishSeedService<ValidOutputSearchByState>
+{
   constructor(
     protected readonly validateService: ValidateInputParamsService,
     protected readonly logSeedService: LogSeedJobService,
@@ -43,7 +51,7 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
     );
     const messageDTO = new MessageSeedNeighborhoodsByCitySuccessDTO(
       resPuppeteer.length,
-      new Date(),
+      DateHelper.getDateNow(),
       reference
     );
     await this.senderMessageService.publishMessage(
@@ -67,9 +75,51 @@ export class PublishSeedNeighborhoodsByCityService extends JobSeedNeighborhoodsS
       convertedSearch.city
     );
 
+    await this.publishMessage(idLog, reference);
+  }
+
+  async publishRefenceError(msg: EventSeedByCityDTO, err: Error) {
+    this.logger.error(
+      `Reference Error Seeding City[${msg.reference.cityId}] - ${msg.reference.cityName}: ${err.message}`
+    );
+
+    const referenceDTOInstance = {
+      country: {
+        id: null,
+        name: msg.reference.country,
+        translations: {
+          br: msg.reference.country
+        }
+      },
+      state: {
+        id: null,
+        name: msg.reference.stateCode,
+        stateCode: msg.reference.stateCode
+      },
+      city: {
+        id: msg.reference.cityId,
+        name: msg.reference.cityName
+      }
+    };
+
+    const idLog = await this.logSeedService.logSeedByState(
+      referenceDTOInstance.country,
+      referenceDTOInstance.state,
+      referenceDTOInstance.city,
+      err
+    );
+
+    const reference = new ReferenceEventByCityBuilder(
+      referenceDTOInstance
+    ).build(referenceDTOInstance.city);
+
+    await this.publishMessage(idLog, reference);
+  }
+
+  async publishMessage(idLog: ObjectId, reference: ReferenceEventByCity) {
     const messageDTO = new MessageSeedNeighborhoodsByCityErrorDTO(
       idLog,
-      new Date(),
+      DateHelper.getDateNow(),
       reference
     );
 

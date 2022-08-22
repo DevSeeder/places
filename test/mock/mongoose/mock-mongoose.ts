@@ -12,6 +12,15 @@ export const mockModelMongoose = {
       })
     };
   },
+  select: () => {
+    return {
+      lean: jest.fn(() => {
+        return {
+          exec: jest.fn(() => null)
+        };
+      })
+    };
+  },
   findById: () => {
     return {
       select: jest.fn(() => {
@@ -34,6 +43,30 @@ export const mockModelMongoose = {
     return { exec: jest.fn(() => null) };
   },
   create: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  deleteOne: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  deleteOneById: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  findOneAndUpdate: jest.fn(
+    () =>
+      new Promise(async (resolve) => {
+        resolve({});
+      })
+  ),
+  updateById: jest.fn(
     () =>
       new Promise(async (resolve) => {
         resolve({});

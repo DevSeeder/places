@@ -45,7 +45,7 @@ All notable changes to this project will be documented in this file.
 - Optimize Neighborhoods by State
 - Sort Collections result
 
-## [0.0.6] - 2022-08-03
+## [0.0.6] - 2022-08-04
 
 ### Added
 
@@ -54,3 +54,15 @@ All notable changes to this project will be documented in this file.
 - Async Seed Neighborhoods By State Job
 - Fix regex filter in mongodb query
 - Secrets and docker container process in GitHub Actions
+
+## [0.0.7] - 2022-08-21
+
+### Added
+
+- LogExecution Schema
+- LogAction Schema
+- Route Request Resolution
+- Route Regions By Country
+- Route Seed Neighborhoods By Country
+- Seed Regions By Puppeteer
+- Seed Neighborhoods By State Queue

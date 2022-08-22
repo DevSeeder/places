@@ -2,6 +2,9 @@ repository:
   neighborhoods:
     guia-mais:
       url: 'https://www.guiamais.com.br/bairros'
+  regions:
+    citypopulation:
+      url: 'https://www.citypopulation.de'
 database:
   mongodb:
     connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'
@@ -9,10 +12,16 @@ microservices:
   rabbitmq:
     url: 'amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}/${RABBITMQ_VHOST}'
     queue:
-      connection: 'places-queue'
-      messages: 'seed-messages'
-      success: 'seed-success'
-      error: 'seed-error'
+      connection: 'places-connection'
+      seed:
+        neighborhoods:
+          by:
+            city:
+              process: 'seed-neighborhoods-by-city-process'
+              success: 'seed-neighborhoods-by-city-success'
+              error: 'seed-neighborhoods-by-city-error'
+            state:
+              process: 'seed-neighborhoods-by-state-process'
     exchange:
       seed:
         neighborhoods:
@@ -21,8 +30,17 @@ microservices:
               process: 'seed-neighborhoods-by-city-process'
               success: 'seed-neighborhoods-by-city-success'
               error: 'seed-neighborhoods-by-city-error'
+            state:
+              process: 'seed-neighborhoods-by-state-process'
+    channel:
+      prefetch-count: 1
+      seed:
+        neighborhoods:
+          by:
+            city: 'channel-seed-neighborhoods-by-city'
+            state: 'channel-seed-neighborhoods-by-state'
 api:
   port: 3000
 doc:
-  version: 0.0.6
+  version: 0.0.7
   name: 'places'

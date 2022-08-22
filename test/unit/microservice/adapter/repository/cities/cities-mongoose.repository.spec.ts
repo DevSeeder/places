@@ -6,6 +6,8 @@ import { getModelToken } from '@nestjs/mongoose';
 import { mockModelMongoose } from '../../../../../mock/mongoose/mock-mongoose';
 import { CitiesMongoose } from '../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
+import { MongoDBException } from '../../../../../../src/core/error-handling/exception/mongodb-.exception';
+import { SearchCitiesDB } from '../../../../../../src/microservice/domain/model/search/cities/search-cities-db.model';
 
 jest.useFakeTimers();
 jest.setTimeout(20000);
@@ -71,6 +73,70 @@ describe('CitiesMongoose', () => {
       expect(actual).to.be.an('array').that.is.not.empty;
 
       findManyStub.restore();
+    });
+  });
+
+  describe('find', () => {
+    it('should call find and return an array', async () => {
+      const findManyStub = sinon
+        .stub(mockModelMongoose, 'find')
+        .returns(mockFind);
+
+      const actual = await sut.find(new SearchCitiesDB(1));
+
+      sinon.assert.calledOnce(findManyStub);
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      findManyStub.restore();
+    });
+  });
+
+  describe('deleteOneById', () => {
+    it('should call deleteOneById and call mongoose deleteOne', async () => {
+      const mongooseStub = sinon.stub(mockModelMongoose, 'deleteOne');
+
+      await sut.deleteOneById('any');
+
+      sinon.assert.calledOnceWithExactly(mongooseStub, { id: 'any' });
+
+      mongooseStub.restore();
+    });
+  });
+
+  describe('updateOneById', () => {
+    it('should call updateOneById and call mongoose findOneAndUpdate', async () => {
+      const mongooseStub = sinon.stub(mockModelMongoose, 'findOneAndUpdate');
+      const updateSpy = sinon.spy(sut, 'updateOne');
+
+      await sut.updateOneById(null, {});
+
+      sinon.assert.calledOnce(mongooseStub);
+      sinon.assert.calledOnceWithExactly(updateSpy, { _id: null }, {});
+
+      mongooseStub.restore();
+      updateSpy.restore();
+    });
+
+    it('should call updateOneById and throws a mongoose error', async () => {
+      const mongooseStub = sinon
+        .stub(mockModelMongoose, 'findOneAndUpdate')
+        .yields(new MongoDBException('any DB error', 4), () => {
+          return;
+        });
+      const updateSpy = sinon.spy(sut, 'updateOne');
+
+      try {
+        await sut.updateOneById(null, {});
+      } catch (err) {
+        expect(err.message).to.be.equal('any DB error');
+      }
+
+      sinon.assert.calledOnce(mongooseStub);
+      sinon.assert.calledOnceWithExactly(updateSpy, { _id: null }, {});
+
+      mongooseStub.restore();
+      updateSpy.restore();
     });
   });
 });

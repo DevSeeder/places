@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongoose';
-import { ReferenceEventByCity } from '../../references/reference-event-by-city.model';
+import { ReferenceEventByCity } from '../../references/event/reference-event-by-city.model';
 import { EventSeedByCityDTO } from '../events/event-seed-by-city-dto.model';
 
 export class MessageSeedNeighborhoodsByCitySuccessDTO extends EventSeedByCityDTO {

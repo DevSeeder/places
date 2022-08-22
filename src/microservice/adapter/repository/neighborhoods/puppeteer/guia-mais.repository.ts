@@ -4,17 +4,17 @@ import { CheerioAPI } from 'cheerio';
 import { InjectPage } from 'nest-puppeteer';
 import { NeighborhoodByCity } from '../../../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { SearchNeighborhoodsDTO } from '../../../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
-import { IPuppeteerNeighborhoodRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-neighborhood-repository.interface';
-import { PuppeteerNeighborhoodRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-neighborhood.repository';
+import { PuppeteerPlacesRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-places.repository';
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
 import { EnumTranslations } from '../../../../domain/enumerators/enum-translations.enumerator';
 import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
 
 @Injectable()
-export class GuiaMaisRepository
-  extends PuppeteerNeighborhoodRepository
-  implements IPuppeteerNeighborhoodRepository
-{
+export class GuiaMaisRepository extends PuppeteerPlacesRepository<
+  NeighborhoodByCity,
+  SearchNeighborhoodsDTO,
+  ValidOutputSearchByCity
+> {
   language = EnumTranslations.BR;
   constructor(
     protected configService: ConfigService,
@@ -22,15 +22,16 @@ export class GuiaMaisRepository
   ) {
     super(
       configService.get<string>('repository.neighborhoods.guia-mais.url'),
-      page
+      page,
+      'Neighborhoods'
     );
   }
 
-  buildElementsFromDocument(
-    searchParams,
+  async buildElementsFromDocument(
+    searchParams: SearchNeighborhoodsDTO,
     convertedSearch: ValidOutputSearchByCity,
     $: CheerioAPI
-  ): NeighborhoodByCity[] {
+  ): Promise<NeighborhoodByCity[]> {
     const arrNeighborhoods = [];
     $('.cities.centerContent')
       .find('a')

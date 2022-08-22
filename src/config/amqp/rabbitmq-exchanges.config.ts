@@ -1,26 +1,32 @@
 import { ConfigHelper } from '../../microservice/adapter/helper/config/config.helper';
 import { EnumConfigAMQP } from './enum/enum-config-amqp.enumerator';
 
-export const seedByCityProcess = ConfigHelper.getConfig(
+export const seedNeighborhoodsByCityProcess = ConfigHelper.getConfig(
   'seed.neighborhoods.by.city.process',
   EnumConfigAMQP.EXCHANGE
 );
 
-export const seedByCitySuccess = ConfigHelper.getConfig(
+export const seedNeighborhoodsByCitySuccess = ConfigHelper.getConfig(
   'seed.neighborhoods.by.city.success',
   EnumConfigAMQP.EXCHANGE
 );
 
-export const seedByCityError = ConfigHelper.getConfig(
+export const seedNeighborhoodsByCityError = ConfigHelper.getConfig(
   'seed.neighborhoods.by.city.error',
+  EnumConfigAMQP.EXCHANGE
+);
+
+export const seedNeighborhoodsByStateProcess = ConfigHelper.getConfig(
+  'seed.neighborhoods.by.state.process',
   EnumConfigAMQP.EXCHANGE
 );
 
 const type = 'topic';
 export const arrExchanges = mountExchanges([
-  seedByCitySuccess,
-  seedByCityError,
-  seedByCityProcess
+  seedNeighborhoodsByCitySuccess,
+  seedNeighborhoodsByCityError,
+  seedNeighborhoodsByCityProcess,
+  seedNeighborhoodsByStateProcess
 ]);
 
 function mountExchanges(arr) {

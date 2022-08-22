@@ -12,6 +12,7 @@ import { SearchNeighborhoodsDTO } from '../../../../../src/microservice/domain/m
 import { GetNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-state.service';
 import { ValidateInputParamsService } from '../../../../../src/microservice/domain/service/validate/validate-input-params.service';
+import { NeighborhoodsByCityService } from '../../../../../src/microservice/domain/service/neighborhoods/neighborhoods-by-city.service';
 
 describe('NeighborhoodsController', () => {
   let neighborhoodsController: NeighborhoodsController;
@@ -30,6 +31,12 @@ describe('NeighborhoodsController', () => {
 
   const mockSeedNeighborhoodsByStateService = {
     seedNeighborhoodsByState: () => {
+      return;
+    }
+  };
+
+  const mockNeighborhoodsByCityService = {
+    getFindAndSeedElements: () => {
       return;
     }
   };
@@ -93,6 +100,10 @@ describe('NeighborhoodsController', () => {
           useFactory: () => mockGetNeighborhoodsByStateService
         },
         {
+          provide: NeighborhoodsByCityService,
+          useFactory: () => mockNeighborhoodsByCityService
+        },
+        {
           provide: SeedNeighborhoodsByStateService,
           useFactory: () => mockSeedNeighborhoodsByStateService
         },
@@ -111,7 +122,7 @@ describe('NeighborhoodsController', () => {
   describe('getNeighborhoodsByCity', () => {
     it('should call getNeighborhoodsByCity and return an array', async () => {
       const getServiceStub = sinon
-        .stub(mockGetNeighborhoodsService, 'getNeighborhoodsByCity')
+        .stub(mockNeighborhoodsByCityService, 'getFindAndSeedElements')
         .returns(mockNeighborhoods);
 
       const searchParams = new SearchNeighborhoodsDTO(
