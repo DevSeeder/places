@@ -76,6 +76,33 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return this.model.aggregate(aggregateParams);
   }
 
+  async aggregateNotExists(
+    from: string,
+    joinFrom: string,
+    joinLet: string,
+    match: any = {}
+  ): Promise<any[]> {
+    const aggregateParams = [];
+
+    aggregateParams.push(
+      MongooseHelper.buildLookupAggregate(from, joinFrom, joinLet, match)
+    );
+
+    const matchParam = {};
+    matchParam[`aggElement.${joinFrom}`] = { $exists: false };
+
+    if (Object.keys(match).length > 0)
+      aggregateParams.push({ $match: { ...matchParam, ...match } });
+
+    aggregateParams.push({
+      $project: {
+        likes: false
+      }
+    });
+    console.log(JSON.stringify(aggregateParams));
+    return this.model.aggregate(aggregateParams);
+  }
+
   async findAll(select: object = {}): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.find({}).select(select).lean().exec();

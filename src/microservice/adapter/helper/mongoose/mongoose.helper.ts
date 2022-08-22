@@ -21,4 +21,56 @@ export class MongooseHelper {
     });
     return objSearchRegex;
   }
+
+  static buildLookupAggregate(
+    from: string,
+    joinFrom: string,
+    joinLet: string,
+    match: any = {}
+  ) {
+    const letObj = {};
+    letObj[`${joinFrom}`] = `\$${joinLet}`;
+
+    return {
+      $lookup: {
+        from,
+        let: letObj,
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: [`\$${joinFrom}`, `\$\$${joinFrom}`] },
+                  ...MongooseHelper.BuildMatchArrayLookup(match)
+                ]
+              }
+            }
+          },
+          {
+            $limit: 1
+          }
+        ],
+        as: 'aggElement'
+      }
+    };
+  }
+
+  static BuildMatchArrayLookup(match: any = {}) {
+    if (Object.keys(match).length === 0) return [];
+
+    const arrLookup = [];
+    const keys = Object.keys(match);
+    const values = Object.values(match);
+
+    for (let i = 0; i < keys.length; i++) {
+      const arrObj = [];
+      arrObj.push(`\$${keys[i]}`);
+      arrObj.push(values[i]);
+      arrLookup.push({
+        $eq: arrObj
+      });
+    }
+
+    return arrLookup;
+  }
 }

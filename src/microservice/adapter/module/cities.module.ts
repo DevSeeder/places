@@ -30,6 +30,7 @@ import { UpdateCityByIdService } from '../../domain/service/cities/update-city-b
     CitiesMongoose,
     ValidateInputParamsService,
     GetCitiesByStateService,
+    GetCitiesByCountryService,
     DeleteCityByIdService,
     UpdateCityByIdService
   ]
