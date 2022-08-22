@@ -8,6 +8,7 @@ import { PuppeteerPlacesRepository } from '../../../../domain/repository/puppete
 import { Page } from '../../../../domain/interface/puppeteer/page.interface';
 import { EnumTranslations } from '../../../../domain/enumerators/enum-translations.enumerator';
 import { ValidOutputSearchByCity } from '../../../../domain/interface/valid-output-search/valid-outpu-search.interface';
+import { PuppeteerService } from '../../../../domain/service/puppeteer/puppeteer.service';
 
 @Injectable()
 export class GuiaMaisRepository extends PuppeteerPlacesRepository<
@@ -18,11 +19,11 @@ export class GuiaMaisRepository extends PuppeteerPlacesRepository<
   language = EnumTranslations.BR;
   constructor(
     protected configService: ConfigService,
-    @InjectPage() protected readonly page: Page
+    protected puppeteerService: PuppeteerService
   ) {
     super(
       configService.get<string>('repository.neighborhoods.guia-mais.url'),
-      page,
+      puppeteerService,
       'Neighborhoods'
     );
   }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PuppeteerModule } from 'nest-puppeteer';
+import { PuppeteerService } from 'src/microservice/domain/service/puppeteer/puppeteer.service';
 import { GuiaMaisRepository } from '../repository/neighborhoods/puppeteer/guia-mais.repository';
 import { CityPopulationRepository } from '../repository/regions/puppeteer/citypopulation.repository';
 import { ConfigurationModule } from './configuration.module';
@@ -8,6 +9,7 @@ import { ConfigurationModule } from './configuration.module';
   imports: [ConfigurationModule, PuppeteerModule.forFeature()],
   controllers: [],
   providers: [
+    PuppeteerService,
     {
       provide: 'GuiaMaisRepository',
       useClass: GuiaMaisRepository
@@ -17,6 +19,6 @@ import { ConfigurationModule } from './configuration.module';
       useClass: CityPopulationRepository
     }
   ],
-  exports: ['GuiaMaisRepository', 'CityPopulationRepository']
+  exports: ['GuiaMaisRepository', 'CityPopulationRepository', PuppeteerService]
 })
 export class PuppeteerFeatureModule {}
