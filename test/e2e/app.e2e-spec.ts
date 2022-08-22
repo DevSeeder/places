@@ -81,6 +81,16 @@ describe('App (e2e) ', () => {
     });
   });
 
+  describe('Region (e2e) ', () => {
+    it('/regions/country/brasil (GET)', async () => {
+      const actual = await request(app.getHttpServer()).get(
+        '/regions/country/brasil'
+      );
+
+      expect(actual.body).to.be.an('array').that.is.not.empty;
+    });
+  });
+
   describe('Country (e2e) ', () => {
     it('/countries/ (GET)', async () => {
       const actual = await request(app.getHttpServer()).get('/countries/');
