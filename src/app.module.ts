@@ -9,8 +9,10 @@ import { CountriesModule } from './microservice/adapter/module/countries.module'
 import { ExtensionsModule } from './microservice/adapter/helper/extensions/exensions.module';
 import { CustomPuppeteerModule } from './microservice/adapter/helper/modules/custom-puppeteer.module';
 import { NeighborhoodsModule } from './microservice/adapter/module/neighborhoods.module';
-import { SeedModule } from './microservice/adapter/module/seed.module';
+import { SeedNeighborhoodsModule } from './microservice/adapter/module/seed/seed-neighborhoods.module';
 import { StatesModule } from './microservice/adapter/module/states.module';
+import { ResolutionsModule } from './microservice/adapter/module/resolution.module';
+import { SeedRegionsModule } from './microservice/adapter/module/seed/seed-regions.module';
 
 @Module({
   imports: [
@@ -31,7 +33,9 @@ import { StatesModule } from './microservice/adapter/module/states.module';
     CitiesModule,
     StatesModule,
     CountriesModule,
-    SeedModule
+    SeedNeighborhoodsModule,
+    ResolutionsModule,
+    SeedRegionsModule
   ],
   controllers: [],
   providers: [

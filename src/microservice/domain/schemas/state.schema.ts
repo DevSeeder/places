@@ -18,9 +18,6 @@ export class State implements Place {
   @Prop({ required: true })
   region: string;
 
-  @Prop({ required: true })
-  subregion: string;
-
   @Prop({ required: false })
   alias: string[];
 

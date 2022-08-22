@@ -2,7 +2,6 @@ import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
-import { GetNeighborhoodsByCityService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { SearchNeighborhoodsDTO } from '../../domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import {
   ApiOkResponse,
@@ -12,12 +11,13 @@ import {
 } from '@nestjs/swagger';
 import { NeighborhoodByCity } from '../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsByState } from '../../domain/model/neighborhoods/neighborhoods-by-state.model';
+import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/neighborhoods-by-city.service';
 
 @ApiTags('neighborhoods')
 @Controller('neighborhoods')
 export class NeighborhoodsController extends AbstractController {
   constructor(
-    private readonly getNeighborhoodsByCityService: GetNeighborhoodsByCityService,
+    private readonly getNeighborhoodsByCityService: NeighborhoodsByCityService,
     private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService
   ) {
     super();
@@ -55,7 +55,7 @@ export class NeighborhoodsController extends AbstractController {
   ): Promise<NestResponse> {
     return this.buildResponse(
       HttpStatus.OK,
-      await this.getNeighborhoodsByCityService.getNeighborhoodsByCity(params)
+      await this.getNeighborhoodsByCityService.getFindAndSeedElements(params)
     );
   }
 

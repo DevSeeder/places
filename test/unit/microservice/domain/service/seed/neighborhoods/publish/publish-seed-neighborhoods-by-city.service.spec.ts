@@ -11,6 +11,9 @@ import { SenderMessageService } from '../../../../../../../../src/microservice/d
 import { mockSenderMessageService } from '../../../../../../../mock/services/amqp/sender-message-service.mock';
 import { mockConvertedSearchOrleans } from '../../../../../../../mock/interfaces/valid-output-search.mock';
 import { mockNeighborhoodsByCity } from '../../../../../../../mock/models/neighborhood/neighborhood-by-city-model.mock';
+import { EventSeedByCityDTO } from '../../../../../../../../src/microservice/domain/model/dto/events/event-seed-by-city-dto.model';
+import { ReferenceEventByCity } from '../../../../../../../../src/microservice/domain/model/references/event/reference-event-by-city.model';
+import { DateHelper } from '../../../../../../../../src/microservice/adapter/helper/date.helper';
 describe('PublishSeedNeighborhoodsByCityService', () => {
   let sut: PublishSeedNeighborhoodsByCityService;
 
@@ -88,6 +91,32 @@ describe('PublishSeedNeighborhoodsByCityService', () => {
       const mockErr = new Error('any');
 
       await sut.publishError(mockConvertedSearchOrleans(), mockErr);
+
+      sinon.assert.calledOnce(senderMessageStub);
+
+      senderMessageStub.restore();
+      logSeedStub.restore();
+    });
+  });
+
+  describe('publishRefenceError', () => {
+    it('should call publishRefenceError and call publishMessage with the correct params', async () => {
+      const senderMessageStub = sinon
+        .stub(mockSenderMessageService, 'publishMessage')
+        .returns(null);
+
+      const logSeedStub = sinon
+        .stub(mockLogSeedJobService, 'logSeedByState')
+        .returns(null);
+
+      const mockErr = new Error('any');
+
+      const mockEvent = new EventSeedByCityDTO(
+        DateHelper.getDateNow(),
+        new ReferenceEventByCity()
+      );
+
+      await sut.publishRefenceError(mockEvent, mockErr);
 
       sinon.assert.calledOnce(senderMessageStub);
 

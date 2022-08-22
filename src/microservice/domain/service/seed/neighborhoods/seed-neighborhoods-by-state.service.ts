@@ -7,6 +7,8 @@ import { CustomResponse } from '../../../../../core/interface/custom-response.in
 import { GetNeighborhoodsByStateService } from '../../neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsService } from './abstract/seed-neighborhoods.service';
 import { PublishSeedNeighborhoodsByCityService } from './publish/publish-seed-neighborhoods-by-city.service';
+import { GetLogSeedByCityService } from '../../logseed/get-log-seed-by-city.service';
+import { City } from '../../../../domain/schemas/city.schema';
 
 @Injectable()
 export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
@@ -14,9 +16,10 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     protected readonly validateService: ValidateInputParamsService,
     private readonly getNeighborhoodsByStateService: GetNeighborhoodsByStateService,
     private readonly getCitiesByStateService: GetCitiesByStateService,
+    private readonly getLogSeedByCityService: GetLogSeedByCityService,
     private readonly publishService: PublishSeedNeighborhoodsByCityService
   ) {
-    super(validateService);
+    super();
   }
 
   async seedNeighborhoodsByState(
@@ -49,6 +52,8 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     }
 
     for await (const item of cities) {
+      if (!(await this.validateLogSeedErrors(item))) continue;
+
       await this.publishService.publishToSeed(convertedSearch, item);
     }
 
@@ -56,6 +61,22 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
       success: true,
       response: 'Seed Requested!'
     };
+  }
+
+  async validateLogSeedErrors(city: City): Promise<boolean> {
+    const arrLogs = await this.getLogSeedByCityService.getLogSeedByCity(
+      city.id,
+      'NotFoundException'
+    );
+
+    const isValid = arrLogs.length === 0;
+
+    if (!isValid)
+      this.logger.error(
+        `LogSeed error found for city[${city.id}] - '${city.name}'`
+      );
+
+    return isValid;
   }
 
   async getSeededCities(stateId: number): Promise<number[]> {

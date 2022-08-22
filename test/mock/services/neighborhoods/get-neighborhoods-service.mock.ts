@@ -1,8 +1,11 @@
 export const mockGetNeighborhoodsByCityService = {
-  getNeighborhoodsByCity: () => {
-    return;
-  },
-  findNeighborhoodsByCityInDatabase: () => {
-    return;
+  searchInDatabase: () => {
+    return [];
+  }
+};
+
+export const mockGetNeighborhoodsByCountryService = {
+  groupByCountry: () => {
+    return [];
   }
 };

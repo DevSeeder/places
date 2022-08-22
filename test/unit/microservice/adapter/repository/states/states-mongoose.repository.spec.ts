@@ -73,4 +73,19 @@ describe('StatesMongoose', () => {
       findManyStub.restore();
     });
   });
+
+  describe('updateById', () => {
+    it('should call updateById and call mongoose findOneAndUpdate', async () => {
+      const mongooseStub = sinon.stub(mockModelMongoose, 'findOneAndUpdate');
+      const updateSpy = sinon.spy(sut, 'updateOne');
+
+      await sut.updateById(null, {});
+
+      sinon.assert.calledOnce(mongooseStub);
+      sinon.assert.calledOnceWithExactly(updateSpy, { id: null }, {});
+
+      mongooseStub.restore();
+      updateSpy.restore();
+    });
+  });
 });

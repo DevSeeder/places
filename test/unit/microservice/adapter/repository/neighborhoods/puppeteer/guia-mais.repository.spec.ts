@@ -82,7 +82,7 @@ describe('GuiaMaisRepository', () => {
       const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
       const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
-      const actual = await sut.getNeighborhoodsByCity(
+      const actual = await sut.getElements(
         mockSearchParams,
         mockConvertedSearch()
       );

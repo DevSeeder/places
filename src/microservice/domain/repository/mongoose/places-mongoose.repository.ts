@@ -1,5 +1,4 @@
 import { Model } from 'mongoose';
-import { MongooseHelper } from '../../../adapter/helper/mongoose/mongoose.helper';
 import { Place } from '../../interface/place.interface';
 import { MongooseRepository } from './mongoose.repository';
 
@@ -28,15 +27,10 @@ export abstract class PlacesMongooseRepository<
     select: object = {},
     sort: any = { name: 1 }
   ): Promise<any[]> {
-    if (Object.keys(select).length === 0) select = { _id: 0 };
+    return this.find(searchParams, select, sort);
+  }
 
-    let res = this.model.find(
-      MongooseHelper.buildRegexFilterQuery(searchParams)
-    );
-
-    if (typeof sort === 'object' && Object.keys(sort).length > 0)
-      res = res.sort(sort);
-
-    return res.select(select).lean().exec();
+  async updateById(id: number, data: any): Promise<void> {
+    return this.updateOne({ id }, data);
   }
 }

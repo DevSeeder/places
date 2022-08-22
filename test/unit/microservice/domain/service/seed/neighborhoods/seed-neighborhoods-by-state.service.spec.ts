@@ -18,6 +18,10 @@ import { NotFoundException } from '../../../../../../../src/core/error-handling/
 import { GetNeighborhoodsByStateService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 import { PublishSeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/publish/publish-seed-neighborhoods-by-city.service';
+import { mockGetLogSeedByCityService } from '../../../../../../mock/services/logseed/log-seed-service.mock';
+import { GetLogSeedByCityService } from '../../../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
+import { LogSeed } from '../../../../../../../src/microservice/domain/schemas/logseed.schema';
+import { Logger } from '@nestjs/common';
 
 describe('SeedNeighborhoodsByStateService', () => {
   let sut: SeedNeighborhoodsByStateService;
@@ -151,6 +155,10 @@ describe('SeedNeighborhoodsByStateService', () => {
           provide: PublishSeedNeighborhoodsByCityService,
           useValue: mockPublishService
         },
+        {
+          provide: GetLogSeedByCityService,
+          useValue: mockGetLogSeedByCityService
+        },
         SeedNeighborhoodsByStateService
       ]
     }).compile();
@@ -184,6 +192,43 @@ describe('SeedNeighborhoodsByStateService', () => {
       groupByCityStub.restore();
       validateStub.restore();
       getCitiesByStateStub.restore();
+    });
+
+    it('should call seedNeighborhoodsByStateService with not valid cities and call logger.error', async () => {
+      const groupByCityStub = sinon
+        .stub(mockGetNeighborhoodsByStateService, 'groupByCity')
+        .returns([]);
+
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByState')
+        .returns(mockConvertedSearch());
+
+      const getCitiesByStateStub = sinon
+        .stub(mockGetCitiesByStateService, 'findCitiesByState')
+        .returns(mockCities());
+
+      const arrLogs = [new LogSeed()];
+
+      const getLogSeedStub = sinon
+        .stub(mockGetLogSeedByCityService, 'getLogSeedByCity')
+        .returns(arrLogs);
+
+      const publishSpy = sinon.spy(mockPublishService, 'publishToSeed');
+
+      const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
+
+      const actual = await sut.seedNeighborhoodsByState(searchParams);
+
+      sinon.assert.notCalled(publishSpy);
+
+      expect(actual.success).to.be.equal(true);
+      expect(actual.response).to.be.equal('Seed Requested!');
+
+      groupByCityStub.restore();
+      validateStub.restore();
+      getCitiesByStateStub.restore();
+      getLogSeedStub.restore();
+      publishSpy.restore();
     });
 
     it('should call seedNeighborhoodsByStateService and return "Nothing to seed"', async () => {

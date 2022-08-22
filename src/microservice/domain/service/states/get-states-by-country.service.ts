@@ -24,7 +24,10 @@ export class GetStatesByCountryService extends StatesService {
     return this.findStatesByCountry(country.id);
   }
 
-  async findStatesByCountry(countryId: number): Promise<State[]> {
+  async findStatesByCountry(
+    countryId: number,
+    arrIgnore = []
+  ): Promise<State[]> {
     const select = {
       _id: 0,
       id: 1,
@@ -35,6 +38,10 @@ export class GetStatesByCountryService extends StatesService {
       stateCode: 1
     };
 
-    return this.mongoRepository.findBySearchParams({ countryId }, select);
+    const match: any = { countryId };
+
+    if (arrIgnore.length > 0) match.id = { $nin: arrIgnore };
+
+    return this.mongoRepository.findBySearchParams(match, select);
   }
 }

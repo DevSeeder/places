@@ -4,13 +4,18 @@ import { Country, CountrySchema } from '../../domain/schemas/country.schema';
 import { CountriesMongoose } from '../repository/countries/countries-mongoose.repository';
 import { CountriesController } from '../controller/countries.controller';
 import { GetCountriesService } from '../../domain/service/countries/get-countries.service';
+import { ValidateCountryByNameOrAliasService } from '../../domain/service/countries/validate-country-by-name-or-alias.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }])
   ],
   controllers: [CountriesController],
-  providers: [CountriesMongoose, GetCountriesService],
-  exports: [CountriesMongoose]
+  providers: [
+    CountriesMongoose,
+    GetCountriesService,
+    ValidateCountryByNameOrAliasService
+  ],
+  exports: [CountriesMongoose, ValidateCountryByNameOrAliasService]
 })
 export class CountriesModule {}

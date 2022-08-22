@@ -7,6 +7,7 @@ import { GetStatesByCountryService } from '../../domain/service/states/get-state
 import { StatesController } from '../controller/states.controller';
 import { CountriesModule } from './countries.module';
 import { ValidateCountryByNameOrAliasService } from '../../domain/service/countries/validate-country-by-name-or-alias.service';
+import { UpdateStatesByRegionService } from '../../domain/service/states/update-states-by-region.service';
 
 @Module({
   imports: [
@@ -18,12 +19,15 @@ import { ValidateCountryByNameOrAliasService } from '../../domain/service/countr
     StatesMongoose,
     ValidateStateByNameOrAliasService,
     ValidateCountryByNameOrAliasService,
-    GetStatesByCountryService
+    GetStatesByCountryService,
+    UpdateStatesByRegionService
   ],
   exports: [
     StatesMongoose,
     ValidateCountryByNameOrAliasService,
-    ValidateStateByNameOrAliasService
+    ValidateStateByNameOrAliasService,
+    UpdateStatesByRegionService,
+    GetStatesByCountryService
   ]
 })
 export class StatesModule {}

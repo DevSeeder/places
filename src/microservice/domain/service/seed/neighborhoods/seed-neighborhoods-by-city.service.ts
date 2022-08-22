@@ -18,7 +18,7 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
     private readonly saveNeighborhoodsService: SaveNeighborhoodsByCityService,
     private readonly publishService: PublishSeedNeighborhoodsByCityService
   ) {
-    super(validateService);
+    super();
   }
 
   async seedNeighborhoodsByCity(eventPayload: EventSeedByCityDTO) {
@@ -28,10 +28,17 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
       eventPayload.reference.cityName
     );
 
-    const convertedSearch =
-      await this.validateService.validateAndConvertSearchByCity(
-        searchParamsByCity
-      );
+    let convertedSearch: ValidOutputSearchByCity;
+
+    try {
+      convertedSearch =
+        await this.validateService.validateAndConvertSearchByCity(
+          searchParamsByCity
+        );
+    } catch (err) {
+      await this.publishService.publishRefenceError(eventPayload, err);
+      return;
+    }
 
     try {
       this.logger.log(
@@ -52,7 +59,7 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
     searchParams: SearchNeighborhoodsDTO,
     convertedSearch: ValidOutputSearchByCity
   ): Promise<NeighborhoodByCity[]> {
-    const resPuppeteer = await this.guiaMaisRepository.getNeighborhoodsByCity(
+    const resPuppeteer = await this.guiaMaisRepository.getElements(
       searchParams,
       convertedSearch
     );

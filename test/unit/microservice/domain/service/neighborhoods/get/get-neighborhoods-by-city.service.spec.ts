@@ -1,20 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { NeighborhoodByCity } from '../../../../../../../src/microservice/domain/model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsMongoose } from '../../../../../../../src/microservice/adapter/repository/neighborhoods/neighborhoods-mongoose.repository';
-import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 import '../../../../../../../src/microservice/adapter/helper/extensions/exensions.module';
 import { CountriesMongoose } from '../../../../../../../src/microservice/adapter/repository/countries/countries-mongoose.repository';
 import { CitiesMongoose } from '../../../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { StatesMongoose } from '../../../../../../../src/microservice/adapter/repository/states/states-mongoose.repository';
-import { SearchNeighborhoodsDTO } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-dto.model';
 import { ValidateInputParamsService } from '../../../../../../../src/microservice/domain/service/validate/validate-input-params.service';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
 import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
+import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
+import { mockGetNeighborhoodsByCityService } from '../../../../../../mock/services/neighborhoods/get-neighborhoods-service.mock';
+import { SearchNeighborhoodsDB } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-db.model';
+import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -46,12 +47,22 @@ describe('GetNeighborhoodsByCityService', () => {
     }
   };
 
-  const mockMongoNeighborhoods = () => {
-    const arr = [];
-    const item1 = new Neighborhood();
-    arr.push(item1);
-    return arr;
-  };
+  const mockResponse = [
+    {
+      name: 'Aires Rodrigues',
+      cityId: 1,
+      city: 'Orleans - SC - SANTA CATARINA',
+      stateId: 2014,
+      countryId: 31
+    },
+    {
+      name: 'Alto Paraná',
+      cityId: 2,
+      city: 'Orleans - SC - SANTA CATARINA',
+      stateId: 2014,
+      countryId: 31
+    }
+  ];
 
   const mockNeighborhoods: NeighborhoodByCity[] = [
     {
@@ -64,6 +75,25 @@ describe('GetNeighborhoodsByCityService', () => {
     {
       name: 'Alto Paraná',
       city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 2
+    }
+  ];
+
+  const mockArrNeighborhoods: Partial<Neighborhood>[] = [
+    {
+      name: 'Aires Rodrigues',
+      city: 'Orleans - SC',
+      state: 'Santa Catarina',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 1
+    },
+    {
+      name: 'Alto Paraná',
+      city: 'Orleans - SC',
+      state: 'Santa Catarina',
       countryId: 31,
       stateId: 2014,
       cityId: 2
@@ -113,6 +143,10 @@ describe('GetNeighborhoodsByCityService', () => {
           provide: SeedNeighborhoodsByCityService,
           useValue: mockSeedByCityService
         },
+        {
+          provide: GetNeighborhoodsByCityService,
+          useValue: mockGetNeighborhoodsByCityService
+        },
         GetNeighborhoodsByCityService
       ]
     }).compile();
@@ -120,54 +154,33 @@ describe('GetNeighborhoodsByCityService', () => {
     sut = app.get<GetNeighborhoodsByCityService>(GetNeighborhoodsByCityService);
   });
 
-  describe('GetNeighborhoodsByCityService', () => {
-    it('should call getNeighborhoodsByCity and return an array by puppeteer', async () => {
-      const seedStub = sinon
-        .stub(mockSeedByCityService, 'searchByPuppeterAndSave')
-        .returns(mockNeighborhoods);
-
-      const validateStub = sinon
-        .stub(mockValidateService, 'validateAndConvertSearchByCity')
-        .returns(mockConvertedSearch());
-
-      const searchParams = new SearchNeighborhoodsDTO(
-        'brasil',
-        'sc',
-        'orleans'
-      );
-
-      const actual = await sut.getNeighborhoodsByCity(searchParams);
-
-      expect(actual).to.be.an('array');
-      expect(actual.length).to.be.equal(2);
-
-      seedStub.restore();
-      validateStub.restore();
-    });
-
-    it('should call getNeighborhoodsByCity and return an array by mongodb', async () => {
+  describe('searchInDatabase', () => {
+    it('should call searchInDatabase and return an array', async () => {
       const mongoFindStub = sinon
         .stub(sut, 'findInDatabase')
-        .returns(mockMongoNeighborhoods());
+        .returns(mockNeighborhoods);
 
-      const validateStub = sinon
-        .stub(mockValidateService, 'validateAndConvertSearchByCity')
-        .returns(mockConvertedSearch());
-
-      const searchParams = new SearchNeighborhoodsDTO(
-        'Brazil',
-        'SC',
-        'Orleans'
-      );
-
-      const actual = await sut.getNeighborhoodsByCity(searchParams);
+      const actual = await sut.searchInDatabase(mockConvertedSearch());
 
       expect(JSON.stringify(actual)).to.be.equal(
-        JSON.stringify(mockMongoNeighborhoods())
+        JSON.stringify(mockNeighborhoods)
       );
 
       mongoFindStub.restore();
-      validateStub.restore();
+    });
+  });
+
+  describe('findInDatabase', () => {
+    it('should call findInDatabase and return an array', async () => {
+      const mongoFindStub = sinon
+        .stub(mockNeighborhoodsMongooseRepository, 'findBySearchParams')
+        .returns(mockArrNeighborhoods);
+      const search = new SearchNeighborhoodsDB(1, 1, 1);
+      const actual = await sut.findInDatabase(search);
+
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockResponse));
+
+      mongoFindStub.restore();
     });
   });
 });

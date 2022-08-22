@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { arrExchanges } from '../../../config/amqp/rabbitmq-exchanges.config';
+import { channelsConfig } from '../../../config/amqp/rabbitmq-channels.config';
 
 @Module({
   imports: [
@@ -13,15 +14,7 @@ import { arrExchanges } from '../../../config/amqp/rabbitmq-exchanges.config';
         exchanges: arrExchanges,
         uri: config.get<string>('microservices.rabbitmq.url'),
         noAck: true,
-        channels: {
-          'channel-1': {
-            prefetchCount: 1,
-            default: true
-          },
-          'channel-2': {
-            prefetchCount: 1
-          }
-        }
+        channels: channelsConfig
       })
     })
   ],

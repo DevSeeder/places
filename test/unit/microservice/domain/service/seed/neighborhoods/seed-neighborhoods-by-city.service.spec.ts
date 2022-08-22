@@ -18,6 +18,7 @@ import { ValidateInputParamsService } from '../../../../../../../src/microservic
 import { mockValidateService } from '../../../../../../mock/services/validate/validate-service.mock';
 import { PublishSeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/publish/publish-seed-neighborhoods-by-city.service';
 import { mockPublishService } from '../../../../../../mock/services/seed/publish/publish-seed-service.mock';
+import { DateHelper } from '../../../../../../../src/microservice/adapter/helper/date.helper';
 
 describe('SeedNeighborhoodsByCityService', () => {
   let sut: SeedNeighborhoodsByCityService;
@@ -35,7 +36,7 @@ describe('SeedNeighborhoodsByCityService', () => {
   };
 
   const mockGuiaMaisRepository = {
-    getNeighborhoodsByCity: () => {
+    getElements: () => {
       return;
     }
   };
@@ -142,7 +143,7 @@ describe('SeedNeighborhoodsByCityService', () => {
       ).build(mockCity);
 
       await sut.seedNeighborhoodsByCity(
-        new EventSeedByCityDTO(new Date(), mockEP)
+        new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP)
       );
 
       const spyConvertedSearch = mockConvertedSearch();
@@ -180,7 +181,7 @@ describe('SeedNeighborhoodsByCityService', () => {
       ).build(mockCity);
 
       await sut.seedNeighborhoodsByCity(
-        new EventSeedByCityDTO(new Date(), mockEP)
+        new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP)
       );
 
       const spyConvertedSearch = mockConvertedSearch();
@@ -196,12 +197,46 @@ describe('SeedNeighborhoodsByCityService', () => {
       publishSpy.restore();
       validateStub.restore();
     });
+
+    it('should call seedNeighborhoodsByCity with ref error and call publishReferenceError with the correct params', async () => {
+      const mockErr = new Error('any');
+      const validateStub = sinon
+        .stub(mockValidateService, 'validateAndConvertSearchByCity')
+        .throws(mockErr);
+
+      const searchByPuppeterAndSaveStub = sinon
+        .stub(sut, 'searchByPuppeterAndSave')
+        .returns(null);
+
+      const publishSpy = sinon.spy(mockPublishService, 'publishRefenceError');
+
+      const mockCity = new City();
+      mockCity.name = 'Orleans';
+      mockCity.id = 1;
+
+      const mockEP = new ReferenceEventByCityBuilder(
+        mockConvertedSearch()
+      ).build(mockCity);
+
+      const payload = new EventSeedByCityDTO(DateHelper.getDateNow(), mockEP);
+
+      await sut.seedNeighborhoodsByCity(payload);
+
+      const spyConvertedSearch = mockConvertedSearch();
+      spyConvertedSearch.city = mockCity;
+
+      sinon.assert.calledOnceWithExactly(publishSpy, payload, mockErr);
+
+      searchByPuppeterAndSaveStub.restore();
+      publishSpy.restore();
+      validateStub.restore();
+    });
   });
 
   describe('searchByPuppeterAndSave', () => {
     it('should call searchByPuppeterAndSave and call saveNeighborhoodsByCity with the correct params', async () => {
       const guiaMaisStub = sinon
-        .stub(mockGuiaMaisRepository, 'getNeighborhoodsByCity')
+        .stub(mockGuiaMaisRepository, 'getElements')
         .returns(mockNeighborhoods);
 
       const saveStub = sinon.stub(

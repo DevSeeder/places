@@ -9,6 +9,10 @@ import { SeedNeighborhoodsByStateService } from '../../../../../src/microservice
 import { SeedController } from '../../../../../src/microservice/adapter/controller/seed.controller';
 import { SenderMessageService } from '../../../../../src/microservice/domain/service/amqp/sender-message.service';
 import { mockSenderMessageService } from '../../../../mock/services/amqp/sender-message-service.mock';
+import { SeedNeighborhoodsByCountryService } from '../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-country.service';
+import { mockSeedNeighborhoodsByCountryService } from '../../../../mock/services/seed/seed-neighborhoods-service.mock';
+import { GetLogSeedByCityService } from '../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
+import { mockGetLogSeedByCityService } from '../../../../mock/services/logseed/log-seed-service.mock';
 
 describe('SeedController', () => {
   let sut: SeedController;
@@ -37,6 +41,14 @@ describe('SeedController', () => {
         {
           provide: SenderMessageService,
           useFactory: () => mockSenderMessageService
+        },
+        {
+          provide: SeedNeighborhoodsByCountryService,
+          useFactory: () => mockSeedNeighborhoodsByCountryService
+        },
+        {
+          provide: GetLogSeedByCityService,
+          useFactory: () => mockGetLogSeedByCityService
         }
       ]
     }).compile();
@@ -58,6 +70,29 @@ describe('SeedController', () => {
       const searchParams = new SearchNeighborhoodsDTO('brasil', 'sc');
 
       const actual = await sut.seedNeighborhoodsByState(searchParams);
+
+      expect(actual.body.success).to.be.equal(true);
+      expect(actual.body.response).to.be.equal('Seed Requested');
+
+      seedServiceStub.restore();
+    });
+  });
+
+  describe('seedNeighborhoodsByCountry', () => {
+    it('should call seedNeighborhoodsByCountry and return a response', async () => {
+      const mockResponseSeed = {
+        success: true,
+        response: 'Seed Requested'
+      };
+
+      const seedServiceStub = sinon
+        .stub(
+          mockSeedNeighborhoodsByCountryService,
+          'seedNeighborhoodsByCountry'
+        )
+        .returns(mockResponseSeed);
+
+      const actual = await sut.seedNeighborhoodsByCountry('brasil');
 
       expect(actual.body.success).to.be.equal(true);
       expect(actual.body.response).to.be.equal('Seed Requested');

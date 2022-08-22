@@ -10,12 +10,16 @@ import { Translations } from '../../../../../../src/microservice/domain/model/tr
 import { EnumTranslations } from '../../../../../../src/microservice/domain/enumerators/enum-translations.enumerator';
 import { State } from '../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../src/microservice/domain/schemas/city.schema';
-import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/logseed/reference/reference-neighborhoods-by-state.model';
+import { ReferenceNeighborhoodsByState } from '../../../../../../src/microservice/domain/model/references/reference-neighborhoods-by-state.model';
+import { EnumTypeResolution } from '../../../../../../src/microservice/domain/enumerators/enum-type-resolution';
 
 describe('LogSeedJobService', () => {
   let sut: LogSeedJobService;
 
   const mockMongooseRepository = {
+    updateOneById: () => {
+      return;
+    },
     insertOne: () => {
       return;
     }
@@ -78,6 +82,21 @@ describe('LogSeedJobService', () => {
 
       insertOneStub.restore();
       createLogSeedSpy.restore();
+    });
+  });
+
+  describe('logProcessResolution', () => {
+    it('should call logProcessResolution and call updateOneById correctly', async () => {
+      const updateOneByIdSpy = sinon.spy(
+        mockMongooseRepository,
+        'updateOneById'
+      );
+
+      await sut.logProcessResolution(null, EnumTypeResolution.IsNotACity);
+
+      sinon.assert.calledOnce(updateOneByIdSpy);
+
+      updateOneByIdSpy.restore();
     });
   });
 });

@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
 import { Page } from '../../interface/puppeteer/page.interface';
-import { SearchNeighborhoodsDTO } from '../../model/search/neighborhoods/search-neighborhoods-dto.model';
+import { DTO } from '../../model/dto.model';
 
 export abstract class PuppeteerRepository {
   protected readonly logger: Logger = new Logger(this.constructor.name);
@@ -27,7 +27,7 @@ export abstract class PuppeteerRepository {
     return this.page.evaluate(() => document.querySelector('*').outerHTML);
   }
 
-  validateInput(searchParams: SearchNeighborhoodsDTO) {
+  validateInput(searchParams: DTO) {
     searchParams.validateIsAnyEmptyKey();
   }
 }

@@ -12,7 +12,7 @@ export abstract class JobSeedNeighborhoodsService extends SeedNeighborhoodsServi
     protected readonly validateService: ValidateInputParamsService,
     protected readonly logSeedService: LogSeedJobService
   ) {
-    super(validateService);
+    super();
   }
 
   async logErrorSeedJob(
