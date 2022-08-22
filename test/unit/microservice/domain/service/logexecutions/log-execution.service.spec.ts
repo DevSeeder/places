@@ -13,6 +13,9 @@ describe('LogExecutionService', () => {
   const mockMongooseRepository = {
     insertOne: () => {
       return;
+    },
+    updateOneById: () => {
+      return;
     }
   };
 
@@ -45,6 +48,19 @@ describe('LogExecutionService', () => {
 
       sinon.assert.calledOnce(insertOneStub);
       expect(actual).to.be.equal('any');
+    });
+  });
+
+  describe('finishLogExecution', () => {
+    it('should call finishLogExecution and call updateOneById correctly', async () => {
+      const updateOneByIdStub = sinon.stub(
+        mockMongooseRepository,
+        'updateOneById'
+      );
+
+      await sut.finishLogExecution(null);
+
+      sinon.assert.calledOnce(updateOneByIdStub);
     });
   });
 });

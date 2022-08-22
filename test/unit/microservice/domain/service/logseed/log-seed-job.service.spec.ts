@@ -19,6 +19,9 @@ describe('LogSeedJobService', () => {
   const mockMongooseRepository = {
     updateOneById: () => {
       return;
+    },
+    insertOne: () => {
+      return;
     }
   };
 

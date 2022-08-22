@@ -15,7 +15,7 @@ export class RegionsController extends AbstractController {
   }
 
   @Get('/:country')
-  async seedNeighborhoodsByState(
+  async getRegionsByCountry(
     @Param() params: SearchRegionsDTO
   ): Promise<NestResponse> {
     return this.buildResponse(

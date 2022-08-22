@@ -77,4 +77,27 @@ describe('SeedController', () => {
       seedServiceStub.restore();
     });
   });
+
+  describe('seedNeighborhoodsByCountry', () => {
+    it('should call seedNeighborhoodsByCountry and return a response', async () => {
+      const mockResponseSeed = {
+        success: true,
+        response: 'Seed Requested'
+      };
+
+      const seedServiceStub = sinon
+        .stub(
+          mockSeedNeighborhoodsByCountryService,
+          'seedNeighborhoodsByCountry'
+        )
+        .returns(mockResponseSeed);
+
+      const actual = await sut.seedNeighborhoodsByCountry('brasil');
+
+      expect(actual.body.success).to.be.equal(true);
+      expect(actual.body.response).to.be.equal('Seed Requested');
+
+      seedServiceStub.restore();
+    });
+  });
 });
