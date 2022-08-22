@@ -14,6 +14,8 @@ import { City } from '../../../../../../../src/microservice/domain/schemas/city.
 import { SeedNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/seed/neighborhoods/seed-neighborhoods-by-city.service';
 import { GetNeighborhoodsByCityService } from '../../../../../../../src/microservice/domain/service/neighborhoods/get/get-neighborhoods-by-city.service';
 import { mockGetNeighborhoodsByCityService } from '../../../../../../mock/services/neighborhoods/get-neighborhoods-service.mock';
+import { SearchNeighborhoodsDB } from '../../../../../../../src/microservice/domain/model/search/neighborhoods/search-neighborhoods-db.model';
+import { Neighborhood } from '../../../../../../../src/microservice/domain/schemas/neighborhood.schema';
 
 describe('GetNeighborhoodsByCityService', () => {
   let sut: GetNeighborhoodsByCityService;
@@ -45,6 +47,23 @@ describe('GetNeighborhoodsByCityService', () => {
     }
   };
 
+  const mockResponse = [
+    {
+      name: 'Aires Rodrigues',
+      cityId: 1,
+      city: 'Orleans - SC - SANTA CATARINA',
+      stateId: 2014,
+      countryId: 31
+    },
+    {
+      name: 'Alto Paraná',
+      cityId: 2,
+      city: 'Orleans - SC - SANTA CATARINA',
+      stateId: 2014,
+      countryId: 31
+    }
+  ];
+
   const mockNeighborhoods: NeighborhoodByCity[] = [
     {
       name: 'Aires Rodrigues',
@@ -56,6 +75,25 @@ describe('GetNeighborhoodsByCityService', () => {
     {
       name: 'Alto Paraná',
       city: 'Orleans - SC',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 2
+    }
+  ];
+
+  const mockArrNeighborhoods: Partial<Neighborhood>[] = [
+    {
+      name: 'Aires Rodrigues',
+      city: 'Orleans - SC',
+      state: 'Santa Catarina',
+      countryId: 31,
+      stateId: 2014,
+      cityId: 1
+    },
+    {
+      name: 'Alto Paraná',
+      city: 'Orleans - SC',
+      state: 'Santa Catarina',
       countryId: 31,
       stateId: 2014,
       cityId: 2
@@ -127,6 +165,21 @@ describe('GetNeighborhoodsByCityService', () => {
       expect(JSON.stringify(actual)).to.be.equal(
         JSON.stringify(mockNeighborhoods)
       );
+
+      mongoFindStub.restore();
+    });
+  });
+
+  describe('findInDatabase', () => {
+    it('should call findInDatabase with name param and return an array', async () => {
+      const mongoFindStub = sinon
+        .stub(mockNeighborhoodsMongooseRepository, 'findBySearchParams')
+        .returns(mockArrNeighborhoods);
+      const search = new SearchNeighborhoodsDB(1, 1, 1);
+      search.name = 'any';
+      const actual = await sut.findInDatabase(search);
+
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockResponse));
 
       mongoFindStub.restore();
     });
