@@ -33,7 +33,8 @@ export class SeedNeighborhoodsByCityService extends SeedNeighborhoodsService {
     try {
       convertedSearch =
         await this.validateService.validateAndConvertSearchByCity(
-          searchParamsByCity
+          searchParamsByCity,
+          true
         );
     } catch (err) {
       await this.publishService.publishRefenceError(eventPayload, err);

@@ -21,10 +21,12 @@ export class ValidateInputParamsService extends AbstractService {
   }
 
   async validateAndConvertSearchByState(
-    searchParams: SearchNeighborhoodsDTO | SearchCitiesDTO
+    searchParams: SearchNeighborhoodsDTO | SearchCitiesDTO,
+    implementationVerify = false
   ): Promise<ValidOutputSearchByState> {
     const country = await this.getCountryService.validateCountry(
-      searchParams.country
+      searchParams.country,
+      implementationVerify
     );
     const state = await this.getStateService.validateState(
       searchParams.state,
@@ -34,10 +36,12 @@ export class ValidateInputParamsService extends AbstractService {
   }
 
   async validateAndConvertSearchByCity(
-    searchParams: SearchNeighborhoodsDTO
+    searchParams: SearchNeighborhoodsDTO,
+    implementationVerify = false
   ): Promise<ValidOutputSearchByCity> {
     const country = await this.getCountryService.validateCountry(
-      searchParams.country
+      searchParams.country,
+      implementationVerify
     );
     const state = await this.getStateService.validateState(
       searchParams.state,

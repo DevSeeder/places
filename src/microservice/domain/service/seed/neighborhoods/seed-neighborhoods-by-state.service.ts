@@ -26,7 +26,10 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     searchParams: SearchNeighborhoodsDTO
   ): Promise<CustomResponse> {
     const convertedSearch =
-      await this.validateService.validateAndConvertSearchByState(searchParams);
+      await this.validateService.validateAndConvertSearchByState(
+        searchParams,
+        true
+      );
 
     const arrSeededCities = await this.getSeededCities(
       convertedSearch.state.id
