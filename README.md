@@ -4,7 +4,7 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
-[url-prod]: https://places.devseeder.com
+[url-prod]: http://places.devseeder.com/api
 
   <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
@@ -16,6 +16,7 @@
   <li>Puppeteer</li>
   <li>MongoDB</li>
   <li>RabbitMQ</li>
+  <li>JWT Auth</li>
 </ul>
 
 ## Description
@@ -84,17 +85,17 @@ After run the server, make a get in browser, postman or similar
 
 ```bash
 ## Neighborhoods By City example
-http://localhost:3000/neighborhoods/city/brazil/sc/orleans
+[url-prod]/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
-http://localhost:3000/neighborhoods/city/brazil/sc
+[url-prod]/neighborhoods/city/brazil/sc
 ## Cities By State example
-http://localhost:3000/cities/brazil/sc
+[url-prod]/cities/brazil/sc
 ## Cities By Country example
-http://localhost:3000/cities/brazil
+[url-prod]/cities/brazil
 ## States By Country example
-http://localhost:3000/states/brazil
+[url-prod]/states/brazil
 ## Countries example
-http://localhost:3000/countries/
+[url-prod]/countries/
 ```
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/)

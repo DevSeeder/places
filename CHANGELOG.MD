@@ -66,3 +66,13 @@ All notable changes to this project will be documented in this file.
 - Route Seed Neighborhoods By Country
 - Seed Regions By Puppeteer
 - Seed Neighborhoods By State Queue
+
+## [0.0.8] - 2022-08-25
+
+### Added
+
+- Improve response from DB Regions By Country
+- Puppeteer Stealth plugin implementation
+- Puppeteer change proxy implementation
+- Puppeteer Cluster Implementation for queue process
+- JWT Authentication

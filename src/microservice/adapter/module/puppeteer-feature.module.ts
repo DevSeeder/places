@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PuppeteerModule } from 'nest-puppeteer';
-import { PuppeteerService } from 'src/microservice/domain/service/puppeteer/puppeteer.service';
+import { PuppeteerService } from '../../domain/service/puppeteer/puppeteer.service';
 import { GuiaMaisRepository } from '../repository/neighborhoods/puppeteer/guia-mais.repository';
 import { CityPopulationRepository } from '../repository/regions/puppeteer/citypopulation.repository';
 import { ConfigurationModule } from './configuration.module';

@@ -1,47 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { Browser, Page } from 'puppeteer';
+import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import useProxy from 'puppeteer-page-proxy';
 import { AbstractService } from '../abstract-service.service';
 import { fetchOne } from 'proxies-generator';
 import { Proxy } from 'proxies-generator/typings/instances';
+import { Cluster } from 'puppeteer-cluster';
 const RETRY_TIMES = 1;
 
 @Injectable()
 export class PuppeteerService extends AbstractService {
-  private browser: Browser;
-  private page: Page;
+  private puppeteer;
 
   constructor() {
     super();
-    this.setBrowser();
+    this.setPuppeteer();
   }
 
-  private async setBrowser() {
-    this.browser = await puppeteer.use(StealthPlugin()).launch({
-      ignoreHTTPSErrors: true,
-      headless: true,
-      args: [
-        '--ignore-certificate-errors',
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-web-security'
-      ],
-      slowMo: 200
-    });
+  private setPuppeteer() {
+    this.puppeteer = puppeteer;
+    this.puppeteer.use(StealthPlugin());
   }
 
-  private async newPage() {
-    this.page = await this.browser.newPage();
-  }
-
-  private async collectData(url) {
+  private async collectData(page: Page, url: string) {
     try {
-      await await this.page.goto(url, {
+      await await page.goto(url, {
         waitUntil: 'networkidle0'
       });
-      return this.page.evaluate(() => {
+      return page.evaluate(() => {
         return document.querySelector('*').outerHTML;
       });
     } catch (err) {
@@ -53,29 +40,54 @@ export class PuppeteerService extends AbstractService {
   async tryCollectData(url) {
     this.logger.log(`Going to url '${url}'...`);
 
-    if (!this.page) await this.newPage();
-
-    let data: any = false;
-    let attempts = 0;
-
-    while (data === false && attempts < RETRY_TIMES) {
-      this.logger.log(`Trying attempt number ${attempts}...`);
-
-      data = await this.collectData(url);
-      attempts += 1;
-
-      if (data === false) {
-        await this.changeProxy();
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+    const cluster = await Cluster.launch({
+      concurrency: Cluster.CONCURRENCY_CONTEXT,
+      maxConcurrency: 1,
+      puppeteerOptions: {
+        headless: true,
+        args: [
+          '--ignore-certificate-errors',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-web-security'
+        ],
+        ignoreHTTPSErrors: true
       }
-    }
+    });
+
+    const data = await this.executeCluster(cluster, url);
+
+    await cluster.idle();
+    await cluster.close();
 
     return data;
   }
 
-  private async changeProxy() {
+  async executeCluster(cluster: Cluster<any, any>, url: string) {
+    await cluster.task(async ({ page, data: url }) => {
+      let data: string | boolean = false;
+      let i = 0;
+      while (!data && i < RETRY_TIMES) {
+        data = await this.collectData(page, url);
+        i++;
+        if (!data) {
+          await this.changeProxy(page);
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          this.logger.warn(`Trying attempt number ${i}...`);
+        }
+      }
+
+      return data;
+    });
+
+    cluster.queue(url);
+
+    return cluster.execute(url);
+  }
+
+  private async changeProxy(page: Page) {
     const proxy: Proxy | any = await fetchOne();
     this.logger.verbose(`Changing Proxy to ${proxy.url}`);
-    await useProxy(this.page, proxy.url);
+    await useProxy(page, proxy.url);
   }
 }
