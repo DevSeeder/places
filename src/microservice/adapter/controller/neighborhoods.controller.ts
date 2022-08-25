@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, UseGuards } from '@nestjs/common';
 import { GetNeighborhoodsByStateService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-state.service';
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
@@ -12,6 +12,9 @@ import {
 import { NeighborhoodByCity } from '../../domain/model/neighborhoods/neighborhood-by-city.model';
 import { NeighborhoodsByState } from '../../domain/model/neighborhoods/neighborhoods-by-state.model';
 import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/neighborhoods-by-city.service';
+import { JwtAuthGuard } from '../../domain/jwt/jwt-auth.guard';
+import { EnumScopes } from '../../domain/enumerators/enum-scopes.enum';
+import { Scopes } from '../../domain/decorator/scopes.decorator';
 
 @ApiTags('neighborhoods')
 @Controller('neighborhoods')
@@ -49,6 +52,8 @@ export class NeighborhoodsController extends AbstractController {
     description: 'The City name of the neighborhood',
     type: String
   })
+  @UseGuards(JwtAuthGuard)
+  @Scopes(EnumScopes.GET_ALL)
   @Get('/city/:country/:state/:city')
   async getNeighborhoodsByCity(
     @Param() params: SearchNeighborhoodsDTO
@@ -78,6 +83,8 @@ export class NeighborhoodsController extends AbstractController {
     description: 'The State name of the neighborhood',
     type: String
   })
+  @UseGuards(JwtAuthGuard)
+  @Scopes(EnumScopes.GET_ALL)
   @Get('/state/:country/:state')
   async getNeighborhoodsByState(
     @Param() params: SearchNeighborhoodsDTO

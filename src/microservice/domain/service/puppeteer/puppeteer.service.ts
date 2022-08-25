@@ -6,7 +6,7 @@ import useProxy from 'puppeteer-page-proxy';
 import { AbstractService } from '../abstract-service.service';
 import { fetchOne } from 'proxies-generator';
 import { Proxy } from 'proxies-generator/typings/instances';
-const RETRY_TIMES = 5;
+const RETRY_TIMES = 1;
 
 @Injectable()
 export class PuppeteerService extends AbstractService {

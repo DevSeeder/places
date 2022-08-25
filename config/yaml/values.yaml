@@ -39,6 +39,8 @@ microservices:
           by:
             city: 'channel-seed-neighborhoods-by-city'
             state: 'channel-seed-neighborhoods-by-state'
+jwt:
+  secret: ${JWT_SECRET}
 api:
   port: 3000
 doc:
