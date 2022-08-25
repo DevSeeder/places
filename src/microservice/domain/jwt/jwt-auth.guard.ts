@@ -31,7 +31,7 @@ export class JwtAuthGuard extends AbstractGuard {
         ''
       );
       const tokenPayload = await this.jwtService.verifyAsync(bearerToken, {
-        secret: this.configService.get<string>('jwt.secret'),
+        secret: this.configService.get<string>('auth.jwt.secret'),
         ignoreExpiration: true
       });
 
