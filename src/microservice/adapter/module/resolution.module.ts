@@ -10,6 +10,7 @@ import { ProcessResolutionUniqueNeighborhoodService } from '../../domain/service
 import { NeighborhoodsModule } from './neighborhoods.module';
 import { CitiesModule } from './cities.module';
 import { StatesModule } from './states.module';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { StatesModule } from './states.module';
     LogSeedModule,
     NeighborhoodsModule,
     CitiesModule,
-    StatesModule
+    StatesModule,
+    AuthModule
   ],
   controllers: [ResolutionsController],
   providers: [
