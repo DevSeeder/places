@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Injectable
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
@@ -15,19 +16,22 @@ dotenv.config();
 
 @Injectable()
 export class JwtAuthGuard extends AbstractGuard {
-  constructor(private reflector: Reflector, private jwtService: JwtService) {
+  constructor(
+    private reflector: Reflector,
+    private jwtService: JwtService,
+    private readonly configService: ConfigService
+  ) {
     super();
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const bearerToken = this.getAuthToken(context, 'Bearer').replace(
-        'Bearer',
+        'Bearer ',
         ''
       );
-
       const tokenPayload = await this.jwtService.verifyAsync(bearerToken, {
-        secret: process.env.JWT_SECRET,
+        secret: this.configService.get<string>('jwt.secret'),
         ignoreExpiration: true
       });
 
