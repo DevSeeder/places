@@ -4,7 +4,7 @@ import { AbstractController } from '../../domain/controller/abstract-controller'
 import { ApiExcludeController } from '@nestjs/swagger';
 import { ReferenceResolution } from '../../domain/model/references/reference-resolution.model';
 import { ResolutionService } from '../../domain/service/resolution/resolution.service';
-import { JwtAuthGuard } from '../../domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../core/auth/jwt/jwt-auth.guard';
 import { EnumScopes } from '../../domain/enumerators/enum-scopes.enum';
 import { Scopes } from '../../domain/decorator/scopes.decorator';
 

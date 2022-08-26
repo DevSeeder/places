@@ -7,7 +7,7 @@ import { ResolutionController } from '../../../../../src/microservice/adapter/co
 import { ResolutionService } from '../../../../../src/microservice/domain/service/resolution/resolution.service';
 import { mockRefResolution } from '../../../../mock/models/reference/reference-resolution.mock';
 import { mockJwtGuard } from '../../../../mock/services/jwt/jwt-service.mock';
-import { JwtAuthGuard } from '../../../../../src/microservice/domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('ResolutionController', () => {
   let sut: ResolutionController;

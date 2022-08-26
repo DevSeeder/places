@@ -96,6 +96,30 @@ describe('ResolutionService', () => {
       logExecutionStub.restore();
     });
 
+    it('should call requestResolution and not call logSeedResolution', async () => {
+      const logExecutionStub = sinon
+        .stub(mockLogExecutionService, 'saveLogExecution')
+        .returns(null);
+      const mockGetLogSeedStub = sinon
+        .stub(mockGetLogSeedByIdService, 'getLogSeedById')
+        .returns(mockLogSeed());
+
+      const mockProcessStub = sinon
+        .stub(sut, 'processResolution')
+        .returns(false);
+
+      const mockLogSpy = sinon.spy(sut, 'processResolution');
+
+      await sut.requestResolution(mockRefResolution());
+
+      sinon.assert.notCalled(mockLogSpy);
+
+      mockGetLogSeedStub.restore();
+      mockLogSpy.restore();
+      logExecutionStub.restore();
+      mockProcessStub.restore();
+    });
+
     it('should call requestResolution correctly with empty logSeed and throws an error', async () => {
       const logExecutionStub = sinon
         .stub(mockLogExecutionService, 'saveLogExecution')

@@ -22,6 +22,14 @@ describe('ValidateCountryByNameOrAliasService', () => {
     return arr;
   };
 
+  const mockMongoCountriesNotImpl = () => {
+    const arr = [];
+    const item1 = new Country();
+    item1.id = 1;
+    arr.push(item1);
+    return arr;
+  };
+
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [],
@@ -50,6 +58,20 @@ describe('ValidateCountryByNameOrAliasService', () => {
         await sut.validateCountry('brasil');
       } catch (err) {
         expect(err.message).to.be.equal(`Invalid Country 'brasil'`);
+      }
+
+      getCountryStub.restore();
+    });
+
+    it('should call validateCountry and throws Country not supported!', async () => {
+      const getCountryStub = sinon
+        .stub(mockCountriesMongooseRepository, 'findByNameOrAliasOrId')
+        .returns(mockMongoCountriesNotImpl());
+
+      try {
+        await sut.validateCountry('brasil', true);
+      } catch (err) {
+        expect(err.message).to.be.equal(`Country not supported!`);
       }
 
       getCountryStub.restore();

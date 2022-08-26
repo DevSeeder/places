@@ -30,7 +30,7 @@ import {
   mockJwtGuard,
   mockJwtService
 } from '../../../../../mock/services/jwt/jwt-service.mock';
-import { JwtAuthGuard } from '../../../../../../src/microservice/domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('SeedRegionsModule', () => {
   let sut: RegionsController;

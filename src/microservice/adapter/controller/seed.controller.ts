@@ -15,7 +15,7 @@ import { AbstractController } from '../../domain/controller/abstract-controller'
 import { SenderMessageService } from '../../domain/service/amqp/sender-message.service';
 import { EventSeedByCityDTO } from '../../domain/model/dto/events/event-seed-by-city-dto.model';
 import { SeedNeighborhoodsByCountryService } from '../../domain/service/seed/neighborhoods/seed-neighborhoods-by-country.service';
-import { JwtAuthGuard } from '../../domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../core/auth/jwt/jwt-auth.guard';
 import { EnumScopes } from '../../domain/enumerators/enum-scopes.enum';
 import { Scopes } from '../../domain/decorator/scopes.decorator';
 

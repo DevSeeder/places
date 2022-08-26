@@ -4,7 +4,7 @@ import { RegionsByCountryService } from '../../domain/service/regions/regions-by
 import { NestResponse } from '../../../core/http/nest-response';
 import { AbstractController } from '../../domain/controller/abstract-controller';
 import { SearchRegionsDTO } from '../../domain/model/search/regions/search-regions-dto.model';
-import { JwtAuthGuard } from '../../domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../core/auth/jwt/jwt-auth.guard';
 import { EnumScopes } from '../../domain/enumerators/enum-scopes.enum';
 import { Scopes } from '../../domain/decorator/scopes.decorator';
 

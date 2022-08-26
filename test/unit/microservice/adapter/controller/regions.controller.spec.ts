@@ -9,7 +9,7 @@ import { RegionsByCountryService } from '../../../../../src/microservice/domain/
 import { mockFinderSeederService } from '../../../../mock/services/seed/finder-seed-service.mock';
 import { RegionsByCountry } from '../../../../../src/microservice/domain/model/regions/regions-by-country.model';
 import { mockJwtGuard } from '../../../../mock/services/jwt/jwt-service.mock';
-import { JwtAuthGuard } from '../../../../../src/microservice/domain/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('RegionsController', () => {
   let regionsController: RegionsController;

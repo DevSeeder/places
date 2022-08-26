@@ -76,6 +76,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return this.model.aggregate(aggregateParams);
   }
 
+  /* istanbul ignore next */
   async aggregateNotExists(
     from: string,
     joinFrom: string,

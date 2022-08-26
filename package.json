@@ -106,10 +106,7 @@
       "/src/main.ts",
       "/src/app.module.ts",
       "/src/config/database",
-      "/src/jwt/jwt-auth.guard.ts",
-      "/src/local/local-auth.guard.ts",
-      "/src/jwt/jwt.strategy.ts",
-      "/src/guard/abstract-guard.guard.ts"
+      "/src/core/auth/jwt/"
     ],
     "testEnvironment": "node"
   }

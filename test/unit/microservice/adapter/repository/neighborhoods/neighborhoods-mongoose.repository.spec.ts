@@ -211,4 +211,65 @@ describe('NeighborhoodsMongoose', () => {
       aggregateStub.restore();
     });
   });
+
+  describe('aggregate', () => {
+    const mockAggregatedParams = [
+      { $match: { stateId: 2014 } },
+      { $unwind: '$any' },
+      {
+        $group: {
+          cityId: '$cityId',
+          count: { $sum: 1 },
+          city: 'city'
+        }
+      }
+    ];
+
+    const mockAggregatedParamsDefaultParams = [
+      {
+        $group: {
+          cityId: '$cityId',
+          count: { $sum: 1 }
+        }
+      }
+    ];
+
+    it('should call aggregate and return an array and call aggregate with the correct params', async () => {
+      const mockGroup = { cityId: '$cityId' };
+
+      const aggregateStub = sinon
+        .stub(mockModelMongoose, 'aggregate')
+        .returns(mockAggregatedCities);
+
+      const match = { stateId: 2014 };
+      const select = { city: 'city' };
+
+      const actual = await sut.aggregate(mockGroup, match, select, 'any');
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      sinon.assert.calledOnceWithExactly(aggregateStub, mockAggregatedParams);
+
+      aggregateStub.restore();
+    });
+
+    it('should call aggregate with default params and return an array and call aggregate with the correct params', async () => {
+      const mockGroup = { cityId: '$cityId' };
+
+      const aggregateStub = sinon
+        .stub(mockModelMongoose, 'aggregate')
+        .returns(mockAggregatedCities2);
+
+      const actual = await sut.aggregate(mockGroup);
+
+      expect(actual).to.be.an('array').that.is.not.empty;
+
+      sinon.assert.calledOnceWithExactly(
+        aggregateStub,
+        mockAggregatedParamsDefaultParams
+      );
+
+      aggregateStub.restore();
+    });
+  });
 });

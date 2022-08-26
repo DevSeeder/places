@@ -22,6 +22,7 @@ export class MongooseHelper {
     return objSearchRegex;
   }
 
+  /* istanbul ignore next */
   static buildLookupAggregate(
     from: string,
     joinFrom: string,
@@ -55,6 +56,7 @@ export class MongooseHelper {
     };
   }
 
+  /* istanbul ignore next */
   static BuildMatchArrayLookup(match: any = {}) {
     if (Object.keys(match).length === 0) return [];
 

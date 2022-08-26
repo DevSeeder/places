@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
-import { EnumScopes } from '../enumerators/enum-scopes.enum';
+import { EnumScopes } from '../../../microservice/domain/enumerators/enum-scopes.enum';
 import { AbstractGuard } from './abstract-guard.guard';
 
 dotenv.config();
