@@ -108,7 +108,10 @@ describe('ResolutionService', () => {
         .stub(sut, 'processResolution')
         .returns(false);
 
-      const mockLogSpy = sinon.spy(sut, 'processResolution');
+      const mockLogSpy = sinon.spy(
+        mockLogSeedJobService,
+        'logProcessResolution'
+      );
 
       await sut.requestResolution(mockRefResolution());
 
