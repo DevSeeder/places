@@ -30,7 +30,7 @@ export abstract class PlacesMongooseRepository<
     return this.find(searchParams, select, sort);
   }
 
-  async updateById(id: number, data: any): Promise<void> {
-    return this.updateOne({ id }, data);
+  async updateById(id: number, data: any, pushData = {}): Promise<void> {
+    return this.updateOne({ id }, data, pushData);
   }
 }

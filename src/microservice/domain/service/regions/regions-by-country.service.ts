@@ -14,7 +14,7 @@ export class RegionsByCountryService
     SearchRegionsDTO,
     Country,
     RegionsByCountry,
-    string
+    RegionsByCountry
   >
   implements GetSeederService<SearchRegionsDTO, Country>
 {
@@ -29,6 +29,6 @@ export class RegionsByCountryService
   async validateAndConvertInput(
     searchParams: SearchRegionsDTO
   ): Promise<Country> {
-    return this.validateService.validateCountry(searchParams.country);
+    return this.validateService.validateCountry(searchParams.country, true);
   }
 }

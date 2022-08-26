@@ -14,11 +14,13 @@ import { PublishSeedNeighborhoodsByStateService } from '../../../domain/service/
 import { ProcessSeedNeighborhoodsByStateService } from '../../../domain/service/seed/neighborhoods/process/process-seed-neighborhoods-by-state.service';
 import { CountriesModule } from '../countries.module';
 import { StatesModule } from '../states.module';
+import { AuthModule } from '../auth.module';
 
 @Module({
   imports: [
     PuppeteerFeatureModule,
     AMQPModule,
+    AuthModule,
     LogSeedModule,
     CountriesModule,
     StatesModule,

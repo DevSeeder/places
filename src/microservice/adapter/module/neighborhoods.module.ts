@@ -13,6 +13,7 @@ import { CitiesModule } from './cities.module';
 import { SeedNeighborhoodsModule } from './seed/seed-neighborhoods.module';
 import { NeighborhoodsByCityService } from '../../domain/service/neighborhoods/neighborhoods-by-city.service';
 import { GetNeighborhoodsByCountryService } from '../../domain/service/neighborhoods/get/get-neighborhoods-by-country.service';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GetNeighborhoodsByCountryService } from '../../domain/service/neighborh
       { name: Neighborhood.name, schema: NeighborhoodSchema }
     ]),
     CitiesModule,
+    AuthModule,
     forwardRef(() => SeedNeighborhoodsModule)
   ],
   controllers: [NeighborhoodsController],

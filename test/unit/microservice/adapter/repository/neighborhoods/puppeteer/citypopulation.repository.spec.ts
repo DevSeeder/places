@@ -9,6 +9,8 @@ import * as cheerio from 'cheerio';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { CityPopulationRepository } from '../../../../../../../src/microservice/adapter/repository/regions/puppeteer/citypopulation.repository';
 import { SearchRegionsDTO } from '../../../../../../../src/microservice/domain/model/search/regions/search-regions-dto.model';
+import { PuppeteerService } from '../../../../../../../src/microservice/domain/service/puppeteer/puppeteer.service';
+import { mockPuppeteerService } from '../../../../../../mock/services/puppeteer/puppeteer-service.mock';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -55,6 +57,10 @@ describe('CityPopulationRepository', () => {
               return 'any_url';
             }
           }
+        },
+        {
+          provide: PuppeteerService,
+          useValue: mockPuppeteerService
         }
       ]
     }).compile();
@@ -69,8 +75,9 @@ describe('CityPopulationRepository', () => {
   describe('getElements', () => {
     it('should call getElements and return an array', async () => {
       const mockSearchParams = new SearchRegionsDTO('brazil');
-      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
+      const getDataHtmlStub = sinon
+        .stub(mockPuppeteerService, 'tryCollectData')
+        .returns(mockHTML);
       const goToStatesStub = sinon
         .stub(sut, 'goToRegionAndGetStates')
         .returns(['any']);
@@ -82,7 +89,6 @@ describe('CityPopulationRepository', () => {
       expect(actual[0].states[0]).to.be.equal('any');
 
       getDataHtmlStub.restore();
-      goToUrlStub.restore();
       goToStatesStub.restore();
     });
   });
@@ -90,9 +96,8 @@ describe('CityPopulationRepository', () => {
   describe('goToRegionAndGetStates', () => {
     it('should call goToRegionAndGetStates and return an array', async () => {
       const getDataHtmlStub = sinon
-        .stub(sut, 'getDataHtml')
+        .stub(mockPuppeteerService, 'tryCollectData')
         .returns(mockHTMLStates);
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
       const actual = await sut.goToRegionAndGetStates('any_url');
 
@@ -102,15 +107,15 @@ describe('CityPopulationRepository', () => {
       expect(actual[2]).to.be.equal('Santa Catarina');
 
       getDataHtmlStub.restore();
-      goToUrlStub.restore();
     });
   });
 
   describe('getRegionsByCountry', () => {
     it('should call getRegionsByCountry and return an array', async () => {
       const mockSearchParams = new SearchRegionsDTO('brazil');
-      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
+      const getDataHtmlStub = sinon
+        .stub(mockPuppeteerService, 'tryCollectData')
+        .returns(mockHTML);
       const goToStatesStub = sinon
         .stub(sut, 'goToRegionAndGetStates')
         .returns(['any']);
@@ -125,7 +130,6 @@ describe('CityPopulationRepository', () => {
       expect(actual[0].states[0]).to.be.equal('any');
 
       getDataHtmlStub.restore();
-      goToUrlStub.restore();
       goToStatesStub.restore();
     });
   });
@@ -133,9 +137,10 @@ describe('CityPopulationRepository', () => {
   describe('callEndpoint', () => {
     it('should call callEndpoint and call getDocumentHtml with the correct params', async () => {
       const mockSearchParams = new SearchRegionsDTO('brazil');
-      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
+      const getDataHtmlStub = sinon
+        .stub(mockPuppeteerService, 'tryCollectData')
+        .returns(mockHTML);
       const getDocumentHtmlspy = sinon.spy(sut, 'getDocumentHtml');
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
       const actual = await sut.callEndpoint(mockSearchParams, mockCountry);
 
@@ -150,7 +155,6 @@ describe('CityPopulationRepository', () => {
 
       getDataHtmlStub.restore();
       getDocumentHtmlspy.restore();
-      goToUrlStub.restore();
     });
   });
 

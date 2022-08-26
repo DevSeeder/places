@@ -26,12 +26,21 @@ describe('UpdateCityByIdService', () => {
 
   describe('updateCityById', () => {
     it('should call updateCityById and call mongoose updateById', async () => {
-      const deleteStub = sinon.stub(mockModelMongoose, 'updateById');
+      const updateStub = sinon.stub(mockModelMongoose, 'updateById');
+      await sut.updateCityById(1, {}, { $push: 'any' });
+
+      sinon.assert.calledOnceWithExactly(updateStub, 1, {}, { $push: 'any' });
+
+      updateStub.restore();
+    });
+
+    it('should call updateCityById and call mongoose updateById default push', async () => {
+      const updateStub = sinon.stub(mockModelMongoose, 'updateById');
       await sut.updateCityById(1, {});
 
-      sinon.assert.calledOnceWithExactly(deleteStub, 1, {});
+      sinon.assert.calledOnceWithExactly(updateStub, 1, {}, {});
 
-      deleteStub.restore();
+      updateStub.restore();
     });
   });
 });

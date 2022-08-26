@@ -15,17 +15,33 @@ describe('GetRegionsByCountryService', () => {
     },
     groupBy: () => {
       return [];
+    },
+    aggregate: () => {
+      return [];
     }
   };
 
   const mockAggregatedRegions = [
     {
-      _id: { region: 'South' },
-      count: 3
+      _id: 'South',
+      count: 3,
+      States: ['RS', 'SC', 'PR']
     },
     {
-      _id: { region: 'North' },
-      count: 7
+      _id: 'North',
+      count: 7,
+      States: ['any_state1', 'any_state2']
+    }
+  ];
+
+  const mockResponse = [
+    {
+      name: 'South',
+      states: ['RS', 'SC', 'PR']
+    },
+    {
+      name: 'North',
+      states: ['any_state1', 'any_state2']
     }
   ];
 
@@ -48,14 +64,12 @@ describe('GetRegionsByCountryService', () => {
   describe('searchInDatabase', () => {
     it('should call searchInDatabase and return an array', async () => {
       const groupByStub = sinon
-        .stub(mockMongooseRepository, 'groupBy')
+        .stub(mockMongooseRepository, 'aggregate')
         .returns(mockAggregatedRegions);
 
       const actual = await sut.searchInDatabase(new Country());
 
-      expect(JSON.stringify(actual)).to.be.equal(
-        JSON.stringify(['North', 'South'])
-      );
+      expect(JSON.stringify(actual)).to.be.equal(JSON.stringify(mockResponse));
 
       groupByStub.restore();
     });

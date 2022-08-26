@@ -8,7 +8,7 @@ export class UpdateCityByIdService extends CitiesService {
     super(mongoRepository);
   }
 
-  async updateCityById(id: number, data: any): Promise<void> {
-    return this.mongoRepository.updateById(id, data);
+  async updateCityById(id: number, data: any, pushData = {}): Promise<void> {
+    return this.mongoRepository.updateById(id, data, pushData);
   }
 }

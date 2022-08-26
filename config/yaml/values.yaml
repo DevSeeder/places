@@ -39,8 +39,11 @@ microservices:
           by:
             city: 'channel-seed-neighborhoods-by-city'
             state: 'channel-seed-neighborhoods-by-state'
+auth:
+  jwt:
+    secret: ${JWT_SECRET}
 api:
-  port: 3000
+  port: ${API_PORT}
 doc:
   version: 0.0.7
   name: 'places'

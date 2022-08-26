@@ -23,7 +23,10 @@ export class GetNeighborhoodsByStateService extends NeighborhoodsService {
     searchParams: SearchNeighborhoodsDTO
   ): Promise<NeighborhoodsByState> {
     const convertedSearch =
-      await this.validateService.validateAndConvertSearchByState(searchParams);
+      await this.validateService.validateAndConvertSearchByState(
+        searchParams,
+        true
+      );
 
     return this.findNeighborhoodsByStateInDatabase(convertedSearch);
   }

@@ -13,6 +13,8 @@ import { SeedNeighborhoodsModule } from './microservice/adapter/module/seed/seed
 import { StatesModule } from './microservice/adapter/module/states.module';
 import { ResolutionsModule } from './microservice/adapter/module/resolution.module';
 import { SeedRegionsModule } from './microservice/adapter/module/seed/seed-regions.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,6 +31,14 @@ import { SeedRegionsModule } from './microservice/adapter/module/seed/seed-regio
         uri: config.get<string>('database.mongodb.connection')
       })
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        secret: config.get<string>('auth.jwt.secret')
+      })
+    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     NeighborhoodsModule,
     CitiesModule,
     StatesModule,

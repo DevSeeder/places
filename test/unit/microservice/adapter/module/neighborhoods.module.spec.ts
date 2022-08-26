@@ -15,6 +15,15 @@ import { StatesMongoose } from '../../../../../src/microservice/adapter/reposito
 import { CitiesMongoose } from '../../../../../src/microservice/adapter/repository/cities/cities-mongoose.repository';
 import { LogSeed } from '../../../../../src/microservice/domain/schemas/logseed.schema';
 import { LogSeedMongoose } from '../../../../../src/microservice/adapter/repository/logseed/logseed-mongoose.repository';
+import { PuppeteerService } from '../../../../../src/microservice/domain/service/puppeteer/puppeteer.service';
+import { mockPuppeteerService } from '../../../../mock/services/puppeteer/puppeteer-service.mock';
+import { JwtService } from '@nestjs/jwt';
+import {
+  mockJwtGuard,
+  mockJwtService
+} from '../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../src/core/auth/jwt/jwt-auth.guard';
+
 import {
   AmqpConnection,
   AmqpConnectionManager
@@ -88,6 +97,12 @@ describe('NeighborhoodsModule', () => {
       .useValue(mockAmqpConnectionManager)
       .overrideProvider(AmqpConnection)
       .useValue(mockAmqpConnection)
+      .overrideProvider(PuppeteerService)
+      .useValue(mockPuppeteerService)
+      .overrideProvider(JwtService)
+      .useValue(mockJwtService)
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
       .compile();
     sut = app.get<NeighborhoodsController>(NeighborhoodsController);
   });

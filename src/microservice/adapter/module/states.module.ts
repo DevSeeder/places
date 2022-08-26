@@ -8,11 +8,13 @@ import { StatesController } from '../controller/states.controller';
 import { CountriesModule } from './countries.module';
 import { ValidateCountryByNameOrAliasService } from '../../domain/service/countries/validate-country-by-name-or-alias.service';
 import { UpdateStatesByRegionService } from '../../domain/service/states/update-states-by-region.service';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: State.name, schema: StateSchema }]),
-    CountriesModule
+    CountriesModule,
+    AuthModule
   ],
   controllers: [StatesController],
   providers: [

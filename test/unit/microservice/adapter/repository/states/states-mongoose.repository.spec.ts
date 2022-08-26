@@ -82,7 +82,7 @@ describe('StatesMongoose', () => {
       await sut.updateById(null, {});
 
       sinon.assert.calledOnce(mongooseStub);
-      sinon.assert.calledOnceWithExactly(updateSpy, { id: null }, {});
+      sinon.assert.calledOnceWithExactly(updateSpy, { id: null }, {}, {});
 
       mongooseStub.restore();
       updateSpy.restore();

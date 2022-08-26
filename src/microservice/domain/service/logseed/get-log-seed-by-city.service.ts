@@ -11,12 +11,14 @@ export class GetLogSeedByCityService extends LogSeedService {
 
   async getLogSeedByCity(
     id: number,
-    errorRef: string,
+    errorRef: string[],
     processed = false
   ): Promise<LogSeed[]> {
     return this.mongoRepository.find({
       'reference.cityId': id,
-      'error.name': errorRef,
+      'error.name': {
+        $in: errorRef
+      },
       processed
     });
   }

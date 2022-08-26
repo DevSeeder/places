@@ -23,6 +23,14 @@ import {
 } from '../../../../../mock/amqp/aqmp-conneciton.mock';
 import { SeedRegionsModule } from '../../../../../../src/microservice/adapter/module/seed/seed-regions.module';
 import { RegionsController } from '../../../../../../src/microservice/adapter/controller/regions.controller';
+import { PuppeteerService } from '../../../../../../src/microservice/domain/service/puppeteer/puppeteer.service';
+import { mockPuppeteerService } from '../../../../../mock/services/puppeteer/puppeteer-service.mock';
+import { JwtService } from '@nestjs/jwt';
+import {
+  mockJwtGuard,
+  mockJwtService
+} from '../../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('SeedRegionsModule', () => {
   let sut: RegionsController;
@@ -88,6 +96,12 @@ describe('SeedRegionsModule', () => {
       .useValue(mockAmqpConnectionManager)
       .overrideProvider(AmqpConnection)
       .useValue(mockAmqpConnection)
+      .overrideProvider(PuppeteerService)
+      .useValue(mockPuppeteerService)
+      .overrideProvider(JwtService)
+      .useValue(mockJwtService)
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
       .compile();
     sut = app.get<RegionsController>(RegionsController);
   });

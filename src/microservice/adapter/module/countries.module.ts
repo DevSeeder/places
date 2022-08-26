@@ -5,10 +5,12 @@ import { CountriesMongoose } from '../repository/countries/countries-mongoose.re
 import { CountriesController } from '../controller/countries.controller';
 import { GetCountriesService } from '../../domain/service/countries/get-countries.service';
 import { ValidateCountryByNameOrAliasService } from '../../domain/service/countries/validate-country-by-name-or-alias.service';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }])
+    MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }]),
+    AuthModule
   ],
   controllers: [CountriesController],
   providers: [

@@ -6,6 +6,8 @@ import { ExtensionsModule } from '../../../../../src/microservice/adapter/helper
 import { ResolutionController } from '../../../../../src/microservice/adapter/controller/resolutions.controller';
 import { ResolutionService } from '../../../../../src/microservice/domain/service/resolution/resolution.service';
 import { mockRefResolution } from '../../../../mock/models/reference/reference-resolution.mock';
+import { mockJwtGuard } from '../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('ResolutionController', () => {
   let sut: ResolutionController;
@@ -32,7 +34,10 @@ describe('ResolutionController', () => {
           useFactory: () => mockResolutionService
         }
       ]
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
+      .compile();
 
     sut = app.get<ResolutionController>(ResolutionController);
   });

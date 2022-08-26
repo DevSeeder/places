@@ -5,9 +5,10 @@ import { StatesModule } from '../states.module';
 import { RegionsController } from '../../controller/regions.controller';
 import { GetRegionsByCountryService } from '../../../domain/service/regions/get-regions-by-country.service';
 import { RegionsByCountryService } from '../../../domain/service/regions/regions-by-country.service';
+import { AuthModule } from '../auth.module';
 
 @Module({
-  imports: [PuppeteerFeatureModule, StatesModule],
+  imports: [PuppeteerFeatureModule, StatesModule, AuthModule],
   controllers: [RegionsController],
   providers: [
     SeedRegionsByCountryService,
