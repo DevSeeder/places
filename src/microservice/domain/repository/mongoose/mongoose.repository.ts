@@ -99,7 +99,6 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
         likes: false
       }
     });
-    console.log(JSON.stringify(aggregateParams));
     return this.model.aggregate(aggregateParams);
   }
 
@@ -124,10 +123,10 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return res;
   }
 
-  async updateOne(query: any, data: any): Promise<void> {
+  async updateOne(query: any, data: any, pushData = {}): Promise<void> {
     this.model.findOneAndUpdate(
       query,
-      { $set: data },
+      { $set: data, ...pushData },
       { upsert: false },
       function (err: MongoError) {
         if (err) throw new MongoDBException(err.message, err.code);
@@ -136,7 +135,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async deleteOneById(id: string | number): Promise<void> {
-    this.model.deleteOne({ id });
+    await this.model.deleteOne({ id });
   }
 
   async find(

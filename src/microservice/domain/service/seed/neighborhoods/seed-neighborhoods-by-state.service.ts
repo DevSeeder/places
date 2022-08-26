@@ -69,7 +69,7 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
   async validateLogSeedErrors(city: City): Promise<boolean> {
     const arrLogs = await this.getLogSeedByCityService.getLogSeedByCity(
       city.id,
-      'NotFoundException'
+      ['NotFoundException', 'InvalidDataException']
     );
 
     const isValid = arrLogs.length === 0;

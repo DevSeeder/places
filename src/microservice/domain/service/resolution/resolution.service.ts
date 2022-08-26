@@ -73,7 +73,13 @@ export class ResolutionService extends AbstractService {
       );
     }
 
-    await this.processResolution(logSeed, resolution, idLogExecution);
+    const resultProccess = await this.processResolution(
+      logSeed,
+      resolution,
+      idLogExecution
+    );
+
+    if (!resultProccess) return;
 
     await this.logSeedService.logProcessResolution(
       resolution.idLogSeed,
@@ -85,7 +91,7 @@ export class ResolutionService extends AbstractService {
     logSeed: LogSeed,
     resolution: ReferenceResolution,
     idLogExecution: MongooseDocumentID
-  ): Promise<void> {
+  ): Promise<boolean> {
     this.logger.log('Processing resolution...');
 
     const processService = `process${resolution.type}Service`;
@@ -99,5 +105,7 @@ export class ResolutionService extends AbstractService {
     }
 
     this.logger.log(`Resolution Finished...`);
+
+    return this.hasOwnProperty(processService);
   }
 }
