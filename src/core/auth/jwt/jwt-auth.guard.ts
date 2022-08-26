@@ -17,8 +17,8 @@ dotenv.config();
 @Injectable()
 export class JwtAuthGuard extends AbstractGuard {
   constructor(
-    private reflector: Reflector,
-    private jwtService: JwtService,
+    private readonly reflector: Reflector,
+    private readonly jwtService: JwtService,
     private readonly configService: ConfigService
   ) {
     super();

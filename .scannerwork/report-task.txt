@@ -1,7 +1,7 @@
 organization=dev-seeder
 projectKey=maick05_places
 serverUrl=https://sonarcloud.io
-serverVersion=8.0.0.29264
+serverVersion=8.0.0.31337
 dashboardUrl=https://sonarcloud.io/dashboard?id=maick05_places
-ceTaskId=AYEShHKEx7rM3OF9_Y2O
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AYEShHKEx7rM3OF9_Y2O
+ceTaskId=AYLbT06b3I3q_WNQcvco
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AYLbT06b3I3q_WNQcvco

@@ -85,17 +85,17 @@ After run the server, make a get in browser, postman or similar
 
 ```bash
 ## Neighborhoods By City example
-[url-prod]/neighborhoods/city/brazil/sc/orleans
+http://places.devseeder.com/api/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
-[url-prod]/neighborhoods/city/brazil/sc
+http://places.devseeder.com/api/neighborhoods/city/brazil/sc
 ## Cities By State example
-[url-prod]/cities/brazil/sc
+http://places.devseeder.com/api/cities/brazil/sc
 ## Cities By Country example
-[url-prod]/cities/brazil
+http://places.devseeder.com/api/cities/brazil
 ## States By Country example
-[url-prod]/states/brazil
+http://places.devseeder.com/api/states/brazil
 ## Countries example
-[url-prod]/countries/
+http://places.devseeder.com/api/countries/
 ```
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/)

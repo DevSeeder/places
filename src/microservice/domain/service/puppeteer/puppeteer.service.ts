@@ -25,7 +25,7 @@ export class PuppeteerService extends AbstractService {
 
   private async collectData(page: Page, url: string) {
     try {
-      await await page.goto(url, {
+      await page.goto(url, {
         waitUntil: 'networkidle0'
       });
       return page.evaluate(() => {
@@ -63,8 +63,9 @@ export class PuppeteerService extends AbstractService {
     return data;
   }
 
-  async executeCluster(cluster: Cluster<any, any>, url: string) {
-    await cluster.task(async ({ page, data: url }) => {
+  async executeCluster(cluster: Cluster<any>, url: string) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    await cluster.task(async ({ page, data: _urlData }) => {
       let data: string | boolean = false;
       let i = 0;
       while (!data && i < RETRY_TIMES) {

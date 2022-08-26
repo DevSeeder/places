@@ -67,7 +67,7 @@ All notable changes to this project will be documented in this file.
 - Seed Regions By Puppeteer
 - Seed Neighborhoods By State Queue
 
-## [0.0.8] - 2022-08-25
+## [0.0.8] - 2022-08-26
 
 ### Added
 
