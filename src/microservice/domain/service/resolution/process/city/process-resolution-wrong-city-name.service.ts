@@ -32,9 +32,17 @@ export class ProcessResolutionWrongCityNameService
       `Updating City Name '${reference.cityName}' to '${resolution.dataResolution}'...`
     );
 
-    await this.updateCityService.updateCityById(reference.cityId, {
-      name: resolution.dataResolution
-    });
+    await this.updateCityService.updateCityById(
+      reference.cityId,
+      {
+        name: resolution.dataResolution
+      },
+      {
+        $push: {
+          alias: resolution.dataResolution
+        }
+      }
+    );
 
     await super.process(logSeed, resolution, idLogExecution);
   }

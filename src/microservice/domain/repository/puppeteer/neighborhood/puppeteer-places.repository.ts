@@ -3,7 +3,7 @@ import { PuppeteerRepository } from '../puppeteer.repository';
 import { NotFoundException } from '../../../../../core/error-handling/exception/not-found.exception';
 import { EnumTranslations } from '../../../enumerators/enum-translations.enumerator';
 import { DTO } from '../../../../domain/model/dto.model';
-import { Page } from '../../../../domain/interface/puppeteer/page.interface';
+import { PuppeteerService } from '../../../../domain/service/puppeteer/puppeteer.service';
 
 export abstract class PuppeteerPlacesRepository<
   ElementPlace,
@@ -14,10 +14,10 @@ export abstract class PuppeteerPlacesRepository<
 
   constructor(
     protected url: string,
-    protected readonly page: Page,
+    protected puppeteerService: PuppeteerService,
     protected readonly elementName: string
   ) {
-    super(url, page);
+    super(puppeteerService);
   }
 
   async getElements(
@@ -27,7 +27,7 @@ export abstract class PuppeteerPlacesRepository<
     this.validateInput(searchParams);
 
     const $ = await this.callEndpoint(searchParams, convertedSearch);
-    const elements = this.buildElementsFromDocument(
+    const elements = await this.buildElementsFromDocument(
       searchParams,
       convertedSearch,
       $
@@ -46,7 +46,7 @@ export abstract class PuppeteerPlacesRepository<
     _searchParams: SearchElement,
     convertedSearch: ValidOutputSearch,
     _$: CheerioAPI
-  );
+  ): Promise<ElementPlace[]>;
 
   abstract callEndpoint(
     _searchParams: SearchElement,

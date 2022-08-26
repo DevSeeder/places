@@ -26,7 +26,10 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
     searchParams: SearchNeighborhoodsDTO
   ): Promise<CustomResponse> {
     const convertedSearch =
-      await this.validateService.validateAndConvertSearchByState(searchParams);
+      await this.validateService.validateAndConvertSearchByState(
+        searchParams,
+        true
+      );
 
     const arrSeededCities = await this.getSeededCities(
       convertedSearch.state.id
@@ -66,7 +69,7 @@ export class SeedNeighborhoodsByStateService extends SeedNeighborhoodsService {
   async validateLogSeedErrors(city: City): Promise<boolean> {
     const arrLogs = await this.getLogSeedByCityService.getLogSeedByCity(
       city.id,
-      'NotFoundException'
+      ['NotFoundException', 'InvalidDataException']
     );
 
     const isValid = arrLogs.length === 0;

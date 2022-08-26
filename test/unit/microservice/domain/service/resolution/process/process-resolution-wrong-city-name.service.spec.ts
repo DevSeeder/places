@@ -43,9 +43,14 @@ describe('ProcessResolutionWrongCityNameService', () => {
 
       await sut.process(mockLogSeed(), mockRefResolution(), null);
 
-      sinon.assert.calledOnceWithExactly(processActionSpy, 5, {
-        name: 'any'
-      });
+      sinon.assert.calledOnceWithExactly(
+        processActionSpy,
+        5,
+        {
+          name: 'any'
+        },
+        { $push: { alias: 'any' } }
+      );
 
       processActionSpy.restore();
     });

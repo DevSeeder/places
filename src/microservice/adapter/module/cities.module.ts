@@ -10,11 +10,13 @@ import { GetCitiesByCountryService } from '../../domain/service/cities/get/get-c
 import { StatesModule } from './states.module';
 import { DeleteCityByIdService } from '../../domain/service/cities/delete-city-by-id.service';
 import { UpdateCityByIdService } from '../../domain/service/cities/update-city-by-id.service';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: City.name, schema: CitySchema }]),
-    StatesModule
+    StatesModule,
+    AuthModule
   ],
   controllers: [CitiesController],
   providers: [
@@ -30,6 +32,7 @@ import { UpdateCityByIdService } from '../../domain/service/cities/update-city-b
     CitiesMongoose,
     ValidateInputParamsService,
     GetCitiesByStateService,
+    GetCitiesByCountryService,
     DeleteCityByIdService,
     UpdateCityByIdService
   ]

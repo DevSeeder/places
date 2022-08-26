@@ -54,6 +54,55 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return this.model.aggregate(aggregateParams);
   }
 
+  async aggregate(
+    group: any,
+    match = {},
+    select = {},
+    unwind = ''
+  ): Promise<any[]> {
+    const aggregateParams = [];
+
+    if (Object.keys(match).length > 0) aggregateParams.push({ $match: match });
+
+    if (unwind.length > 0) aggregateParams.push({ $unwind: `\$${unwind}` });
+
+    aggregateParams.push({
+      $group: {
+        ...group,
+        count: { $sum: 1 },
+        ...select
+      }
+    });
+    return this.model.aggregate(aggregateParams);
+  }
+
+  /* istanbul ignore next */
+  async aggregateNotExists(
+    from: string,
+    joinFrom: string,
+    joinLet: string,
+    match: any = {}
+  ): Promise<any[]> {
+    const aggregateParams = [];
+
+    aggregateParams.push(
+      MongooseHelper.buildLookupAggregate(from, joinFrom, joinLet, match)
+    );
+
+    const matchParam = {};
+    matchParam[`aggElement.${joinFrom}`] = { $exists: false };
+
+    if (Object.keys(match).length > 0)
+      aggregateParams.push({ $match: { ...matchParam, ...match } });
+
+    aggregateParams.push({
+      $project: {
+        likes: false
+      }
+    });
+    return this.model.aggregate(aggregateParams);
+  }
+
   async findAll(select: object = {}): Promise<any[]> {
     if (Object.keys(select).length === 0) select = { _id: 0 };
     return this.model.find({}).select(select).lean().exec();
@@ -75,10 +124,10 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
     return res;
   }
 
-  async updateOne(query: any, data: any): Promise<void> {
+  async updateOne(query: any, data: any, pushData = {}): Promise<void> {
     this.model.findOneAndUpdate(
       query,
-      { $set: data },
+      { $set: data, ...pushData },
       { upsert: false },
       function (err: MongoError) {
         if (err) throw new MongoDBException(err.message, err.code);
@@ -87,7 +136,7 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
   }
 
   async deleteOneById(id: string | number): Promise<void> {
-    this.model.deleteOne({ id });
+    await this.model.deleteOne({ id });
   }
 
   async find(

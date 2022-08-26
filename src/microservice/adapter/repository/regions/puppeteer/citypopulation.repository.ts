@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CheerioAPI } from 'cheerio';
-import { InjectPage } from 'nest-puppeteer';
-import { Page } from '../../../../domain/interface/puppeteer/page.interface';
 import { IPuppeteerRepository } from '../../../../domain/interface/puppeteer/repository/puppeteer-repository.interface';
 import { SearchRegionsDTO } from '../../../../domain/model/search/regions/search-regions-dto.model';
 import { RegionsByCountry } from '../../../../domain/model/regions/regions-by-country.model';
 import { Country } from '../../../../domain/schemas/country.schema';
 import { PuppeteerPlacesRepository } from '../../../../domain/repository/puppeteer/neighborhood/puppeteer-places.repository';
+import { PuppeteerService } from '../../../../domain/service/puppeteer/puppeteer.service';
 
 @Injectable()
 export class CityPopulationRepository
@@ -16,11 +15,11 @@ export class CityPopulationRepository
 {
   constructor(
     protected configService: ConfigService,
-    @InjectPage() protected readonly page: Page
+    protected puppeteerService: PuppeteerService
   ) {
     super(
       configService.get<string>('repository.regions.citypopulation.url'),
-      page,
+      puppeteerService,
       'Regions'
     );
   }

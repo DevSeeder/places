@@ -4,6 +4,7 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
+[url-prod]: http://places.devseeder.com/api
 
   <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
@@ -14,6 +15,8 @@
   <li>NodeJS</li>
   <li>Puppeteer</li>
   <li>MongoDB</li>
+  <li>RabbitMQ</li>
+  <li>JWT Auth</li>
 </ul>
 
 ## Description
@@ -23,6 +26,7 @@ API to get Places by Local Names.
 - Neighborhoods
 - Cities
 - States
+- Regions
 - Countries
 
 ## Installation
@@ -81,19 +85,19 @@ After run the server, make a get in browser, postman or similar
 
 ```bash
 ## Neighborhoods By City example
-http://localhost:3000/neighborhoods/city/brazil/sc/orleans
+http://places.devseeder.com/api/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
-http://localhost:3000/neighborhoods/city/brazil/sc
+http://places.devseeder.com/api/neighborhoods/city/brazil/sc
 ## Cities By State example
-http://localhost:3000/cities/brazil/sc
+http://places.devseeder.com/api/cities/brazil/sc
 ## Cities By Country example
-http://localhost:3000/cities/brazil
+http://places.devseeder.com/api/cities/brazil
 ## States By Country example
-http://localhost:3000/states/brazil
+http://places.devseeder.com/api/states/brazil
 ## Countries example
-http://localhost:3000/countries/
+http://places.devseeder.com/api/countries/
 ```
 
 [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/)
 
-At the moment, it's working only for Brazilians places.
+At the moment, it's working only for Brazilians Neighborhoods.

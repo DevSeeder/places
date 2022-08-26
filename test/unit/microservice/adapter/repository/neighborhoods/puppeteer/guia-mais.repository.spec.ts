@@ -11,6 +11,8 @@ import * as cheerio from 'cheerio';
 import { Country } from '../../../../../../../src/microservice/domain/schemas/country.schema';
 import { State } from '../../../../../../../src/microservice/domain/schemas/state.schema';
 import { City } from '../../../../../../../src/microservice/domain/schemas/city.schema';
+import { PuppeteerService } from '../../../../../../../src/microservice/domain/service/puppeteer/puppeteer.service';
+import { mockPuppeteerService } from '../../../../../../mock/services/puppeteer/puppeteer-service.mock';
 
 jest.useFakeTimers();
 jest.setTimeout(50000);
@@ -61,6 +63,10 @@ describe('GuiaMaisRepository', () => {
               return 'any_url';
             }
           }
+        },
+        {
+          provide: PuppeteerService,
+          useValue: mockPuppeteerService
         }
       ]
     }).compile();
@@ -79,8 +85,9 @@ describe('GuiaMaisRepository', () => {
         'sc',
         'orleans'
       );
-      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
+      const getDataHtmlStub = sinon
+        .stub(mockPuppeteerService, 'tryCollectData')
+        .returns(mockHTML);
 
       const actual = await sut.getElements(
         mockSearchParams,
@@ -92,7 +99,6 @@ describe('GuiaMaisRepository', () => {
       expect(actual[0].name).to.be.equal('6 Marias');
 
       getDataHtmlStub.restore();
-      goToUrlStub.restore();
     });
   });
 
@@ -103,9 +109,11 @@ describe('GuiaMaisRepository', () => {
         'sc',
         'orleans'
       );
-      const getDataHtmlStub = sinon.stub(sut, 'getDataHtml').returns(mockHTML);
+      const getDataHtmlStub = sinon
+        .stub(mockPuppeteerService, 'tryCollectData')
+        .returns(mockHTML);
+
       const getDocumentHtmlspy = sinon.spy(sut, 'getDocumentHtml');
-      const goToUrlStub = sinon.stub(sut, 'goToUrl').returns();
 
       const actual = await sut.callEndpoint(mockSearchParams);
 
@@ -120,7 +128,6 @@ describe('GuiaMaisRepository', () => {
 
       getDataHtmlStub.restore();
       getDocumentHtmlspy.restore();
-      goToUrlStub.restore();
     });
   });
 

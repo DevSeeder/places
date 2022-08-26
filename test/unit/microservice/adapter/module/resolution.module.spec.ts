@@ -25,6 +25,14 @@ import { ResolutionController } from '../../../../../src/microservice/adapter/co
 import { ResolutionsModule } from '../../../../../src/microservice/adapter/module/resolution.module';
 import { LogExecution } from '../../../../../src/microservice/domain/schemas/logexecution.schema';
 import { LogAction } from '../../../../../src/microservice/domain/schemas/logaction.schema';
+import { PuppeteerService } from '../../../../../src/microservice/domain/service/puppeteer/puppeteer.service';
+import { mockPuppeteerService } from '../../../../mock/services/puppeteer/puppeteer-service.mock';
+import { JwtService } from '@nestjs/jwt';
+import {
+  mockJwtGuard,
+  mockJwtService
+} from '../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../src/core/auth/jwt/jwt-auth.guard';
 
 describe('ResolutionModule', () => {
   let sut: ResolutionController;
@@ -94,6 +102,12 @@ describe('ResolutionModule', () => {
       .useValue(mockAmqpConnectionManager)
       .overrideProvider(AmqpConnection)
       .useValue(mockAmqpConnection)
+      .overrideProvider(PuppeteerService)
+      .useValue(mockPuppeteerService)
+      .overrideProvider(JwtService)
+      .useValue(mockJwtService)
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
       .compile();
     sut = app.get<ResolutionController>(ResolutionController);
   });
