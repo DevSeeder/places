@@ -75,7 +75,7 @@ describe('GetLogSeedByCityService', () => {
         .stub(mockMongooseRepository, 'find')
         .returns([mockLogSeed()]);
 
-      const actual = await sut.getLogSeedByCity(1, 'any');
+      const actual = await sut.getLogSeedByCity(1, ['any']);
 
       expect(actual[0].reference).to.be.equal(mockLogSeed().reference);
 

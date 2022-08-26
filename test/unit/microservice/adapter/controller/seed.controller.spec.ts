@@ -13,6 +13,8 @@ import { SeedNeighborhoodsByCountryService } from '../../../../../src/microservi
 import { mockSeedNeighborhoodsByCountryService } from '../../../../mock/services/seed/seed-neighborhoods-service.mock';
 import { GetLogSeedByCityService } from '../../../../../src/microservice/domain/service/logseed/get-log-seed-by-city.service';
 import { mockGetLogSeedByCityService } from '../../../../mock/services/logseed/log-seed-service.mock';
+import { mockJwtGuard } from '../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../src/microservice/domain/jwt/jwt-auth.guard';
 
 describe('SeedController', () => {
   let sut: SeedController;
@@ -51,7 +53,10 @@ describe('SeedController', () => {
           useFactory: () => mockGetLogSeedByCityService
         }
       ]
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
+      .compile();
 
     sut = app.get<SeedController>(SeedController);
   });

@@ -8,6 +8,8 @@ import { RegionsController } from '../../../../../src/microservice/adapter/contr
 import { RegionsByCountryService } from '../../../../../src/microservice/domain/service/regions/regions-by-country.service';
 import { mockFinderSeederService } from '../../../../mock/services/seed/finder-seed-service.mock';
 import { RegionsByCountry } from '../../../../../src/microservice/domain/model/regions/regions-by-country.model';
+import { mockJwtGuard } from '../../../../mock/services/jwt/jwt-service.mock';
+import { JwtAuthGuard } from '../../../../../src/microservice/domain/jwt/jwt-auth.guard';
 
 describe('RegionsController', () => {
   let regionsController: RegionsController;
@@ -37,7 +39,10 @@ describe('RegionsController', () => {
           useFactory: () => mockFinderSeederService
         }
       ]
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue(mockJwtGuard)
+      .compile();
 
     regionsController = app.get<RegionsController>(RegionsController);
   });
