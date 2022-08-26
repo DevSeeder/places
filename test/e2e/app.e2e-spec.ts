@@ -1,5 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import supertest from 'supertest';
 import { expect } from 'chai';
 import { AppModule } from '../../src/app.module';
 import { NestFactory } from '@nestjs/core';
@@ -35,7 +35,7 @@ describe('App (e2e) ', () => {
 
   describe('Neighborhood (e2e) ', () => {
     it('/neighborhoods/city/brasil/sc/orleans (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
+      const actual = await supertest(app.getHttpServer()).get(
         '/neighborhoods/city/brasil/sc/orleans'
       );
 
@@ -43,7 +43,7 @@ describe('App (e2e) ', () => {
     });
 
     it('/neighborhoods/state/brasil/sc (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
+      const actual = await supertest(app.getHttpServer()).get(
         '/neighborhoods/state/brasil/sc'
       );
       expect(actual.body).to.be.an('object').that.is.not.empty;
@@ -53,7 +53,7 @@ describe('App (e2e) ', () => {
 
   describe('City (e2e) ', () => {
     it('/cities/state/brasil/sc (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
+      const actual = await supertest(app.getHttpServer()).get(
         '/cities/state/brasil/sc'
       );
 
@@ -61,7 +61,7 @@ describe('App (e2e) ', () => {
     });
 
     it('/cities/country/brasil (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
+      const actual = await supertest(app.getHttpServer()).get(
         '/cities/country/brasil'
       );
 
@@ -73,18 +73,8 @@ describe('App (e2e) ', () => {
 
   describe('State (e2e) ', () => {
     it('/states/country/brasil (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
+      const actual = await supertest(app.getHttpServer()).get(
         '/states/country/brasil'
-      );
-
-      expect(actual.body).to.be.an('array').that.is.not.empty;
-    });
-  });
-
-  describe('Region (e2e) ', () => {
-    it('/regions/country/brasil (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get(
-        '/regions/country/brasil'
       );
 
       expect(actual.body).to.be.an('array').that.is.not.empty;
@@ -93,7 +83,7 @@ describe('App (e2e) ', () => {
 
   describe('Country (e2e) ', () => {
     it('/countries/ (GET)', async () => {
-      const actual = await request(app.getHttpServer()).get('/countries/');
+      const actual = await supertest(app.getHttpServer()).get('/countries/');
 
       expect(actual.body).to.be.an('array').that.is.not.empty;
     });
