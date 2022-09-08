@@ -89,11 +89,11 @@ http://places.devseeder.com/api/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
 http://places.devseeder.com/api/neighborhoods/city/brazil/sc
 ## Cities By State example
-http://places.devseeder.com/api/cities/brazil/sc
+http://places.devseeder.com/api/cities/brazil/state/sc
 ## Cities By Country example
-http://places.devseeder.com/api/cities/brazil
+http://places.devseeder.com/api/cities/country/brazil
 ## States By Country example
-http://places.devseeder.com/api/states/brazil
+http://places.devseeder.com/api/states/country/brazil
 ## Countries example
 http://places.devseeder.com/api/countries/
 ```
