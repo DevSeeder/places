@@ -87,7 +87,7 @@ After run the server, make a get in browser, postman or similar
 ## Neighborhoods By City example
 http://places.devseeder.com/api/neighborhoods/city/brazil/sc/orleans
 ## Neighborhoods By State example
-http://places.devseeder.com/api/neighborhoods/city/brazil/sc
+http://places.devseeder.com/api/neighborhoods/state/brazil/sc
 ## Cities By State example
 http://places.devseeder.com/api/cities/state/brazil/sc
 ## Cities By Country example
